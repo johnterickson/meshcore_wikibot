@@ -1,0 +1,157 @@
+name: wikibot
+
+services:
+  kiwix:
+    image: ghcr.io/kiwix/kiwix-tools:3.8.2
+    restart: unless-stopped
+    entrypoint: ["/usr/bin/dumb-init", "--"]
+    command:
+      - kiwix-serve
+      - --port=8080
+      - --skipInvalid
+      - /data
+    ports:
+      - "127.0.0.1:${KIWIX_PORT:-8081}:8080"
+    volumes:
+      - type: bind
+        source: ${ZIM_PATH:-F:/wikipedia}
+        target: /data
+        read_only: true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/catalog/v2/entries"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    security_opt:
+      - no-new-privileges:true
+
+  openzim-mcp:
+    image: ghcr.io/cameronrye/openzim-mcp:3.3.3
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MCP_PORT:-8000}:8000"
+    volumes:
+      - type: bind
+        source: ${ZIM_PATH:-F:/wikipedia}
+        target: /data
+        read_only: true
+      - openzim-cache:/home/appuser/.cache/openzim-mcp
+    environment:
+      OPENZIM_MCP_TRANSPORT: http
+      OPENZIM_MCP_HOST: 0.0.0.0
+      OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
+      OPENZIM_MCP_CACHE__PERSISTENCE_ENABLED: "true"
+      OPENZIM_MCP_CACHE__PERSISTENCE_PATH: /home/appuser/.cache/openzim-mcp/cache.json
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/readyz').getcode() == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    security_opt:
+      - no-new-privileges:true
+
+  ollama:
+    image: ollama/ollama:0.34.0
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      CUDA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+      NVIDIA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+      OLLAMA_FLASH_ATTENTION: "1"
+      OLLAMA_KV_CACHE_TYPE: q8_0
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-8192}
+      OLLAMA_GPU_OVERHEAD: "0"
+      LLAMA_ARG_FIT_TARGET: "128"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids:
+                - ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.11.3
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+      openzim-mcp:
+        condition: service_healthy
+    ports:
+      - "${OPEN_WEBUI_PORT:-3000}:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+    environment:
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Set WEBUI_SECRET_KEY in .env}
+      OLLAMA_BASE_URL: http://ollama:11434
+      ENABLE_OLLAMA_API: "true"
+      ENABLE_OPENAI_API: "false"
+      ENABLE_USER_API_KEYS: "true"
+      TOOL_SERVER_CONNECTIONS: >-
+        [{"type":"mcp","url":"http://openzim-mcp:8000/mcp","path":"","spec_type":"url","spec":"","auth_type":"bearer","key":"${OPENZIM_MCP_AUTH_TOKEN}","config":{"enable":true,"function_name_filter_list":"","access_grants":[]},"info":{"id":"wikipedia","name":"Offline Wikipedia","description":"Search and read the local ZIM archive collection"}}]
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health').getcode() == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  home-assistant-gateway:
+    build:
+      context: ./home-assistant-gateway
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+      openzim-mcp:
+        condition: service_healthy
+    ports:
+      - "${HOME_ASSISTANT_GATEWAY_PORT:-11435}:8080"
+    environment:
+      OLLAMA_URL: http://ollama:11434
+      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-qwen3:4b}
+      GATEWAY_API_KEY: ${HOME_ASSISTANT_GATEWAY_API_KEY:-${WEBUI_SECRET_KEY:?Set HOME_ASSISTANT_GATEWAY_API_KEY or WEBUI_SECRET_KEY in .env}}
+      OPENZIM_MCP_URL: http://openzim-mcp:8000/mcp
+      OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
+      MCP_TOOL_NAMES: '["zim_query"]'
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health').getcode() == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  ollama-data:
+  open-webui-data:
+  openzim-cache:
