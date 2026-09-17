@@ -36,13 +36,21 @@ services:
         source: ${ZIM_PATH:-F:/wikipedia}
         target: /data
         read_only: true
-      - openzim-cache:/home/appuser/.cache/openzim-mcp
+      - type: bind
+        source: ./cache/openzim-mcp
+        target: /home/appuser/.cache/openzim-mcp
     environment:
       OPENZIM_MCP_TRANSPORT: http
       OPENZIM_MCP_HOST: 0.0.0.0
       OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
+      OPENZIM_MCP_LOGGING__LEVEL: ${OPENZIM_MCP_LOG_LEVEL:-INFO}
+      OPENZIM_MCP_LOGGING__FORMAT: "%(asctime)s - %(name)s:%(funcName)s - %(levelname)s - %(message)s"
+      OPENZIM_MCP_CACHE__MAX_SIZE: "500"
+      OPENZIM_MCP_CACHE__TTL_SECONDS: "14400"
       OPENZIM_MCP_CACHE__PERSISTENCE_ENABLED: "true"
       OPENZIM_MCP_CACHE__PERSISTENCE_PATH: /home/appuser/.cache/openzim-mcp/cache.json
+      OPENZIM_MCP_CACHE__LIBZIM_CLUSTER_CACHE_MAX_SIZE_BYTES: "67108864"
+      OPENZIM_MCP_CACHE__LIBZIM_DIRENT_CACHE_MAX_COUNT: "2048"
     healthcheck:
       test:
         - CMD
@@ -52,7 +60,33 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 15s
+      start_period: 5m
+    security_opt:
+      - no-new-privileges:true
+
+  localwiki-mcp:
+    build:
+      context: ./localwiki-mcp
+    restart: unless-stopped
+    depends_on:
+      kiwix:
+        condition: service_healthy
+    environment:
+      KIWIX_BASE_URL: http://kiwix:8080
+      SEARCH_SUMMARY: "false"
+      SEARCH_LIMIT: "5"
+      CHAR_LIMIT: "4000"
+      LOCALWIKI_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     security_opt:
       - no-new-privileges:true
 
@@ -65,8 +99,8 @@ services:
       - ollama-data:/root/.ollama
     environment:
       OLLAMA_HOST: 0.0.0.0:11434
-      CUDA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
-      NVIDIA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+      CUDA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_IDS:-GPU-cdcefea5-129f-ff32-5a0f-6b627a943f26,GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+      NVIDIA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_IDS:-GPU-cdcefea5-129f-ff32-5a0f-6b627a943f26,GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
       OLLAMA_FLASH_ATTENTION: "1"
       OLLAMA_KV_CACHE_TYPE: q8_0
       OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-8192}
@@ -79,8 +113,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids:
-                - ${OLLAMA_GPU_DEVICE_ID:-GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
+              count: all
               capabilities: [gpu]
     healthcheck:
       test: ["CMD", "ollama", "list"]
@@ -127,17 +160,21 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
-      openzim-mcp:
+      localwiki-mcp:
         condition: service_healthy
     ports:
       - "${HOME_ASSISTANT_GATEWAY_PORT:-11435}:8080"
     environment:
       OLLAMA_URL: http://ollama:11434
-      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-qwen3:4b}
+      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-wcamaralopes/bonsai-27b:latest}
       GATEWAY_API_KEY: ${HOME_ASSISTANT_GATEWAY_API_KEY:-${WEBUI_SECRET_KEY:?Set HOME_ASSISTANT_GATEWAY_API_KEY or WEBUI_SECRET_KEY in .env}}
-      OPENZIM_MCP_URL: http://openzim-mcp:8000/mcp
+      OPENZIM_MCP_URL: http://localwiki-mcp:8080/mcp
       OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
-      MCP_TOOL_NAMES: '["zim_query"]'
+      MCP_TOOL_NAMES: '["wiki_search", "wiki_fetch"]'
+      MAX_TOOL_ROUNDS: "24"
+      MAX_WIKI_SEARCHES: "4"
+      MAX_WIKI_FETCHES: "2"
+      MCP_TOOL_TIMEOUT_SECONDS: "300"
     healthcheck:
       test:
         - CMD
@@ -154,4 +191,3 @@ services:
 volumes:
   ollama-data:
   open-webui-data:
-  openzim-cache:

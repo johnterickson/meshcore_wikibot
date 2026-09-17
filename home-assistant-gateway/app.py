@@ -1,4 +1,5 @@
 import hmac
+import asyncio
 import json
 import logging
 import os
@@ -10,18 +11,24 @@ from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://ollama:11434").rstrip("/")
-DEFAULT_MODEL = os.environ.get("DEFAULT_MODEL", "qwen3.5:4b")
+DEFAULT_MODEL = os.environ.get("DEFAULT_MODEL", "wcamaralopes/bonsai-27b:latest")
 GATEWAY_API_KEY = os.environ["GATEWAY_API_KEY"]
 OPENZIM_MCP_URL = os.environ.get("OPENZIM_MCP_URL", "http://openzim-mcp:8000/mcp")
 OPENZIM_MCP_AUTH_TOKEN = os.environ["OPENZIM_MCP_AUTH_TOKEN"]
-MCP_TOOL_NAMES = set(json.loads(os.environ.get("MCP_TOOL_NAMES", '["zim_query"]')))
-MAX_TOOL_ROUNDS = int(os.environ.get("MAX_TOOL_ROUNDS", "8"))
+MCP_TOOL_NAMES = set(json.loads(os.environ.get("MCP_TOOL_NAMES", '["wiki_search", "wiki_fetch"]')))
+MAX_TOOL_ROUNDS = int(os.environ.get("MAX_TOOL_ROUNDS", "24"))
+MAX_WIKI_SEARCHES = int(os.environ.get("MAX_WIKI_SEARCHES", "4"))
+MAX_WIKI_FETCHES = int(os.environ.get("MAX_WIKI_FETCHES", "2"))
 TIMEOUT = httpx.Timeout(600.0, connect=10.0)
-WIKI_SYSTEM_PROMPT = """/no_think
-Use the Offline Wikipedia tools to research factual questions.
-Continue calling search and article tools until the answer is supported by article content.
-Do not call or report server health unless the user asks about server or archive health.
-Give a concise final answer and identify the offline Wikipedia article used."""
+MCP_TOOL_TIMEOUT_SECONDS = int(os.environ.get("MCP_TOOL_TIMEOUT_SECONDS", "300"))
+WIKI_SYSTEM_PROMPT = """Answer using only the provided local Wikipedia tools.
+Silently identify the exact claim in the question, preserving every qualifier and relation.
+Search with short, title-oriented phrases. If results are weak, reformulate instead of repeating a query.
+Fetch the most relevant result and verify that its text directly supports the exact claim.
+Do not substitute a related claim, rely on memory, or infer a negative or universal claim from incomplete results.
+Use one tool call at a time, with at most four searches and two fetches.
+As soon as the evidence is sufficient, answer. When the tool budget is exhausted, answer with the best supported conclusion and state any uncertainty.
+Return only a concise answer, without narrating the search process."""
 
 app = FastAPI(title="Home Assistant Offline Wikipedia Gateway")
 logger = logging.getLogger("uvicorn.error")
@@ -35,7 +42,12 @@ def require_auth(authorization: str | None, x_api_key: str | None) -> None:
         raise HTTPException(status_code=401, detail="Invalid gateway API key")
 
 
-def ollama_tools(mcp_tools: list) -> list[dict]:
+def ollama_tools(mcp_tools: list, state: dict) -> list[dict]:
+    exhausted = set()
+    if state["searches"] >= MAX_WIKI_SEARCHES:
+        exhausted.add("wiki_search")
+    if state["fetches"] >= MAX_WIKI_FETCHES:
+        exhausted.add("wiki_fetch")
     return [
         {
             "type": "function",
@@ -46,8 +58,34 @@ def ollama_tools(mcp_tools: list) -> list[dict]:
             },
         }
         for tool in mcp_tools
-        if tool.name in MCP_TOOL_NAMES
+        if tool.name in MCP_TOOL_NAMES and tool.name not in exhausted
     ]
+
+
+def mcp_text(result) -> str:
+    texts = []
+    for content in result.content:
+        text = getattr(content, "text", None)
+        if text:
+            texts.append(text)
+    if texts:
+        return "\n".join(texts)
+    return json.dumps(result.model_dump(mode="json", exclude_none=True))
+
+
+async def call_wiki_tool(session: ClientSession, name: str, arguments: dict, state: dict) -> str:
+    if name == "wiki_search":
+        state["searches"] += 1
+    elif name == "wiki_fetch":
+        state["fetches"] += 1
+    elif name not in MCP_TOOL_NAMES:
+        return json.dumps({"error": f"Unknown tool: {name}"})
+
+    result = await asyncio.wait_for(
+        session.call_tool(name, arguments),
+        timeout=MCP_TOOL_TIMEOUT_SECONDS,
+    )
+    return mcp_text(result)
 
 
 @app.get("/health")
@@ -71,15 +109,26 @@ async def chat(
     async with streamablehttp_client(OPENZIM_MCP_URL, headers=mcp_headers) as streams:
         async with ClientSession(streams[0], streams[1]) as session:
             await session.initialize()
-            tools = ollama_tools((await session.list_tools()).tools)
+            mcp_tools = (await session.list_tools()).tools
+            available_tools = {tool.name for tool in mcp_tools}
+            if not MCP_TOOL_NAMES.issubset(available_tools):
+                raise HTTPException(status_code=503, detail="Required Wikipedia tools are unavailable")
+            tool_state = {"searches": 0, "fetches": 0}
 
             async with httpx.AsyncClient(timeout=TIMEOUT) as client:
                 for tool_round in range(MAX_TOOL_ROUNDS + 1):
+                    tools = ollama_tools(mcp_tools, tool_state)
                     payload = {
                         "model": model,
                         "messages": messages,
                         "stream": False,
                         "tools": tools,
+                        "options": {
+                            "num_ctx": 8192,
+                            "temperature": 0,
+                            "num_predict": 1024,
+                            "repeat_last_n": 64,
+                        },
                     }
                     for option in ("options", "format", "keep_alive", "think"):
                         if option in body:
@@ -115,16 +164,26 @@ async def chat(
                                     detail="Model returned invalid tool arguments",
                                 ) from error
 
-                        logger.info("Calling OpenZIM MCP tool: %s", name)
-                        tool_result = await session.call_tool(name, arguments)
-                        logger.info("Completed OpenZIM MCP tool: %s", name)
+                        logger.info(
+                            "Wiki tool call: round=%d name=%s arguments=%s",
+                            tool_round + 1,
+                            name,
+                            json.dumps(arguments, ensure_ascii=True, sort_keys=True),
+                        )
+                        tool_result = await call_wiki_tool(session, name, arguments, tool_state)
+                        logger.info(
+                            "Wiki tool result: round=%d name=%s chars=%d searches=%d fetches=%d",
+                            tool_round + 1,
+                            name,
+                            len(tool_result),
+                            tool_state["searches"],
+                            tool_state["fetches"],
+                        )
                         messages.append(
                             {
                                 "role": "tool",
                                 "tool_name": name,
-                                "content": json.dumps(
-                                    tool_result.model_dump(mode="json", exclude_none=True)
-                                ),
+                                "content": tool_result,
                             }
                         )
 
