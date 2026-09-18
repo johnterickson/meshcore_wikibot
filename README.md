@@ -49,6 +49,8 @@ The gateway passes the conversation and three request-scoped tools to LM Studio 
 
 The compatibility surface includes `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer authentication and `x-api-key` are supported. Streaming requests currently receive one final NDJSON record after `.act()` finishes rather than incremental tokens.
 
+Begin a user message with `/new` to discard earlier conversation history, for example `/new Which active MLB teams have never been to the World Series?`. The most recent `/new` remains the history boundary when Home Assistant sends later follow-up messages.
+
 ## Verify and operate
 
 ```powershell

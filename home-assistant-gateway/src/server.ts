@@ -48,15 +48,31 @@ function requireAuth(request: Request, response: Response, next: NextFunction) {
   next();
 }
 
+function historyResetIndex(messages: OllamaMessage[]): number {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (message.role === "user" && typeof message.content === "string" && /^\/new(?:\s+|$)/i.test(message.content.trimStart())) {
+      return index;
+    }
+  }
+  return -1;
+}
+
 function chatMessages(messages: OllamaMessage[]): ChatMessageInput[] {
   const supportedRoles = new Set(["system", "user", "assistant"]);
+  const resetIndex = historyResetIndex(messages);
+  const conversation = resetIndex >= 0
+    ? messages.slice(resetIndex).map((message, index) => index === 0
+      ? { ...message, content: message.content?.trimStart().replace(/^\/new(?:\s+|$)/i, "") }
+      : message)
+    : messages;
   const clientSystemPrompts = messages
     .filter(message => message.role === "system" && typeof message.content === "string")
     .map(message => message.content as string);
   return [
     { role: "system", content: [...clientSystemPrompts, wikiSystemPrompt].join("\n\n") },
-    ...messages
-      .filter(message => message.role !== "system" && message.role && supportedRoles.has(message.role) && typeof message.content === "string")
+    ...conversation
+      .filter(message => message.role !== "system" && message.role && supportedRoles.has(message.role) && typeof message.content === "string" && message.content.length > 0)
       .map(message => ({
         role: message.role as "system" | "user" | "assistant",
         content: message.content,
@@ -168,6 +184,7 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
     model: modelName,
     messages: body.messages?.length ?? 0,
     systemMessages: body.messages?.filter(message => message.role === "system").length ?? 0,
+    historyReset: historyResetIndex(body.messages ?? []) >= 0,
     stream: body.stream !== false,
   }));
   const abortController = new AbortController();
