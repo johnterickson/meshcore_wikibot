@@ -1,0 +1,38 @@
+<tool_call>
+<function=wiki_fetch>
+<parameter=path>
+List_of_Major_League_Baseball_postseason_teams
+</parameter>
+<parameter=content>
+full
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+{"content":"| Part of a series on the |\n| Major League Baseball postseason |\n| Wild Card Series |\n| ALWCS NLWCS |\n| Division Series |\n| ALDS NLDS |\n| League Championship Series |\n| ALCS (Winners list)NLCS (Winners list) |\n| World Series |\n| List of World Series champions Commissioner's Trophy |\n| Teams |\n| Appearances Series Streaks Droughts |\n|  |\n\nThe Major League Baseball postseason is an elimination tournament conducted after the regular season, by which MLB determines its World Series champion for a given year.\n\nThe MLB postseason format has evolved throughout its history, with the number of participating teams increasing from two (for its first six-plus decades) to the current 12, with a special format in 2020 having 16. The World Series was first played in 1903, when the champions of the established National League (NL) and the upstart American League (AL) met for a playoff series. From that time through 1968, the two leagues (which each had eight teams through 1960) each sent only its team with the best regular-season record to the World Series. In 1969, as each league had expanded to 12 teams, each league was divided into East and West divisions and another playoff round was created. This round became known as the League Championship Series (LCS), with the four division champions competing for a spot in the World Series every year. This format lasted until 1993.\n\nIn 1994, the again-expanded leagues were re-organized into three separate divisions, and another playoff round was established, called the Division Series (DS). In this format, for each league, the champions of the East, Central, and West divisions would be joined in the playoffs by a Wild Card team. The addition of the Wild Card allowed a team that was not a division winner but still had one of the top regular-season records to enter the postseason. In 1998, the system was slightly modified so that the division winners with better regular-season records would be rewarded with homefield advantage in the division series and LCS. In 2012, the structure was adjusted such that two teams from each league receive Wild Card berths and then play a single game against each other to determine who advances to the Division Series. It also eliminated the previous restriction that the wild card team could not play a team in its own division in the first round. In 2022, the current 12-team format was used, featuring a best-of-three Wild Card Series. However, in this format, the top two division winners in each league received an automatic berth to the Division Series, while the lowest-ranked division winner and three Wild Card teams would play in the Wild Card Series.\n\nThree anomalies in the above-described system occurred. In 1904, the World Series did not take place because the National League champion did not wish to participate and the leagues had not yet agreed to require their champions to do so. In 1981, there was a Division Series due to a split season brought about by a midsummer player's strike. In 1994, the postseason did not take place due to a player's strike. And in 2020, after a shortened 60-game regular season due to the COVID-19 pandemic, a special best-of-three Wild Card Series was played; this involved the three division winners, three second-place teams from each division, and two Wild Card teams in each league.\n\nPostseason appearances by franchise\n\n| Postseason Appearances by Finish |  |  |  |  |  |  |  |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| Franchise | Years | Lost WC | Lost DS | Lost LCS | Lost WS | Won WS |  |\n| ATH | Philadelphia Athletics | 1903–1954 | — | — | — | 1905, 1914, 1931 | 1910, 1911, 1913, 1929, 1930 |\n| Kansas City Athletics | 1955–1967 | — | — | — | — | — |  |\n| Oakland Athletics | 1968–2024 | 2014, 2018, 2019 | 2000, 2001, 2002, 2003, 2012, 2013, 2020 | 1971, 1975, 1981, 1992, 2006 | 1988, 1990 | 1972, 1973, 1974, 1989 |  |\n| Athletics (Sacramento) | 2025–present | — | — | — | — | — |  |\n| AZ | Arizona Diamondbacks | 1998–present | — | 1999, 2002, 2011, 2017 | 2007 | 2023 | 2001 |\n| ATL | Boston Braves | 1903–1952 | — | — | — | 1948 | 1914 |\n| Milwaukee Braves | 1953–1965 | — | — | — | 1958 | 1957 |  |\n| Atlanta Braves | 1966–present | 2012, 2024 | 2000, 2002, 2003, 2004, 2005, 2010, 2013, 2018, 2019, 2022, 2023 | 1969, 1982, 1993, 1997, 1998, 2001, 2020 | 1991, 1992, 1996, 1999 | 1995, 2021 |  |\n| BAL | St. Louis Browns | 1903–1953 | — | — | — | 1944 | — |\n| Baltimore Orioles | 1954–present | 2016, 2024 | 2012, 2023 | 1973, 1974, 1996, 1997, 2014 | 1969, 1971, 1979 | 1966, 1970, 1983 |  |\n| BOS | Boston Red Sox | 1903–present | 2025 | 1995, 1998, 2005, 2009, 2016, 2017 | 1988, 1990, 1999, 2003, 2008, 2021 | 1946, 1967, 1975, 1986 | 1903, 1912, 1915, 1916, 1918, 2004, 2007, 2013, 2018 |\n| CHC | Chicago Cubs | 1903–present | 2018, 2020 | 1998, 2007, 2008, 2025 | 1984, 1989, 2003, 2015, 2017 | 1906, 1910, 1918, 1929, 1932, 1935, 1938, 1945 | 1907, 1908, 2016 |\n| CWS | Chicago White Sox | 1903–present | 2020 | 2000","pagination":{"page":1,"pageSize":5000,"totalPages":4,"totalCharacters":16190,"hasPreviousPage":false,"hasNextPage":true}}
+</tool_response>
+<|im_end|>
+<|im_start|>assistant
+<think>
+Scrolling further. Let's fetch more pages (page 2). Use page=2? The article seems to be paginated across multiple pages; we need to get all content? It might have the entire list in one page but our fetch only got first few lines due to limited size? Actually the tool returned only up to "CWS ...". Let's continue fetching with page 2.
+
+
+
+</think>
+<tool_call>
+<function=wiki_fetch>
+<parameter=path>
+List_of_Major_League_Baseball_postseason_teams
+</parameter>
+<parameter=page>
+2
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+"Error calling wiki_fetch: Page 2 is out of range (total pages: 1)"
+</tool_response>

@@ -36,7 +36,7 @@ Wikipedia archive: `D:\wikipedia\wikipedia_en_all_maxi_2026-02.zim`
 - Quadro K1200, 4 GB, compute capability 5.0.
 - GTX 1650 SUPER, 4 GB, compute capability 7.5.
 - Ollama is configured to use both GPU UUIDs from `.env`.
-- Default context is 8192 tokens.
+- Default context is 12,288 tokens.
 - Flash attention and q8_0 KV cache are enabled.
 - Ollama handles one parallel request.
 - Do not print `.env`; it contains authentication secrets.
@@ -56,11 +56,13 @@ All relevant services were healthy after the latest deployment.
 
 Source: <https://github.com/johnterickson/lmstudio-localwiki.git>
 
-Cloned under `localwiki-mcp` at upstream commit:
+Cloned under `localwiki-mcp` at commit:
 
 ```text
-841ea26151dccbcd5fb3afe89c619434829c958b
+4abce86 Add section-aware MCP server
 ```
+
+That commit is present on `origin/main`. Local commit `571f128` (`Raise default search result limit`) changes the standalone server's default search limit from 5 to 25; the parent repository records that nested commit.
 
 The upstream LM Studio plugin was wrapped in a standalone authenticated Streamable HTTP MCP server. The Kiwix behavior was preserved:
 
@@ -68,8 +70,8 @@ The upstream LM Studio plugin was wrapped in a standalone authenticated Streamab
 - `/search` full-text results
 - Kiwix HTML parsing
 - Redirect handling
-- Intro/full/references extraction
-- Character pagination
+- Section discovery
+- Block-aware section segmentation
 
 The implementation assumes exactly one Kiwix book. Its catalog is resolved internally and cached; the model does not provide a book name.
 
@@ -82,52 +84,95 @@ Live MCP tools:
     "required": ["query"]
   },
   {
+    "name": "wiki_sections",
+    "required": ["path"]
+  },
+  {
     "name": "wiki_fetch",
-    "required": ["path"],
-    "optional": ["content", "page"]
+    "required": ["path", "section"],
+    "optional": ["segment"]
   }
 ]
 ```
 
 `wiki_list` was completely removed from source, generated output, gateway behavior, prompts, Compose configuration, benchmark text, and documentation.
 
-`wiki_fetch.content` accepts `intro`, `full`, or `refs` and defaults to `intro`. `page` defaults to 1.
+`wiki_sections` returns the non-empty sections of an article in document order. `wiki_fetch` returns one section as native Markdown with the References section removed. `segment` defaults to 1. Segmentation keeps paragraphs and list items intact, splits tables only between rows, and repeats table headers. If an article path returns HTTP 404, underscores are replaced with spaces and matching `wiki_search` results are returned.
 
-The LocalWiki service build and live MCP discovery were validated. Both `wiki_search` and `wiki_fetch` execute successfully against Kiwix.
+The LocalWiki service build and live MCP discovery were validated. All three tools execute successfully against Kiwix.
 
 ## Home Assistant Gateway
 
-The gateway directly discovers LocalWiki MCP schemas with `session.list_tools()` and forwards MCP calls without translating through OpenZIM operations.
+The gateway discovers LocalWiki MCP tools and presents a smaller model-facing schema. Search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
+
+Each search now returns up to 25 results, matching the successful LM Studio LocalWiki condition. For the MLB benchmark query, this exposes `List of Major League Baseball franchise postseason droughts` at result 21.
+
+The gateway removes prior reasoning traces from model history while preserving the current response's reasoning for diagnostics. It compacts only when Ollama's measured prompt usage plus newly appended tool messages is estimated to reach 85% of the request's context window. Compaction sends only accumulated assistant/tool retrieval work to the model without tools or hidden thinking and asks it for a compact factual summary. The original gateway policy and client messages are excluded. The compacted history keeps the mechanical handle registry and treats the generated summary as advisory assistant context, then restores the exact original messages unchanged. A failed or empty compaction leaves the existing history intact.
 
 Legacy environment variable names remain for compatibility:
 
 - `OPENZIM_MCP_URL` points to LocalWiki MCP.
 - `OPENZIM_MCP_AUTH_TOKEN` authenticates LocalWiki MCP.
 
-The gateway limits each request to:
+The gateway request defaults are:
 
-- Four searches
-- Two article fetches
+- Up to 25 results per search; no separate number-of-searches or fetch cap
 - 24 model/tool rounds
-- 8192-token context by default
-- Temperature 0
-- 1024 prediction tokens
+- Granite 4.2 8B by default
+- 12,288-token context by default
+- Temperature 0.2
+- 102,400 prediction tokens unless the client overrides it; controlled matrix runs use 2,048
 - `repeat_last_n=64`
+- Low-effort thinking by default (`OLLAMA_THINK=low`); clients may override it with `true`, `false`, or another supported level
+- `keep_alive=-1` so the active model remains resident
+- 7,200-second Ollama request and benchmark timeout for long-running diagnostics
 
 The publisher-supplied Bonsai value `repeat_last_n=-1` was intentionally overridden because it is invalid/problematic in this setup.
+
+LM Studio's successful Granite run enabled thinking with a separate 64-token reasoning budget. Ollama does not expose a numeric reasoning budget for this model, but Granite's installed template implements `reasoning_effort="low"`; `OLLAMA_THINK=low` is the closest available control and does not guarantee an exact 64-token limit.
 
 Current technique-only system prompt:
 
 ```text
-Answer using only the provided local Wikipedia tools.
-Silently identify the exact claim in the question, preserving every qualifier and relation.
-Search with short, title-oriented phrases. If results are weak, reformulate instead of repeating a query.
-Fetch the most relevant result and verify that its text directly supports the exact claim.
-Do not substitute a related claim, rely on memory, or infer a negative or universal claim from incomplete results.
-Use one tool call at a time, with at most four searches and two fetches.
-As soon as the evidence is sufficient, answer. When the tool budget is exhausted, answer with the best supported conclusion and state any uncertainty.
-Return only a concise answer, without narrating the search process.
+Your internal factual knowledge is limited and may be inaccurate, but you have access to an offline copy of Wikipedia through the provided tools. This is your primary source of truth: use it heavily, and do not rely on memory, other tools, or web search.
+
+Use the intentional retrieval sequence: wiki_search, wiki_sections for a promising article, then wiki_fetch for the most relevant section. Article and section handles are short and valid only for this request. Fetch additional segments only when the current segment says another is available and the evidence is still insufficient.
+
+Handles preserve source order and do not indicate relevance. Compare titles before choosing a handle.
+
+Find explicit support for the precise question, preserving its qualifiers and relationships. Once the evidence is sufficient, answer concisely.
 ```
+
+## Model Matrix and LM Studio Parity
+
+All current gateway matrix runs use the generic MLB question, temperature 0.2, 8,192 context unless noted, 2,048 prediction tokens, and sequential execution. A wrong answer counts as failure and triggers the requested GTX-only fallback after a dual-GPU attempt.
+
+| Model | Dual GPU | GTX-only |
+| --- | --- | --- |
+| `nemotron-3-nano:4b` | All 43 layers loaded, then empty warm-up timed out after five minutes | Loaded in 100.8 seconds; two 8K runs failed semantically |
+| `openbmb/minicpm5-2b:q4_K_M` | Loaded fully on GPU; searched repeatedly but never listed/fetched sections | Confused article and section handles and exhausted its output budget |
+| `qwen3:14b-q4_K_M` | Runner startup timed out after 313 seconds | Loaded 11/41 layers on GPU; four searches, no fetch, then exhausted 2,048 reasoning tokens |
+| `mistral-nemo:12b` | Downloaded; benchmark pending | Pending if dual fails |
+
+The successful LM Studio Nemotron trace used the same `Q4_K_M` quantization, 32,768 context, full 42-layer GPU offload, thinking enabled, 25 search results, and no compaction between section listing and fetch. It made one recoverable invalid fetch, listed raw section IDs, fetched `Longest_current_World_Series_appearance_droughts`, and answered correctly from the explicit `Seattle Mariners | Never` row.
+
+The gateway was changed to match the three material orchestration conditions visible in that trace:
+
+- 25 search results
+- prior reasoning removed from subsequent model history
+- compaction only near 85% of the active context window
+
+A GTX-only Nemotron parity run then used 32,768 context, Boolean thinking, full GPU residency, and the same `Q4_K_M` artifact. It found the drought article and listed its sections without any compaction (`prompt_eval_count=1927`), but generated 2,048 repetitive reasoning tokens about fetching `S19` without emitting a tool call. This isolates the remaining discrepancy to same-turn reasoning/tool emission, chat template, or runtime orchestration rather than search visibility, retained reasoning, or compaction.
+
+Raw reference transcripts committed with this checkpoint:
+
+- `granite_success_1.txt`
+- `granite_success_2.txt`
+- `pagination_bug.txt`
+- `qwen3.8-27b_success.txt`
+- `nemotron - 2026-09-17 19.08`
+- `nemotron - 2026-09-17 19.09`
+- `nemotron - 2026-09-17 21.13`
 
 ## Important Files
 
@@ -172,9 +217,8 @@ docker compose logs --since $timestamp --timestamps --no-color home-assistant-ga
 
 ## Repository State and Cautions
 
-- The parent worktree contains accumulated uncommitted changes.
+- This checkpoint intentionally includes the accumulated gateway/configuration changes, documentation, and raw experiment transcripts.
 - Do not revert unrelated changes.
-- Do not commit unless explicitly requested.
 - `localwiki-mcp` was cloned with nested `.git` metadata. Decide whether to preserve it as a submodule-like checkout or remove the nested metadata before a future parent commit.
 - The upstream LocalWiki project is GPLv3 and its `LICENSE` is retained.
 - `package.json` may still report ISC and should eventually be reconciled with the upstream GPLv3 license.

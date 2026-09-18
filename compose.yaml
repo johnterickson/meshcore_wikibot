@@ -6,10 +6,9 @@ services:
     restart: unless-stopped
     entrypoint: ["/usr/bin/dumb-init", "--"]
     command:
-      - kiwix-serve
-      - --port=8080
-      - --skipInvalid
-      - /data
+      - sh
+      - -c
+      - exec kiwix-serve --port=8080 --skipInvalid /data/*.zim
     ports:
       - "127.0.0.1:${KIWIX_PORT:-8081}:8080"
     volumes:
@@ -18,7 +17,7 @@ services:
         target: /data
         read_only: true
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/catalog/v2/entries"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/catalog/v2/entries | grep -q '<entry>'"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -74,7 +73,7 @@ services:
     environment:
       KIWIX_BASE_URL: http://kiwix:8080
       SEARCH_SUMMARY: "false"
-      SEARCH_LIMIT: "5"
+      SEARCH_LIMIT: "25"
       CHAR_LIMIT: "4000"
       LOCALWIKI_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
     healthcheck:
@@ -103,7 +102,8 @@ services:
       NVIDIA_VISIBLE_DEVICES: ${OLLAMA_GPU_DEVICE_IDS:-GPU-cdcefea5-129f-ff32-5a0f-6b627a943f26,GPU-20986d10-64a8-9a2b-43b1-251aa0f58852}
       OLLAMA_FLASH_ATTENTION: "1"
       OLLAMA_KV_CACHE_TYPE: q8_0
-      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-8192}
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-12288}
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:--1}
       OLLAMA_GPU_OVERHEAD: "0"
       LLAMA_ARG_FIT_TARGET: "128"
       OLLAMA_NUM_PARALLEL: "1"
@@ -166,14 +166,19 @@ services:
       - "${HOME_ASSISTANT_GATEWAY_PORT:-11435}:8080"
     environment:
       OLLAMA_URL: http://ollama:11434
-      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-wcamaralopes/bonsai-27b:latest}
+      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-granite4.2:8b}
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-12288}
+      OLLAMA_TEMPERATURE: ${OLLAMA_TEMPERATURE:-0.2}
       GATEWAY_API_KEY: ${HOME_ASSISTANT_GATEWAY_API_KEY:-${WEBUI_SECRET_KEY:?Set HOME_ASSISTANT_GATEWAY_API_KEY or WEBUI_SECRET_KEY in .env}}
       OPENZIM_MCP_URL: http://localwiki-mcp:8080/mcp
       OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
-      MCP_TOOL_NAMES: '["wiki_search", "wiki_fetch"]'
+      MCP_TOOL_NAMES: '["wiki_search", "wiki_sections", "wiki_fetch"]'
       MAX_TOOL_ROUNDS: "24"
-      MAX_WIKI_SEARCHES: "4"
-      MAX_WIKI_FETCHES: "2"
+      COMPACT_CONTEXT_THRESHOLD: ${COMPACT_CONTEXT_THRESHOLD:-0.85}
+      COMPACT_NUM_PREDICT: ${COMPACT_NUM_PREDICT:-256}
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:--1}
+      OLLAMA_THINK: ${OLLAMA_THINK:-low}
+      OLLAMA_REQUEST_TIMEOUT_SECONDS: ${OLLAMA_REQUEST_TIMEOUT_SECONDS:-72000}
       MCP_TOOL_TIMEOUT_SECONDS: "300"
     healthcheck:
       test:

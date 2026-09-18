@@ -1,0 +1,209 @@
+https://lmstudio.ai/models/nvidia/nemotron-3-nano-4b
+
+<|im_start|>system
+You are a small LLM model so you have limited, poor, and inaccurate factual knowledge - but you do have access to an offline copy of the entirety of human knowledge: wikipedia - this is your superpower - use it heavily to have any hope of getting accurate answers. Treat the information in it as gospel fact. Use its search sparingly - likely it will be more helpful to read full articles (i.e. follow through with pagination) and find explicit links to other articles. 
+
+Also use wikipedia as a dictionary if you are unsure the definition of terms.
+
+You have constrained GPU so thinking is expensive but tool calls are practically free. Lean on tool calls. Make lots of them. Rely less on being "clever" (sorry your model is not good at this) and instead read whole articles. Don't overthink or second-guess yourself - just extract factual information from wikipedia.  You will not be given trick questions - just straight-forward information requests. Stop immediately once a fetched passage explicitly answers the question.
+
+# Tools
+
+You have access to the following functions:
+
+<tools>
+<function>
+<name>wiki_search</name>
+<description>Search the local Wikipedia book for articles. Returns the first exact or prefix title match first, 		followed by full-text matches, with duplicate paths removed. 		Parameters: 		- query (required): search term. 		Returns relevant articles with 'title' and 'path'. 		There could be an extra 'summary' section if the user enables it. 		Use the 'path' field (NOT 'title') in 'wiki_fetch' tool to retrieve the article.</description>
+<parameters>
+<parameter>
+<name>query</name>
+<type>string</type>
+<description>Non-empty article search term</description>
+<minLength>1</minLength>
+</parameter>
+<additionalProperties>False</additionalProperties>
+<required>["query"]</required>
+</parameters>
+</function>
+<function>
+<name>wiki_sections</name>
+<description>List an article's sections before fetching content. 		Parameters: 		- path (required): exact article path from wiki_search. 		Returns concise section IDs and titles for wiki_fetch.</description>
+<parameters>
+<parameter>
+<name>path</name>
+<type>string</type>
+<description>Exact article path from wiki_search</description>
+<minLength>1</minLength>
+</parameter>
+<additionalProperties>False</additionalProperties>
+<required>["path"]</required>
+</parameters>
+</function>
+<function>
+<name>wiki_fetch</name>
+<description>Fetch one intelligently segmented article section, excluding References. 		Parameters: 		- path (required): exact article path from wiki_search. 		- section (required): exact section ID from wiki_sections. 		- segment (optional, defaults to 1): 1-based segment. Segments preserve complete Markdown blocks and table rows.</description>
+<parameters>
+<parameter>
+<name>path</name>
+<type>string</type>
+<description>Exact article path returned by wiki_search for the same book</description>
+<minLength>1</minLength>
+</parameter>
+<parameter>
+<name>section</name>
+<type>string</type>
+<minLength>1</minLength>
+</parameter>
+<parameter>
+<name>segment</name>
+<type>integer</type>
+<description>1-based section segment number</description>
+<minimum>1</minimum>
+<default>1</default>
+</parameter>
+<additionalProperties>False</additionalProperties>
+<required>["path", "section"]</required>
+</parameters>
+</function>
+</tools>
+
+If you choose to call a function ONLY reply in the following format with NO suffix:
+
+<tool_call>
+<function=example_function_name>
+<parameter=example_parameter_1>
+value_1
+</parameter>
+<parameter=example_parameter_2>
+This is the value for the second parameter
+that can span
+multiple lines
+</parameter>
+</function>
+</tool_call>
+
+<IMPORTANT>
+Reminder:
+- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags
+- Required parameters MUST be specified
+- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after
+- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls
+</IMPORTANT><|im_end|>
+<|im_start|>user
+Which active MLB teams have never been to the World Series?<|im_end|>
+<|im_start|>assistant
+<think>
+We need list of active MLB teams that have never won a World Series. Use Wikipedia. Search "MLB teams that have never won a World Series". Let's search.
+
+</think>
+<tool_call>
+<function=wiki_search>
+<parameter=query>
+MLB teams that have never won a World Series
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+{"results":[{"title":"List of Major League Baseball tie-breakers","path":"List_of_Major_League_Baseball_tie-breakers"},{"title":"List of Miami Marlins seasons","path":"List_of_Miami_Marlins_seasons"},{"title":"List of Colorado Rockies seasons","path":"List_of_Colorado_Rockies_seasons"},{"title":"List of Los Angeles Angels seasons","path":"List_of_Los_Angeles_Angels_seasons"},{"title":"List of Chicago White Sox seasons","path":"List_of_Chicago_White_Sox_seasons"},{"title":"League Championship Series","path":"League_Championship_Series"},{"title":"List of Athletics seasons","path":"List_of_Athletics_seasons"},{"title":"List of San Diego Padres seasons","path":"List_of_San_Diego_Padres_seasons"},{"title":"World Series Most Valuable Player Award","path":"World_Series_Most_Valuable_Player_Award"},{"title":"Major League Baseball postseason","path":"Major_League_Baseball_postseason"},{"title":"List of teams that have overcome 3–0 series deficits","path":"List_of_teams_that_have_overcome_3%E2%80%930_series_deficits"},{"title":"Milwaukee Brewers","path":"Milwaukee_Brewers"},{"title":"2019 World Series","path":"2019_World_Series"},{"title":"Commissioner's Trophy (MLB)","path":"Commissioner's_Trophy_(MLB)"},{"title":"World Series","path":"World_Series"},{"title":"Major League Baseball rivalries","path":"Major_League_Baseball_rivalries"},{"title":"List of Seattle Mariners seasons","path":"List_of_Seattle_Mariners_seasons"},{"title":"Game seven","path":"Game_seven"},{"title":"2025 American League Championship Series","path":"2025_American_League_Championship_Series"},{"title":"Wild Card Series","path":"Wild_Card_Series"},{"title":"List of Major League Baseball franchise postseason droughts","path":"List_of_Major_League_Baseball_franchise_postseason_droughts"},{"title":"Portal:Baseball/Selected list","path":"Portal%3ABaseball/Selected_list"},{"title":"Philadelphia Phillies","path":"Philadelphia_Phillies"},{"title":"Portal:Baseball/Selected article","path":"Portal%3ABaseball/Selected_article"},{"title":"Curse of the Billy Goat","path":"Curse_of_the_Billy_Goat"}],"hint":"If the results are irrelevant or empty, try shortening the search query."}
+</tool_response>
+<|im_end|>
+<|im_start|>assistant
+<think>
+We need list of active MLB teams that have never won a World Series. Use Wikipedia. Search "MLB teams that have never won a World Series". The result includes "List_of_Major_League_Baseball_franchise_postseason_droughts" which likely lists franchise postseason droughts, i.e., teams that haven't made playoffs? But we need teams that have never been to the World Series. That is different: they may have made playoffs but not won WS.
+
+Search "MLB franchise postseason droughts". Let's fetch article.
+
+</think>
+<tool_call>
+<function=wiki_fetch>
+<parameter=path>
+List_of_Major_League_Baseball_franchise_postseason_droughts
+</parameter>
+<parameter=section>
+1
+</parameter>
+<parameter=segment>
+1
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+"Error calling wiki_fetch: Unknown section ID: 1"
+</tool_response>
+<|im_end|>
+<|im_start|>assistant
+<think>
+Maybe the article has no sections? Let's get sections list.
+
+We need to fetch sections first. Use wiki_sections.
+
+
+
+</think>
+<tool_call>
+<function=wiki_sections>
+<parameter=path>
+List_of_Major_League_Baseball_franchise_postseason_droughts
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+{"sections":[{"id":"lead","title":"Lead","level":1},{"id":"Longest_current_postseason_droughts","title":"Longest current postseason droughts","level":3},{"id":"Longest_postseason_droughts_in_the_expanded-postseason_era","title":"Longest postseason droughts in the expanded-postseason era","level":3},{"id":"Longest_active_postseason_series_win_droughts","title":"Longest active postseason series win droughts","level":3},{"id":"Longest_postseason_game_win_droughts","title":"Longest postseason game win droughts","level":3},{"id":"Longest_current_postseason_game_win_droughts","title":"Longest current postseason game win droughts","level":3},{"id":"Longest_current_division_champion_droughts","title":"Longest current division champion droughts","level":3},{"id":"Longest_division_championship_droughts_through_history","title":"Longest division championship droughts through history","level":3},{"id":"Longest_current_league_championship_appearance_droughts","title":"Longest current league championship appearance droughts","level":3},{"id":"Longest_current_World_Series_appearance_droughts","title":"Longest current World Series appearance droughts","level":3},{"id":"Longest_major_league_pennant_droughts_through_history","title":"Longest major league pennant droughts through history","level":3},{"id":"Major_league_pennant_droughts_by_city/region","title":"Major league pennant droughts by city/region","level":3},{"id":"Longest_current_World_Series_championship_droughts","title":"Longest current World Series championship droughts","level":3},{"id":"Longest_World_Series_championship_droughts_through_history","title":"Longest World Series championship droughts through history","level":3},{"id":"World_Series_championship_droughts_by_city/region","title":"World Series championship droughts by city/region","level":3},{"id":"World_Series_in_which_neither_team_had_previously_won_a_championship","title":"World Series in which neither team had previously won a championship","level":3},{"id":"World_Series_in_which_neither_team_had_previously_lost_a_championship","title":"World Series in which neither team had previously lost a championship","level":3},{"id":"World_Series_in_which_both_teams_had_ended_pennant_droughts_of_20-plus_seasons","title":"World Series in which both teams had ended pennant droughts of 20-plus seasons","level":3},{"id":"World_Series_in_which_neither_franchise_had_won_a_championship_in_30-plus_seasons","title":"World Series in which neither franchise had won a championship in 30-plus seasons","level":3},{"id":"World_Series_Championship_droughts_by_division","title":"World Series Championship droughts by division","level":3},{"id":"Closest_approaches_without_winning_the_World_Series","title":"Closest approaches without winning the World Series","level":3},{"id":"See_also","title":"See also","level":2}]}
+</tool_response>
+<|im_end|>
+<|im_start|>assistant
+<think>
+We need list of active MLB teams that have never won a World Series. The article likely lists franchise postseason droughts, i.e., longest current World Series appearance droughts. That is exactly what we want: teams with longest drought (i.e., never made WS). Let's fetch the "Longest_current_World_Series_appearance_droughts" section.
+
+Section ID: Longest_current_World_Series_appearance_droughts
+
+Fetch.
+
+
+
+</think>
+<tool_call>
+<function=wiki_fetch>
+<parameter=path>
+List_of_Major_League_Baseball_franchise_postseason_droughts
+</parameter>
+<parameter=section>
+Longest_current_World_Series_appearance_droughts
+</parameter>
+<parameter=segment>
+1
+</parameter>
+</function>
+</tool_call>
+<|im_end|>
+<|im_start|>user
+<tool_response>
+{"content":"No World Series was played in 1994 due to the players' strike that year.\n\n| Seasons | Team | Last World Series appearance |\n| --- | --- | --- |\n| 49 | Seattle Mariners | Never (franchise started in 1977) |\n| 46 | Pittsburgh Pirates | 1979 |\n| 43 | Milwaukee Brewers | 1982[4] |\n| 42 | Baltimore Orioles | 1983 |\n| 35 | Cincinnati Reds | 1990 |\n| 35 | Athletics | 1990 |\n| 34 | Minnesota Twins | 1991 |\n| 27 | San Diego Padres | 1998 |\n| 23 | Los Angeles Angels | 2002 |\n| 22 | Miami Marlins | 2003 |\n| 20 | Chicago White Sox | 2005 |\n| 18 | Colorado Rockies | 2007 |\n| 13 | Detroit Tigers | 2012 |\n| 12 | St. Louis Cardinals | 2013 |\n| 11 | San Francisco Giants | 2014 |\n| 10 | Kansas City Royals | 2015 |\n| 10 | New York Mets | 2015 |\n| 9 | Chicago Cubs | 2016 |\n| 9 | Cleveland Guardians | 2016 |\n| 7 | Boston Red Sox | 2018 |\n| 6 | Washington Nationals | 2019 |\n| 5 | Tampa Bay Rays | 2020 |\n| 4 | Atlanta Braves | 2021 |\n| 3 | Houston Astros | 2022 |\n| 3 | Philadelphia Phillies | 2022 |\n| 2 | Arizona Diamondbacks | 2023 |\n| 2 | Texas Rangers | 2023 |\n| 1 | New York Yankees | 2024 |\n| 0 | Los Angeles Dodgers | 2025 |\n| 0 | Toronto Blue Jays | 2025 |","section":{"id":"Longest_current_World_Series_appearance_droughts","title":"Longest current World Series appearance droughts"},"pagination":{"segment":1,"totalSegments":1,"hasPreviousSegment":false,"hasNextSegment":false}}
+</tool_response>
+<|im_end|>
+<|im_start|>assistant
+<think>
+The table lists teams with longest current World Series appearance droughts. The question: "Which active MLB teams have never been to the World Series?" That's essentially those whose last appearance is "Never". Only Seattle Mariners (49) and maybe others? The list shows only Seattle Mariners have "Never (franchise started in 1977)". Also perhaps other teams that haven't made WS yet but are active: The table includes many with years, meaning they have appeared. So answer: Seattle Mariners.
+
+But also note that the franchise started 1977; they've never been to WS. Are there any other active MLB teams that have never been to WS? According to data, only Seattle Mariners. However, maybe also the "Los Angeles Dodgers" have 0 (2025) meaning they haven't yet made WS in current era but will soon. So not "never". The question likely expects list of teams that have never been to WS: Seattle Mariners.
+
+But could there be others like "Toronto Blue Jays" also 0? They are active, but 0 means they haven't had a World Series appearance yet (since 2025). That's future. So not "never". The phrase "have never been to the World Series" includes past up to now: only Seattle Mariners.
+
+Thus answer: Seattle Mariners.
+
+Provide citation from article.
+
+</think>
+
+The only active MLB franchise that has **never** made a World Series appearance is the **Seattle Mariners**.  
+
+According to Wikipedia’s “Longest current World Series appearance droughts” table, the Mariners have a 49‑year drought (their last World Series appearance was never – they began in 1977). All other active teams listed have at least one World Series appearance.
+
+**Source:** *List of Major League Baseball franchise postseason droughts* → “Longest current World Series appearance droughts” section.
