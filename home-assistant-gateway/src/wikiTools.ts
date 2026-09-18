@@ -15,7 +15,8 @@ type WikiState = {
 };
 
 function resultText(result: Awaited<ReturnType<Client["callTool"]>>): string {
-  const texts = (result.content as Array<{ type: string; text?: string }>)
+  const content = Array.isArray(result.content) ? result.content : [];
+  const texts = (content as Array<{ type: string; text?: string }>)
     .filter(item => item.type === "text" && item.text)
     .map(item => item.text as string);
   return texts.length > 0 ? texts.join("\n") : JSON.stringify(result);
@@ -25,8 +26,13 @@ async function callMcp(client: Client, name: string, arguments_: Record<string, 
   console.info(JSON.stringify({ event: "wiki_tool_call", name, arguments: arguments_ }));
   const result = await client.callTool({ name, arguments: arguments_ });
   const text = resultText(result);
-  console.info(JSON.stringify({ event: "wiki_tool_result", name, characters: text.length }));
-  return JSON.parse(text) as Record<string, any>;
+  console.info(JSON.stringify({ event: "wiki_tool_result", name, characters: text.length, isError: result.isError === true }));
+  if (result.isError) return { error: text };
+  try {
+    return JSON.parse(text) as Record<string, any>;
+  } catch {
+    throw new Error(`${name} returned invalid JSON`);
+  }
 }
 
 export async function connectLocalWiki(): Promise<{
@@ -57,6 +63,7 @@ export function createWikiTools(client: Client): Tool[] {
     parameters: { query: z.string().min(1).describe("Concise search terms") },
     implementation: async ({ query }) => {
       const parsed = await callMcp(client, "wiki_search", { query });
+      if (parsed.error) return `Error: ${parsed.error}`;
       const lines = ["Articles (source order; handles do not indicate relevance):"];
       for (const item of parsed.results ?? []) {
         if (!item.path) continue;
@@ -81,6 +88,7 @@ export function createWikiTools(client: Client): Tool[] {
       const selected = state.articles.get(article);
       if (!selected) return JSON.stringify({ error: `Unknown article handle: ${article}` });
       const parsed = await callMcp(client, "wiki_sections", { path: selected.path });
+      if (parsed.error) return `Error: ${parsed.error}`;
       const lines = [`Sections in ${article} (document order; handles do not indicate relevance):`];
       for (const item of parsed.sections ?? []) {
         const key = `${article}\u0000${item.id}`;
@@ -116,6 +124,7 @@ export function createWikiTools(client: Client): Tool[] {
         section: selected.id,
         segment,
       });
+      if (parsed.error) return `Error: ${parsed.error}`;
       const pagination = parsed.pagination ?? {};
       return `${parsed.content ?? JSON.stringify(parsed)}\n\n[Segment ${pagination.segment ?? 1} of ${pagination.totalSegments ?? 1}; has next: ${Boolean(pagination.hasNextSegment)}]`;
     },
