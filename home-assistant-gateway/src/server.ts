@@ -50,10 +50,13 @@ function requireAuth(request: Request, response: Response, next: NextFunction) {
 
 function chatMessages(messages: OllamaMessage[]): ChatMessageInput[] {
   const supportedRoles = new Set(["system", "user", "assistant"]);
+  const clientSystemPrompts = messages
+    .filter(message => message.role === "system" && typeof message.content === "string")
+    .map(message => message.content as string);
   return [
-    { role: "system", content: wikiSystemPrompt },
+    { role: "system", content: [...clientSystemPrompts, wikiSystemPrompt].join("\n\n") },
     ...messages
-      .filter(message => message.role && supportedRoles.has(message.role) && typeof message.content === "string")
+      .filter(message => message.role !== "system" && message.role && supportedRoles.has(message.role) && typeof message.content === "string")
       .map(message => ({
         role: message.role as "system" | "user" | "assistant",
         content: message.content,
@@ -160,6 +163,13 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
   const body = request.body ?? {};
   const modelName = body.model || config.defaultModel;
   const predictions: PredictionResult[] = [];
+  console.info(JSON.stringify({
+    event: "chat_request",
+    model: modelName,
+    messages: body.messages?.length ?? 0,
+    systemMessages: body.messages?.filter(message => message.role === "system").length ?? 0,
+    stream: body.stream !== false,
+  }));
   const abortController = new AbortController();
   request.once("aborted", () => abortController.abort());
   response.once("close", () => {
@@ -199,6 +209,13 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
       },
     });
     const payload = ollamaResponse(body, modelName, predictions, result.totalExecutionTimeSeconds);
+    console.info(JSON.stringify({
+      event: "chat_completed",
+      model: modelName,
+      rounds: predictions.length,
+      answerCharacters: payload.message.content.length,
+      doneReason: payload.done_reason,
+    }));
     if (body.stream === false) {
       response.json(payload);
     } else {
