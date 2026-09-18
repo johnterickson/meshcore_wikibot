@@ -393,6 +393,24 @@ Live validation confirmed that the same query returns 25 results and the target 
 
 `mistral-nemo:12b` is downloaded but has not yet completed its dual/GTX matrix. Larger pending candidates remain `gpt-oss:20b` and `mistral-small3.2:24b`.
 
+### Native LM Studio SDK Gateway
+
+The Home Assistant gateway was rewritten in Node/TypeScript with `@lmstudio/sdk` 1.4.0. It passes the generic Wikipedia prompt and request-scoped LocalWiki tools to `model.act()` instead of manually replaying Ollama assistant/tool turns. Search still returns 25 results, tools remain serial, and the only control-flow bound is 24 prediction rounds.
+
+Nemotron Q4_K_M passed through this gateway at 32,768 context with full GPU offload. It completed search -> sections -> fetch and correctly identified only the Seattle Mariners. This reproduces the earlier positive LM Studio result and strongly supports `.act()` or LM Studio's reasoning/tool transition as the material runtime difference.
+
+Granite Q4_K_M loaded successfully at 12,288 context with 80% GPU offload. Full GPU offload loaded but failed during inference with CUDA OOM. The first full `.act()` attempt made five valid calls:
+
+1. `wiki_search("MLB teams never played in the World Series")`
+2. `wiki_search("World Series appearances by team")`
+3. `wiki_sections(A44)` for `World_Series`
+4. `wiki_fetch(S33)` for `Modern_World_Series_appearances_by_franchise`
+5. `wiki_fetch(S34)` for `World_Series_record_by_team_or_franchise,_1903-present`
+
+The benchmark client then hit Undici's default response-header timeout while the server-side final prediction continued. This is not a Granite tool or gateway failure. The Node benchmark now uses `node:http` with no response-header deadline; final Granite grading remains pending.
+
+The next exact candidate is `unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_M.gguf`, approximately 16.5 GB. It is Qwen3.8, not Qwen3.5, and should be downloaded and tested only after Granite is idle.
+
 ## Pending Baselines
 
 Still run under the exact baseline, sequentially and with a five-minute process bound:
@@ -454,20 +472,13 @@ Standard run:
 Set-Location D:\wikibot
 $timestamp = [DateTime]::UtcNow.ToString('o')
 docker compose exec -T home-assistant-gateway `
-  python benchmark.py granite4.2:8b
+  node dist/benchmark.js granite-4.2-8b --num-predict 2048 --temperature 0.2
 docker compose logs --since $timestamp --timestamps --no-color home-assistant-gateway |
-  Select-String 'Wiki tool call|Wiki tool result|POST /api/chat'
-docker compose exec -T ollama ollama ps
+  Select-String 'lmstudio_tool_call|wiki_tool_call|wiki_tool_result|lmstudio_invalid_tool_call'
+lms ps
 ```
 
-Bound a slow run to five minutes:
-
-```powershell
-docker compose exec -T home-assistant-gateway `
-  timeout 300 python benchmark.py granite4.2:8b
-```
-
-Do not run candidates concurrently.
+The benchmark deliberately has no response-header timeout because `.act()` may require more than five minutes. Cancel a slow run explicitly only after recording the tool trace. Do not run candidates concurrently.
 
 ## Current Hypotheses
 

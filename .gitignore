@@ -2,4 +2,6 @@
 .tmp-docker-config/
 __pycache__/
 *.py[cod]
+node_modules/
+dist/
 cache/

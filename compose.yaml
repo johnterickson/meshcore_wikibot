@@ -158,34 +158,26 @@ services:
       context: ./home-assistant-gateway
     restart: unless-stopped
     depends_on:
-      ollama:
-        condition: service_healthy
       localwiki-mcp:
         condition: service_healthy
     ports:
       - "${HOME_ASSISTANT_GATEWAY_PORT:-11435}:8080"
     environment:
-      OLLAMA_URL: http://ollama:11434
-      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-granite4.2:8b}
-      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-12288}
-      OLLAMA_TEMPERATURE: ${OLLAMA_TEMPERATURE:-0.2}
+      LM_STUDIO_BASE_URL: ws://host.docker.internal:1234
+      LM_STUDIO_HTTP_URL: http://host.docker.internal:1234
+      DEFAULT_MODEL: ${HOME_ASSISTANT_MODEL:-nemotron-3-nano-4b}
+      LM_STUDIO_TEMPERATURE: ${LM_STUDIO_TEMPERATURE:-0.2}
+      LM_STUDIO_MAX_TOKENS: ${LM_STUDIO_MAX_TOKENS:-2048}
       GATEWAY_API_KEY: ${HOME_ASSISTANT_GATEWAY_API_KEY:-${WEBUI_SECRET_KEY:?Set HOME_ASSISTANT_GATEWAY_API_KEY or WEBUI_SECRET_KEY in .env}}
-      OPENZIM_MCP_URL: http://localwiki-mcp:8080/mcp
-      OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
-      MCP_TOOL_NAMES: '["wiki_search", "wiki_sections", "wiki_fetch"]'
+      LOCALWIKI_MCP_URL: http://localwiki-mcp:8080/mcp
+      LOCALWIKI_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
       MAX_TOOL_ROUNDS: "24"
-      COMPACT_CONTEXT_THRESHOLD: ${COMPACT_CONTEXT_THRESHOLD:-0.85}
-      COMPACT_NUM_PREDICT: ${COMPACT_NUM_PREDICT:-256}
-      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:--1}
-      OLLAMA_THINK: ${OLLAMA_THINK:-low}
-      OLLAMA_REQUEST_TIMEOUT_SECONDS: ${OLLAMA_REQUEST_TIMEOUT_SECONDS:-72000}
-      MCP_TOOL_TIMEOUT_SECONDS: "300"
     healthcheck:
       test:
         - CMD
-        - python
-        - -c
-        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health').getcode() == 200 else 1)"
+        - node
+        - -e
+        - "fetch('http://localhost:8080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
       interval: 30s
       timeout: 5s
       retries: 3

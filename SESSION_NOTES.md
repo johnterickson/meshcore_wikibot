@@ -1,6 +1,6 @@
 # Session Notes
 
-Last updated: 2026-09-17
+Last updated: 2026-09-18
 
 ## Goal
 
@@ -8,8 +8,8 @@ Run an offline Wikipedia assistant stack with Docker:
 
 1. Kiwix serves a local Wikipedia ZIM.
 2. LocalWiki MCP searches and fetches Kiwix content.
-3. Ollama runs local models on both host NVIDIA GPUs.
-4. A FastAPI gateway exposes an authenticated Ollama-compatible API to Home Assistant and orchestrates Wikipedia tools.
+3. LM Studio runs the Home Assistant model on the host GPUs.
+4. A Node/TypeScript gateway exposes an authenticated Ollama-compatible API and delegates Wikipedia tool orchestration to LM Studio SDK `.act()`.
 5. Open WebUI remains available, but it is not in the Home Assistant request path.
 
 ## Current Architecture
@@ -17,7 +17,7 @@ Run an offline Wikipedia assistant stack with Docker:
 ```text
 Home Assistant
     -> home-assistant-gateway :11435
-        -> Ollama :11434
+    -> LM Studio :1234 (host)
         -> LocalWiki MCP :8080 (internal)
             -> Kiwix :8080 (internal; host 127.0.0.1:8081)
 
@@ -35,10 +35,10 @@ Wikipedia archive: `D:\wikipedia\wikipedia_en_all_maxi_2026-02.zim`
 - Windows with Docker Desktop/WSL2 Linux containers.
 - Quadro K1200, 4 GB, compute capability 5.0.
 - GTX 1650 SUPER, 4 GB, compute capability 7.5.
-- Ollama is configured to use both GPU UUIDs from `.env`.
-- Default context is 12,288 tokens.
-- Flash attention and q8_0 KV cache are enabled.
-- Ollama handles one parallel request.
+- LM Studio 1.3.3.0 serves its API on `0.0.0.0:1234`.
+- `nemotron-3-nano-4b` is validated at 32,768 context with full GPU offload.
+- `granite-4.2-8b` is stable at 12,288 context and 80% GPU offload; full offload causes CUDA OOM during inference.
+- Keep model loads and benchmarks sequential.
 - Do not print `.env`; it contains authentication secrets.
 
 ## Services
@@ -47,7 +47,7 @@ Wikipedia archive: `D:\wikipedia\wikipedia_en_all_maxi_2026-02.zim`
 - OpenZIM MCP: `ghcr.io/cameronrye/openzim-mcp:3.3.3`
 - Ollama: `ollama/ollama:0.34.0`
 - Open WebUI: `ghcr.io/open-webui/open-webui:v0.11.3`
-- Home Assistant gateway: local FastAPI image
+- Home Assistant gateway: local Node 22/TypeScript image using `@lmstudio/sdk` 1.4.0
 - LocalWiki MCP: local Node/TypeScript image
 
 All relevant services were healthy after the latest deployment.
@@ -56,13 +56,12 @@ All relevant services were healthy after the latest deployment.
 
 Source: <https://github.com/johnterickson/lmstudio-localwiki.git>
 
-Cloned under `localwiki-mcp` at commit:
+Cloned under `localwiki-mcp`. Upstream commit `46066d5` adds recursive nested-table Markdown conversion. Local commit `17ab80b` (`Raise default search result limit`) is rebased on top and changes the standalone server default from 5 to 25; the parent repository records that nested commit.
 
 ```text
-4abce86 Add section-aware MCP server
+17ab80b Raise default search result limit
+46066d5 Fix nested table Markdown conversion
 ```
-
-That commit is present on `origin/main`. Local commit `571f128` (`Raise default search result limit`) changes the standalone server's default search limit from 5 to 25; the parent repository records that nested commit.
 
 The upstream LM Studio plugin was wrapped in a standalone authenticated Streamable HTTP MCP server. The Kiwix behavior was preserved:
 
@@ -103,33 +102,24 @@ The LocalWiki service build and live MCP discovery were validated. All three too
 
 ## Home Assistant Gateway
 
-The gateway discovers LocalWiki MCP tools and presents a smaller model-facing schema. Search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
+The gateway connects to LocalWiki MCP for each chat request and presents its three operations as LM Studio SDK tools. Search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
 
 Each search now returns up to 25 results, matching the successful LM Studio LocalWiki condition. For the MLB benchmark query, this exposes `List of Major League Baseball franchise postseason droughts` at result 21.
 
-The gateway removes prior reasoning traces from model history while preserving the current response's reasoning for diagnostics. It compacts only when Ollama's measured prompt usage plus newly appended tool messages is estimated to reach 85% of the request's context window. Compaction sends only accumulated assistant/tool retrieval work to the model without tools or hidden thinking and asks it for a compact factual summary. The original gateway policy and client messages are excluded. The compacted history keeps the mechanical handle registry and treats the generated summary as advisory assistant context, then restores the exact original messages unchanged. A failed or empty compaction leaves the existing history intact.
-
-Legacy environment variable names remain for compatibility:
-
-- `OPENZIM_MCP_URL` points to LocalWiki MCP.
-- `OPENZIM_MCP_AUTH_TOKEN` authenticates LocalWiki MCP.
+LM Studio `.act()` owns prediction rounds, tool-call parsing, reasoning history, and tool-result continuation. The gateway runs tools serially, logs finalized and invalid calls, closes the request-scoped MCP client afterward, and returns the final prediction in Ollama response shape. It removes LM Studio's internal synthetic reasoning separator from visible answers.
 
 The gateway request defaults are:
 
 - Up to 25 results per search; no separate number-of-searches or fetch cap
-- 24 model/tool rounds
-- Granite 4.2 8B by default
-- 12,288-token context by default
+- 24 `.act()` prediction rounds
+- `nemotron-3-nano-4b` by default
 - Temperature 0.2
-- 102,400 prediction tokens unless the client overrides it; controlled matrix runs use 2,048
-- `repeat_last_n=64`
-- Low-effort thinking by default (`OLLAMA_THINK=low`); clients may override it with `true`, `false`, or another supported level
-- `keep_alive=-1` so the active model remains resident
-- 7,200-second Ollama request and benchmark timeout for long-running diagnostics
+- 2,048 tokens per prediction round unless the client overrides `options.num_predict`
+- Optional per-request `options.reasoning_budget`; unset by default and mapped to LM Studio's raw `llm.prediction.reasoning.budgetTokens` KV field
+- Serial tool execution
+- No benchmark response-header deadline
 
-The publisher-supplied Bonsai value `repeat_last_n=-1` was intentionally overridden because it is invalid/problematic in this setup.
-
-LM Studio's successful Granite run enabled thinking with a separate 64-token reasoning budget. Ollama does not expose a numeric reasoning budget for this model, but Granite's installed template implements `reasoning_effort="low"`; `OLLAMA_THINK=low` is the closest available control and does not guarantee an exact 64-token limit.
+The gateway implements `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer tokens and `x-api-key` are accepted. A streaming request receives one final NDJSON record, not incremental token events.
 
 Current technique-only system prompt:
 
@@ -143,7 +133,7 @@ Handles preserve source order and do not indicate relevance. Compare titles befo
 Find explicit support for the precise question, preserving its qualifiers and relationships. Once the evidence is sufficient, answer concisely.
 ```
 
-## Model Matrix and LM Studio Parity
+## Historical Ollama Matrix and LM Studio Parity
 
 All current gateway matrix runs use the generic MLB question, temperature 0.2, 8,192 context unless noted, 2,048 prediction tokens, and sequential execution. A wrong answer counts as failure and triggers the requested GTX-only fallback after a dual-GPU attempt.
 
@@ -164,6 +154,14 @@ The gateway was changed to match the three material orchestration conditions vis
 
 A GTX-only Nemotron parity run then used 32,768 context, Boolean thinking, full GPU residency, and the same `Q4_K_M` artifact. It found the drought article and listed its sections without any compaction (`prompt_eval_count=1927`), but generated 2,048 repetitive reasoning tokens about fetching `S19` without emitting a tool call. This isolates the remaining discrepancy to same-turn reasoning/tool emission, chat template, or runtime orchestration rather than search visibility, retained reasoning, or compaction.
 
+## LM Studio SDK Validation
+
+The Node rewrite validated the orchestration hypothesis. With the same Nemotron Q4_K_M model, 32,768 context, full GPU offload, and generic prompt, `.act()` completed the search -> sections -> fetch path and correctly answered that the Seattle Mariners are the only active MLB team never to reach the World Series.
+
+Granite Q4_K_M is downloaded as `granite-4.2-8b`. At 80% GPU offload it completed five valid calls through the decisive `World Series record by team or franchise, 1903-present` table. Its first benchmark client disconnected at Node's default five-minute response-header deadline while server-side generation continued; the benchmark now uses `node:http` without that deadline. Final Granite grading remains pending.
+
+The exact pending Qwen artifact is `unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_M.gguf`, approximately 16.5 GB. Do not substitute Qwen3.5 27B. Download, load, and test it only after Granite is idle.
+
 Raw reference transcripts committed with this checkpoint:
 
 - `granite_success_1.txt`
@@ -178,8 +176,9 @@ Raw reference transcripts committed with this checkpoint:
 
 - `compose.yaml`: service definitions and runtime settings
 - `.env.example`: documented configuration defaults
-- `home-assistant-gateway/app.py`: gateway orchestration
-- `home-assistant-gateway/benchmark.py`: reproducible authenticated benchmark client
+- `home-assistant-gateway/src/server.ts`: Ollama-compatible LM Studio `.act()` gateway
+- `home-assistant-gateway/src/wikiTools.ts`: request-scoped LocalWiki tool adapter
+- `home-assistant-gateway/src/benchmark.ts`: reproducible authenticated benchmark client
 - `localwiki-mcp/src/toolsProvider.ts`: Kiwix search/fetch implementation
 - `localwiki-mcp/src/server.ts`: standalone MCP HTTP server
 - `localwiki-mcp/Dockerfile`: two-stage Node 22 image
@@ -195,7 +194,8 @@ docker compose build localwiki-mcp home-assistant-gateway
 docker compose up -d --force-recreate localwiki-mcp home-assistant-gateway
 docker compose ps
 
-python -m py_compile home-assistant-gateway/app.py home-assistant-gateway/benchmark.py
+Set-Location D:\wikibot\home-assistant-gateway
+npm run build
 Set-Location D:\wikibot\localwiki-mcp
 npm run build
 ```
@@ -205,19 +205,19 @@ Run one benchmark from the gateway container:
 ```powershell
 Set-Location D:\wikibot
 docker compose exec -T home-assistant-gateway `
-  python benchmark.py qwen3:4b-instruct-2507-q4_K_M
+  node dist/benchmark.js nemotron-3-nano-4b --num-predict 2048 --temperature 0.2
 ```
 
 Capture its tool trace by recording an ISO UTC timestamp immediately before the request, then:
 
 ```powershell
 docker compose logs --since $timestamp --timestamps --no-color home-assistant-gateway |
-  Select-String 'Wiki tool call|Wiki tool result|POST /api/chat'
+  Select-String 'lmstudio_tool_call|wiki_tool_call|wiki_tool_result|lmstudio_invalid_tool_call'
 ```
 
 ## Repository State and Cautions
 
-- This checkpoint intentionally includes the accumulated gateway/configuration changes, documentation, and raw experiment transcripts.
+- The Node gateway rewrite and rebased LocalWiki pointer are currently uncommitted in the parent repository.
 - Do not revert unrelated changes.
 - `localwiki-mcp` was cloned with nested `.git` metadata. Decide whether to preserve it as a submodule-like checkout or remove the nested metadata before a future parent commit.
 - The upstream LocalWiki project is GPLv3 and its `LICENSE` is retained.
@@ -232,4 +232,4 @@ docker compose logs --since $timestamp --timestamps --no-color home-assistant-ga
 - Small models may fail before tool execution, so first-tool compliance must be distinguished from query quality and final synthesis.
 - Search results cannot prove a negative or universal claim merely because they are incomplete.
 - Keep model experiments sequential; the GPUs cannot fairly serve concurrent benchmark requests.
-- Use the checked-in benchmark client rather than inline shell/Python scripts. Several ad hoc runs were invalid due to environment propagation, authentication, or shell-state errors.
+- Use the checked-in Node benchmark client rather than inline shell/Python scripts. Several ad hoc runs were invalid due to environment propagation, authentication, shell-state errors, or client timeouts.
