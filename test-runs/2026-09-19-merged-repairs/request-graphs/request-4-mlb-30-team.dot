@@ -1,0 +1,55 @@
+digraph Request4 {
+  graph [rankdir=LR, bgcolor="#fbfbf8", fontname="Arial", fontsize=11,
+    label="Request 4: MLB primary 30-team list-map run\nHover for event details; click any node for the request-scoped raw gateway trace\nFan-out is logical: Gateway executed map subagents serially",
+    labelloc=t, labeljust=l, nodesep=0.16, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=8, margin="0.07,0.04",
+    color="#69727d", fillcolor="#ffffff", URL="request-4-raw.log", target="_blank"];
+  edge [color="#69727d", fontname="Arial", fontsize=7, arrowsize=0.55];
+
+  request [label="[Gateway]\nRequest 4 dequeued", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway started request 4 when request 3 released."];
+  route_list [label="[LM Studio top-level LLM]\nresearch_list tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw arguments: list all active MLB teams as of 2025; purpose=entity_attributes."];
+  list_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nTeam discovery", tooltip="Subagent searched/fetched offline Wikipedia and returned 30 team nicknames."];
+  dataset [label="[Gateway]\nD1 stored\n30 nicknames", fillcolor="#dcecff", color="#4f86c6", tooltip="research_list_created count=30. Click for exact ordered list."];
+  route_map [label="[LM Studio top-level LLM]\nresearch_map tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Template: Has {item} ever participated in the World Series? Required field Team: Yes/No."];
+  map [label="[Gateway]\nFan-out controller\n30 serial subagents", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway created one clean LM Studio context per D1 item and supplied discovery context."];
+
+  node [tooltip="Gateway -> LM Studio subagent with one team question; subagent -> LocalWiki MCP tool loop; click for exact raw prompt, calls, and answer."];
+  braves [label="[LLM + Wiki]\nBraves"]; marlins [label="[LLM + Wiki]\nMarlins"]; mets [label="[LLM + Wiki]\nMets"];
+  phillies [label="[LLM + Wiki]\nPhillies"]; nationals [label="[LLM + Wiki]\nNationals"]; cubs [label="[LLM + Wiki]\nCubs"];
+  reds [label="[LLM + Wiki]\nReds"]; brewers [label="[LLM + Wiki]\nBrewers"]; pirates [label="[LLM + Wiki]\nPirates"];
+  cardinals [label="[LLM + Wiki]\nCardinals"]; dbacks [label="[LLM + Wiki]\nDiamondbacks"]; rockies [label="[LLM + Wiki]\nRockies"];
+  dodgers [label="[LLM + Wiki]\nDodgers"]; padres [label="[LLM + Wiki]\nPadres"]; giants [label="[LLM + Wiki]\nGiants"];
+  orioles [label="[LLM + Wiki]\nOrioles"]; redsox [label="[LLM + Wiki]\nRed Sox"]; yankees [label="[LLM + Wiki]\nYankees"];
+  rays [label="[LLM + Wiki]\nRays"]; bluejays [label="[LLM + Wiki]\nBlue Jays"]; whitesox [label="[LLM + Wiki]\nWhite Sox"];
+  guardians [label="[LLM + Wiki]\nGuardians"]; tigers [label="[LLM + Wiki]\nTigers"]; royals [label="[LLM + Wiki]\nRoyals"];
+  twins [label="[LLM + Wiki]\nTwins"]; athletics [label="[LLM + Wiki]\nAthletics"]; astros [label="[LLM + Wiki]\nAstros"];
+  angels [label="[LLM + Wiki]\nAngels"]; mariners [label="[LLM + Wiki]\nMariners"]; rangers [label="[LLM + Wiki]\nRangers"];
+
+  retry_mets [label="[Gateway retry]\nLLM + Wiki\nMets attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+  retry_rockies [label="[Gateway retry]\nLLM + Wiki\nRockies attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+  retry_yankees [label="[Gateway retry]\nLLM + Wiki\nYankees attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+  retry_guardians [label="[Gateway retry]\nLLM + Wiki\nGuardians attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+  retry_tigers [label="[Gateway retry]\nLLM + Wiki\nTigers attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+  retry_athletics [label="[Gateway retry]\nLLM + Wiki\nAthletics attempt 2", fillcolor="#ffe0b8", color="#d87918"];
+
+  map_done [label="[Gateway]\nM1 stored\n30/30 records", fillcolor="#dcecff", color="#4f86c6", tooltip="research_map_completed after 30 records and six execution retries."];
+  route_reduce [label="[LM Studio top-level LLM]\nresearch_reduce tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Question: Which active MLB teams have never been to the World Series?"];
+  review [label="[LM Studio LLM]\nStructured reviewer\nonly 1/30 assessed", fillcolor="#f9dddd", color="#b64b4b", tooltip="Reviewer output contained only the Braves assessment. Click for raw JSON."];
+  plan [label="[Gateway]\nFallback repair planner\n2 calls / budget 24", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway detected two partial map records independent of incomplete reviewer coverage."];
+  repair_a [label="[LM Studio subagent]\n+ LocalWiki MCP\nAthletics record repair", fillcolor="#ffe0b8", color="#d87918", tooltip="Whole-record retry. The returned answer incorrectly conflated Athletics with the Angels; click for raw text."];
+  repair_m [label="[LM Studio subagent]\n+ LocalWiki MCP\nMariners record repair", fillcolor="#ffe0b8", color="#d87918", tooltip="Whole-record retry. Raw result: No; Mariners have never participated in a World Series."];
+  merge [label="[Gateway]\nMerge repaired records", fillcolor="#dcecff", color="#4f86c6", tooltip="research_repair_completed: repairCalls=2, outputCount=30."];
+  reduce [label="[LM Studio LLM]\nStructured reducer", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw reducer output: [{Team: Mariners, value: No}]."];
+  final [label="[LM Studio top-level LLM]\nFinal: Mariners\nsubstantive PASS", fillcolor="#def3e4", color="#438a5e", penwidth=1.4, tooltip="Top-level response named Mariners only; canonical Seattle prefix was omitted."];
+
+  request -> route_list -> list_agent -> dataset -> route_map -> map;
+  map -> {braves marlins mets phillies nationals cubs reds brewers pirates cardinals dbacks rockies dodgers padres giants orioles redsox yankees rays bluejays whitesox guardians tigers royals twins athletics astros angels mariners rangers};
+  mets -> retry_mets [style=dashed, color="#d87918"]; rockies -> retry_rockies [style=dashed, color="#d87918"];
+  yankees -> retry_yankees [style=dashed, color="#d87918"]; guardians -> retry_guardians [style=dashed, color="#d87918"];
+  tigers -> retry_tigers [style=dashed, color="#d87918"]; athletics -> retry_athletics [style=dashed, color="#d87918"];
+  {braves marlins phillies nationals cubs reds brewers pirates cardinals dbacks dodgers padres giants orioles redsox rays bluejays whitesox royals twins astros angels mariners rangers retry_mets retry_rockies retry_yankees retry_guardians retry_tigers retry_athletics} -> map_done;
+  map_done -> route_reduce -> review -> plan;
+  plan -> {repair_a repair_m} [style=dashed, color="#d87918", label="record repair"];
+  {repair_a repair_m} -> merge [style=dashed, color="#d87918"];
+  merge -> reduce -> final;
+}

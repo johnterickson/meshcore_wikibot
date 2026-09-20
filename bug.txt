@@ -1,0 +1,339 @@
+{
+  "trace": {
+    "last_step": "action/2/choose/0/sequence/1",
+    "run_id": "07cd3b0b37738cd45cc4ac6e06f7855c",
+    "state": "stopped",
+    "script_execution": "finished",
+    "timestamp": {
+      "start": "2026-09-18T14:59:32.266110+00:00",
+      "finish": "2026-09-18T14:59:39.476491+00:00"
+    },
+    "domain": "automation",
+    "item_id": "1789447890039",
+    "trigger": "event 'meshcore_message'",
+    "trace": {
+      "trigger/0": [
+        {
+          "path": "trigger/0",
+          "timestamp": "2026-09-18T14:59:32.266257+00:00",
+          "changed_variables": {
+            "this": {
+              "entity_id": "automation.wikibot_dm",
+              "state": "on",
+              "attributes": {
+                "id": "1789447890039",
+                "last_triggered": "2026-09-18T14:58:16.065421+00:00",
+                "mode": "single",
+                "current": 0,
+                "friendly_name": "wikibot DM"
+              },
+              "last_changed": "2026-09-16T17:25:52.599692+00:00",
+              "last_reported": "2026-09-18T14:59:04.191900+00:00",
+              "last_updated": "2026-09-18T14:59:04.191900+00:00",
+              "context": {
+                "id": "01M2TGEDVZ68GPZB301JWWEETC",
+                "parent_id": null,
+                "user_id": null
+              }
+            },
+            "trigger": {
+              "id": "0",
+              "idx": "0",
+              "alias": null,
+              "platform": "event",
+              "event": {
+                "event_type": "meshcore_message",
+                "data": {
+                  "message": " What are their stage nicknames?",
+                  "sender_name": "johnlaptop v4",
+                  "pubkey_prefix": "d6a606df66c9",
+                  "receiver_name": "meshcore",
+                  "entity_id": "binary_sensor.meshcore_198460_d6a606_messages",
+                  "domain": "meshcore",
+                  "timestamp": "2026-09-18T14:59:32.265081+00:00",
+                  "message_type": "direct",
+                  "hop_count": 0,
+                  "snr": 10.5
+                },
+                "origin": "LOCAL",
+                "time_fired": "2026-09-18T14:59:32.265136+00:00",
+                "context": {
+                  "id": "01M2TGF999SEXVN9SY4SJFSW8D",
+                  "parent_id": null,
+                  "user_id": null
+                }
+              },
+              "description": "event 'meshcore_message'"
+            }
+          }
+        }
+      ],
+      "condition/0": [
+        {
+          "path": "condition/0",
+          "timestamp": "2026-09-18T14:59:32.266300+00:00",
+          "result": {
+            "result": true,
+            "entities": []
+          }
+        }
+      ],
+      "condition/1": [
+        {
+          "path": "condition/1",
+          "timestamp": "2026-09-18T14:59:32.266507+00:00",
+          "result": {
+            "result": true,
+            "entities": []
+          }
+        }
+      ],
+      "condition/2": [
+        {
+          "path": "condition/2",
+          "timestamp": "2026-09-18T14:59:32.266806+00:00",
+          "result": {
+            "result": true,
+            "entities": []
+          }
+        }
+      ],
+      "action/0": [
+        {
+          "path": "action/0",
+          "timestamp": "2026-09-18T14:59:32.270520+00:00",
+          "changed_variables": {
+            "context": {
+              "id": "01M2TGF99A0KG0HJE6MJWWPZ7N",
+              "parent_id": "01M2TGF999SEXVN9SY4SJFSW8D",
+              "user_id": null
+            }
+          },
+          "result": {
+            "params": {
+              "domain": "meshcore",
+              "service": "send_message",
+              "service_data": {
+                "node_id": "johnlaptop v4",
+                "message": "[thinking]"
+              },
+              "target": {}
+            },
+            "running_script": false
+          }
+        }
+      ],
+      "action/1": [
+        {
+          "path": "action/1",
+          "timestamp": "2026-09-18T14:59:32.292714+00:00",
+          "child_id": {
+            "domain": "automation",
+            "item_id": "1789447890039",
+            "run_id": "b00bf92784867131a0a57adfb72e9f80"
+          },
+          "changed_variables": {
+            "resp": {
+              "response": {
+                "speech": {
+                  "plain": {
+                    "speech": "",
+                    "extra_data": null
+                  }
+                },
+                "card": {},
+                "language": "en",
+                "response_type": "action_done",
+                "data": {
+                  "success": [],
+                  "failed": []
+                }
+              },
+              "conversation_id": "johnlaptop v4",
+              "continue_conversation": false
+            }
+          },
+          "result": {
+            "params": {
+              "domain": "conversation",
+              "service": "process",
+              "service_data": {
+                "agent_id": "conversation.wikibot",
+                "text": "What are their stage nicknames?",
+                "conversation_id": "johnlaptop v4"
+              },
+              "target": {}
+            },
+            "running_script": false
+          }
+        }
+      ],
+      "action/2": [
+        {
+          "path": "action/2",
+          "timestamp": "2026-09-18T14:59:39.470555+00:00",
+          "changed_variables": {
+            "chunks": []
+          },
+          "result": {
+            "choice": 0
+          }
+        }
+      ],
+      "action/2/choose/0": [
+        {
+          "path": "action/2/choose/0",
+          "timestamp": "2026-09-18T14:59:39.470954+00:00",
+          "result": {
+            "result": true
+          }
+        }
+      ],
+      "action/2/choose/0/conditions/0": [
+        {
+          "path": "action/2/choose/0/conditions/0",
+          "timestamp": "2026-09-18T14:59:39.471087+00:00",
+          "result": {
+            "result": true,
+            "entities": []
+          }
+        }
+      ],
+      "action/2/choose/0/sequence/0": [
+        {
+          "path": "action/2/choose/0/sequence/0",
+          "timestamp": "2026-09-18T14:59:39.472057+00:00",
+          "changed_variables": {
+            "chunks": []
+          }
+        }
+      ],
+      "action/2/choose/0/sequence/1": [
+        {
+          "path": "action/2/choose/0/sequence/1",
+          "timestamp": "2026-09-18T14:59:39.472774+00:00"
+        }
+      ]
+    },
+    "config": {
+      "id": "1789447890039",
+      "alias": "wikibot DM",
+      "description": "wikibot",
+      "triggers": [
+        {
+          "event_type": "meshcore_message",
+          "trigger": "event"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "template",
+          "value_template": "{{ trigger.event.data.message_type == 'direct' }}\n"
+        },
+        {
+          "condition": "template",
+          "value_template": "{{ trigger.event.data.receiver_name == 'meshcore' }}\n"
+        },
+        {
+          "condition": "template",
+          "value_template": "{{ trigger.event.data.sender_name != 'johnlaptop-HA' }}\n"
+        }
+      ],
+      "actions": [
+        {
+          "action": "meshcore.send_message",
+          "data": {
+            "node_id": "{{ trigger.event.data.sender_name }}",
+            "message": "[thinking]"
+          }
+        },
+        {
+          "action": "conversation.process",
+          "continue_on_error": true,
+          "data": {
+            "agent_id": "conversation.wikibot",
+            "text": "{{ trigger.event.data.message }}",
+            "conversation_id": "{{ trigger.event.data.sender_name }}"
+          },
+          "response_variable": "resp"
+        },
+        {
+          "choose": [
+            {
+              "conditions": [
+                {
+                  "condition": "template",
+                  "value_template": "{{ resp is defined and\n   resp.response is defined and\n   resp.response.speech is defined }}\n"
+                }
+              ],
+              "sequence": [
+                {
+                  "variables": {
+                    "chunks": "{% set text = resp.response.speech.plain.speech %} {% set ns = namespace(result=[]) %} {% for i in range(0, text|length, 100) %}\n  {% set ns.result = ns.result + [text[i:i+100]] %}\n{% endfor %} {{ ns.result }}\n"
+                  }
+                },
+                {
+                  "repeat": {
+                    "for_each": "{{ chunks }}",
+                    "sequence": [
+                      {
+                        "action": "meshcore.send_message",
+                        "data": {
+                          "node_id": "{{ trigger.event.data.sender_name }}",
+                          "message": "{{ repeat.item }}"
+                        }
+                      },
+                      {
+                        "delay": {
+                          "milliseconds": 1000
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "default": [
+            {
+              "action": "meshcore.send_message",
+              "data": {
+                "node_id": "{{ trigger.event.data.sender_name }}",
+                "message": "Wikibot error: model unavailable. Try again in a minute."
+              }
+            }
+          ]
+        }
+      ],
+      "mode": "single"
+    },
+    "blueprint_inputs": null,
+    "context": {
+      "id": "01M2TGF99A0KG0HJE6MJWWPZ7N",
+      "parent_id": "01M2TGF999SEXVN9SY4SJFSW8D",
+      "user_id": null
+    }
+  },
+  "logbookEntries": [
+    {
+      "name": "wikibot DM",
+      "message": "triggered by event 'meshcore_message'",
+      "source": "event 'meshcore_message'",
+      "entity_id": "automation.wikibot_dm",
+      "context_id": "01M2TGF99A0KG0HJE6MJWWPZ7N",
+      "domain": "automation",
+      "when": 1789743572.2670875
+    },
+    {
+      "state": "2026-09-18T14:59:32.293951+00:00",
+      "entity_id": "conversation.wikibot",
+      "when": 1789743572.2940247,
+      "context_event_type": "automation_triggered",
+      "context_domain": "automation",
+      "context_name": "wikibot DM",
+      "context_message": "triggered by event 'meshcore_message'",
+      "context_source": "event 'meshcore_message'",
+      "context_entity_id": "automation.wikibot_dm"
+    }
+  ]
+}

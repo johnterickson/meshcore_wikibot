@@ -1,0 +1,46 @@
+digraph Request2 {
+  graph [rankdir=LR, bgcolor="#fbfbf8", fontname="Arial", fontsize=11,
+    label="Request 2: Spice Girls duplicate queued run\nHover for event details; click any node for the request-scoped raw gateway trace",
+    labelloc=t, labeljust=l, nodesep=0.22, ranksep=0.75];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=9, margin="0.09,0.06",
+    color="#69727d", fillcolor="#ffffff", URL="request-2-raw.log", target="_blank"];
+  edge [color="#69727d", fontname="Arial", fontsize=8, arrowsize=0.65];
+
+  request [label="[Gateway]\nRequest 2 dequeued", fillcolor="#dcecff", color="#4f86c6", tooltip="Request-scoped mutex released request 1, then Gateway started request 2."];
+  route_q [label="[LM Studio top-level LLM]\nTool call: research_question", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="Raw LLM->Gateway call: research_question for the complete Spice Girls question."];
+  q_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nWhole-question research", tooltip="Gateway created one clean subagent for the whole question. Click for its raw prompt, wiki calls, and output."];
+  q_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nWhole-question attempt 2", fillcolor="#ffe0b8", color="#d87918", tooltip="Gateway retried subagent index 1 after the first execution did not produce a usable complete result."];
+
+  route_list [label="[LM Studio top-level LLM]\nTool call: research_list", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw LLM->Gateway call: research_list(question='Spice Girl', purpose='entity_attributes')."];
+  list_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nDiscover members", tooltip="Subagent researched the set and returned the five canonical subjects."];
+  dataset [label="[Gateway]\nD1: 5 subjects", fillcolor="#dcecff", color="#4f86c6", tooltip="research_list_created: Mel B, Melanie C, Emma Bunton, Geri Halliwell, Victoria Beckham."];
+  route_map [label="[LM Studio top-level LLM]\nTool call: research_map", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw template: What is the stage name, real name, and birthday of {item}? Required fields: stage_name, real_name, birthday."];
+  map [label="[Gateway]\nFan-out controller\n5 records x 3 fields", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway serially launched five clean LM Studio subagents over D1."];
+
+  melb [label="[LM Studio subagent]\n+ LocalWiki MCP\nMel B", tooltip="Mapped Mel B. Record status was partial, which later triggered a whole-record repair."];
+  melc [label="[LM Studio subagent]\n+ LocalWiki MCP\nMelanie C", tooltip="Mapped Melanie C. Click for exact input, retrieval calls, and output."];
+  emma [label="[LM Studio subagent]\n+ LocalWiki MCP\nEmma Bunton", tooltip="Mapped Emma Bunton. First execution required an automatic retry."];
+  geri [label="[LM Studio subagent]\n+ LocalWiki MCP\nGeri Halliwell", tooltip="Mapped Geri Halliwell. Click for exact input, retrieval calls, and output."];
+  victoria [label="[LM Studio subagent]\n+ LocalWiki MCP\nVictoria Beckham", tooltip="Mapped Victoria Beckham. Click for exact input, retrieval calls, and output."];
+  emma_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nEmma attempt 2", fillcolor="#ffe0b8", color="#d87918", tooltip="Automatic execution retry for map subagent index 5 (Emma Bunton)."];
+  map_done [label="[Gateway]\nM1 stored\n5/5 records", fillcolor="#dcecff", color="#4f86c6", tooltip="research_map_completed: inputCount=5, completedCount=5."];
+
+  review [label="[LM Studio LLM]\nStructured repair review\ncoverage incomplete", fillcolor="#f9dddd", color="#b64b4b", tooltip="Reviewer emitted only a Mel B assessment rather than all 15 field cells. Click for raw review JSON."];
+  plan [label="[Gateway]\nRepair planner\n1 call / budget 15", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway fallback detected Mel B's partial record and scheduled one whole-record retry."];
+  melb_repair [label="[LM Studio subagent]\n+ LocalWiki MCP\nMel B record retry", fillcolor="#ffe0b8", color="#d87918", tooltip="Input requests stage name, full legal name, and birthday. Raw output: Scary; Melanie Janine Brown; birthday unsupported."];
+  merge [label="[Gateway]\nRepair merge\nMel B remains partial", fillcolor="#dcecff", color="#4f86c6", tooltip="research_repair_completed: repairCalls=1; Mel B partial; four other records complete."];
+  reduce [label="[LM Studio LLM]\nStructured reducer", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw reducer output contains five records; Mel B birthday is unknown and stage names omit the word Spice."];
+  final [label="[LM Studio top-level LLM]\nFinal response\npartial", fillcolor="#f9dddd", color="#b64b4b", tooltip="Request completed after five top-level rounds. Click for complete request trace."];
+
+  request -> route_q -> q_agent;
+  q_agent -> q_retry [style=dashed, color="#d87918", label="retry"];
+  q_retry -> route_list -> list_agent -> dataset -> route_map -> map;
+  map -> {melb melc emma geri victoria};
+  emma -> emma_retry [style=dashed, color="#d87918", label="retry"];
+  {melb melc geri victoria emma_retry} -> map_done;
+  map_done -> review -> plan;
+  plan -> melb_repair [style=dashed, color="#d87918", label="record repair"];
+  melb_repair -> merge [style=dashed, color="#d87918"];
+  merge -> reduce -> final;
+}

@@ -1,0 +1,14 @@
+{
+  "model": "qwen/qwen3.8-27b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 129,
+  "answer": "The **Seattle Mariners** are the only active MLB team that has never appeared in the World Series. According to the World Series record by team (1903\u2013present), the Mariners (AL, 1977) show 0 Series played, and the notes explicitly state that all fourteen expansion teams since 1961 have appeared in at least one World Series except the Mariners.",
+  "thinking": "The research question returned a complete answer: the Seattle Mariners are the only active MLB team that has never appeared in the World Series. The evidence is from the \"World Series\" article, which contains a table of World Series records by team, and the Seattle Mariners are shown with 0 series appearances.\n\nI can answer concisely.",
+  "done_reason": "stop",
+  "prompt_eval_count": 3685,
+  "eval_count": 312
+}

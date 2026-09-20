@@ -22,11 +22,16 @@ function resultText(result: Awaited<ReturnType<Client["callTool"]>>): string {
   return texts.length > 0 ? texts.join("\n") : JSON.stringify(result);
 }
 
-async function callMcp(client: Client, name: string, arguments_: Record<string, unknown>) {
-  console.info(JSON.stringify({ event: "wiki_tool_call", name, arguments: arguments_ }));
+async function callMcp(
+  client: Client,
+  name: string,
+  arguments_: Record<string, unknown>,
+  logContext: Record<string, unknown>,
+) {
+  console.info(JSON.stringify({ event: "wiki_tool_call", ...logContext, name, arguments: arguments_ }));
   const result = await client.callTool({ name, arguments: arguments_ });
   const text = resultText(result);
-  console.info(JSON.stringify({ event: "wiki_tool_result", name, characters: text.length, isError: result.isError === true }));
+  console.info(JSON.stringify({ event: "wiki_tool_result", ...logContext, name, characters: text.length, isError: result.isError === true }));
   if (result.isError) return { error: text };
   try {
     return JSON.parse(text) as Record<string, any>;
@@ -49,7 +54,13 @@ export async function connectLocalWiki(): Promise<{
   return { client, transport };
 }
 
-export function createWikiTools(client: Client): Tool[] {
+export function createWikiTools(
+  client: Client,
+  options: {
+    onEvidence?: (content: string) => void;
+    logContext?: Record<string, unknown>;
+  } = {},
+): Tool[] {
   const state: WikiState = {
     articles: new Map(),
     articlePaths: new Map(),
@@ -62,7 +73,7 @@ export function createWikiTools(client: Client): Tool[] {
     description: "Search local Wikipedia. Returns short article handles such as A1.",
     parameters: { query: z.string().min(1).describe("Concise search terms") },
     implementation: async ({ query }) => {
-      const parsed = await callMcp(client, "wiki_search", { query });
+      const parsed = await callMcp(client, "wiki_search", { query }, options.logContext ?? {});
       if (parsed.error) return `Error: ${parsed.error}`;
       const lines = ["Articles (source order; handles do not indicate relevance):"];
       for (const item of parsed.results ?? []) {
@@ -87,7 +98,7 @@ export function createWikiTools(client: Client): Tool[] {
     implementation: async ({ article }) => {
       const selected = state.articles.get(article);
       if (!selected) return JSON.stringify({ error: `Unknown article handle: ${article}` });
-      const parsed = await callMcp(client, "wiki_sections", { path: selected.path });
+      const parsed = await callMcp(client, "wiki_sections", { path: selected.path }, options.logContext ?? {});
       if (parsed.error) return `Error: ${parsed.error}`;
       const lines = [`Sections in ${article} (document order; handles do not indicate relevance):`];
       for (const item of parsed.sections ?? []) {
@@ -123,10 +134,12 @@ export function createWikiTools(client: Client): Tool[] {
         path: selected.path,
         section: selected.id,
         segment,
-      });
+      }, options.logContext ?? {});
       if (parsed.error) return `Error: ${parsed.error}`;
       const pagination = parsed.pagination ?? {};
-      return `${parsed.content ?? JSON.stringify(parsed)}\n\n[Segment ${pagination.segment ?? 1} of ${pagination.totalSegments ?? 1}; has next: ${Boolean(pagination.hasNextSegment)}]`;
+      const content = `${parsed.content ?? JSON.stringify(parsed)}\n\n[Segment ${pagination.segment ?? 1} of ${pagination.totalSegments ?? 1}; has next: ${Boolean(pagination.hasNextSegment)}]`;
+      options.onEvidence?.(content);
+      return content;
     },
   });
 

@@ -17,10 +17,47 @@ export const config = {
   localWikiMcpAuthToken: required("LOCALWIKI_MCP_AUTH_TOKEN"),
 };
 
-export const wikiSystemPrompt = `Your internal factual knowledge is limited and may be inaccurate, but you have access to an offline copy of Wikipedia through the provided tools. This is your primary source of truth: use it heavily, and do not rely on memory, other tools, or web search.
+export const wikiSystemPrompt = `Your internal factual knowledge is limited and may be inaccurate. Use the research tools for every factual request and synthesize only their returned evidence. Do not answer factual questions from memory.
 
-Use the intentional retrieval sequence: wiki_search, wiki_sections for a promising article, then wiki_fetch for the most relevant section. Article and section handles are short and valid only for this request. Fetch additional segments only when the current segment says another is available and the evidence is still insufficient.
+For a simple single-entity question, use research_question.
 
-Handles preserve source order and do not indicate relevance. Compare titles before choosing a handle.
+For a set-filter question asking which entities satisfy one predicate, first call research_question with the complete original aggregate question. Prefer one authoritative list or table over checking every entity. Only use list-map-reduce if that aggregate researcher explicitly reports that the evidence is insufficient.
 
-Find explicit support for the precise question, preserving its qualifiers and relationships. Once the evidence is sufficient, answer concisely.`;
+For a request that requires the same independent facts for every member of a set, always use the request-scoped list-map-reduce pipeline:
+1. research_list asks only which unique real-world subjects belong to the set and stores one canonical identifier per subject. Set purpose to entity_attributes. Do not request dates, labels, or other attributes during discovery. Aliases, nicknames, stage names, titles, and alternate labels for the same subject are attributes of one record, never separate list items.
+2. research_map applies one standalone {item} question to every stored entity without omissions. Its question must request every per-entity attribute from the user's original question. Each requiredFields entry must give a precise field name and preserve all semantic and formatting constraints from the user's wording instead of broadening them to a related field.
+3. research_reduce answers the user's original question from the complete stored map.
+
+For a set-filter question, call research_question first with the complete original question. Only if that result is partial or failed may research_list use purpose set_filter_fallback.
+
+Preserve the exact meaning of every predicate and requested attribute in each research question and reduction. Do not substitute a related but different concept.
+
+Never copy a discovered list into separate calls yourself. Never skip research_reduce after research_map. Do not infer unsupported values or fill gaps from memory; report them as unknown.
+
+Once every requested fact is supported or explicitly marked unknown, answer concisely in the user's requested format.`;
+
+export const researchSystemPrompt = `Answer one standalone factual question using the offline Wikipedia tools. Your context is intentionally clean: use only the question and fetched evidence.
+
+Use wiki_search, wiki_sections, and wiki_fetch. Search for the exact subject, pass only returned A-number handles to wiki_sections, pass only returned S-number handles to wiki_fetch, and fetch the sections that explicitly support the requested facts. Never pass an article title or path where a handle is required. Do not stop after search results alone.
+
+Do not answer until a fetched passage explicitly supports every requested fact. If support cannot be found, state exactly what remains unsupported instead of guessing. Return a concise answer and identify the article section that supports it.`;
+
+export const listExtractionPrompt = `Extract the complete list of unique real-world subjects requested by the list question from the researcher's grounded answer and fetched evidence. Use the original user request to distinguish requested subjects from related, historical, opposing, or contextual names. Emit exactly one canonical identifier per subject. When a source gives aliases, nicknames, stage names, titles, former names, or alternate labels for one subject, choose the single name that best identifies that subject for follow-up research; never emit those names as separate items. Preserve source order. When the target is a collective, include its members but never the collective itself unless it is explicitly requested as an item. Return only the items.`;
+
+export const reduceReviewSystemPrompt = `Review mapped research records and retained discovery context before final reduction. Return only a repair plan; do not answer the user's question.
+
+Request a retry when a record failed, is partial, contains malformed output, discusses the wrong subject, violates a required field's stated requirement, semantically misinterprets a field, or omits requested fields. Field presence alone is not completion. Compare every record against requiredFields and the user's wording. Use the record's exact item value.
+
+Produce exactly one assessment for every mapped record. Within each assessment, evaluate every required field as satisfied or unsatisfied and explain the decision. A field is satisfied only when its returned value meets the stated requirement and is supported by mapped or discovery evidence. Mark it unsatisfied when the value is merely a fragment, broad category, related concept, or formatting mismatch.
+
+Choose record strategy when one standalone question can efficiently repair the record. Choose field_map when a combined question failed or conflated independent fields; provide one standalone field question for each unresolved required field. Each field question must name the exact item and ask for only that field.
+
+Add an entity only when the supplied evidence clearly establishes that it belongs in the requested complete set but it has no mapped record. Exclude an item only when it is clearly an accidental collection label, duplicate, or non-member; never exclude an item merely because its facts are unknown or contradict a filter predicate.
+
+Use discovery context to recover set-level facts that per-entity pages may omit, but request repair when the mapped interpretation conflicts with that context. Keep the plan minimal. Do not retry complete records merely to seek a preferred answer.`;
+
+export const reduceSystemPrompt = `Answer the reduction question using only the complete mapped research results supplied as JSON. Consider every input item. Preserve the precise predicate and requested output format.
+
+For every output record, explicitly include a value for every entry in requiredFields. A mapped item's identifier is context, not a substitute for any required field unless the mapped evidence explicitly establishes that they are the same. Before responding, verify that each output record contains the complete required field set and preserves each field's stated meaning.
+
+Do not add facts from memory. If an item or field is unsupported, report it as unknown rather than guessing.`;

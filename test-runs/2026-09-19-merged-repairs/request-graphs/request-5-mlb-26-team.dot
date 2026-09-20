@@ -1,0 +1,54 @@
+digraph Request5 {
+  graph [rankdir=LR, bgcolor="#fbfbf8", fontname="Arial", fontsize=11,
+    label="Request 5: MLB duplicate queued 26-team run\nHover for event details; click any node for the request-scoped raw gateway trace\nFan-out is logical: Gateway executed map subagents serially",
+    labelloc=t, labeljust=l, nodesep=0.16, ranksep=0.7];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=8, margin="0.07,0.04",
+    color="#69727d", fillcolor="#ffffff", URL="request-5-raw.log", target="_blank"];
+  edge [color="#69727d", fontname="Arial", fontsize=7, arrowsize=0.55];
+
+  request [label="[Gateway]\nRequest 5 dequeued", fillcolor="#dcecff", color="#4f86c6", tooltip="Request 5 was queued behind requests 3 and 4, then started after request 4 released."];
+  route_list [label="[LM Studio top-level LLM]\nresearch_list tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Raw arguments: list all active MLB teams with official names as canonical identifiers."];
+  list_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nTeam discovery attempt 1", tooltip="Discovery subagent first attempt did not yield a usable complete list."];
+  list_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nDiscovery attempt 2", fillcolor="#ffe0b8", color="#d87918", tooltip="Automatic retry of discovery subagent index 1."];
+  dataset [label="[Gateway]\nD1 stored\n26 subjects (incomplete)", fillcolor="#f9dddd", color="#b64b4b", tooltip="research_list_created count=26; four active teams were omitted and New York Giants was included."];
+  route_map [label="[LM Studio top-level LLM]\nresearch_map tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Template: Has {item} ever participated in a World Series? Required boolean participated_in_world_series."];
+  map [label="[Gateway]\nFan-out controller\n26 serial subagents", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway launched one clean LM Studio subagent per discovered subject."];
+
+  node [tooltip="Gateway -> LM Studio subagent with one team question; subagent -> LocalWiki MCP tool loop; click for exact raw prompt, calls, and answer."];
+  braves [label="[LLM + Wiki]\nAtlanta Braves"]; marlins [label="[LLM + Wiki]\nMiami Marlins"]; mets [label="[LLM + Wiki]\nNew York Mets"];
+  phillies [label="[LLM + Wiki]\nPhiladelphia Phillies"]; nationals [label="[LLM + Wiki]\nWashington Nationals"]; cubs [label="[LLM + Wiki]\nChicago Cubs"];
+  reds [label="[LLM + Wiki]\nCincinnati Reds"]; brewers [label="[LLM + Wiki]\nMilwaukee Brewers"]; pirates [label="[LLM + Wiki]\nPittsburgh Pirates"];
+  cardinals [label="[LLM + Wiki]\nSt. Louis Cardinals"]; dbacks [label="[LLM + Wiki]\nArizona Diamondbacks"]; rockies [label="[LLM + Wiki]\nColorado Rockies"];
+  dodgers [label="[LLM + Wiki]\nLos Angeles Dodgers"]; padres [label="[LLM + Wiki]\nSan Diego Padres"]; giants [label="[LLM + Wiki]\nNew York Giants"];
+  orioles [label="[LLM + Wiki]\nBaltimore Orioles"]; redsox [label="[LLM + Wiki]\nBoston Red Sox"]; yankees [label="[LLM + Wiki]\nNew York Yankees"];
+  rays [label="[LLM + Wiki]\nTampa Bay Rays"]; bluejays [label="[LLM + Wiki]\nToronto Blue Jays"]; whitesox [label="[LLM + Wiki]\nChicago White Sox"];
+  tigers [label="[LLM + Wiki]\nDetroit Tigers"]; royals [label="[LLM + Wiki]\nKansas City Royals"]; twins [label="[LLM + Wiki]\nMinnesota Twins"];
+  angels [label="[LLM + Wiki]\nLos Angeles Angels"]; athletics [label="[LLM + Wiki]\nOakland Athletics"];
+
+  retry_tigers [label="[Gateway retry]\nLLM + Wiki\nDetroit Tigers attempt 2", fillcolor="#ffe0b8", color="#d87918", tooltip="Automatic execution retry for map subagent index 23."];
+  map_done [label="[Gateway]\nM1 stored\n26/26 records", fillcolor="#dcecff", color="#4f86c6", tooltip="research_map_completed after 26 records and one map execution retry."];
+  route_reduce [label="[LM Studio top-level LLM]\nresearch_reduce tool call", fillcolor="#eadff5", color="#7b55a6", tooltip="Question: list all active MLB teams that have never participated in a World Series."];
+  review [label="[LM Studio LLM]\nStructured reviewer\n26 assessments", fillcolor="#eadff5", color="#7b55a6", tooltip="Reviewer assessed the one required field for all 26 records. Click for full raw JSON."];
+  plan [label="[Gateway]\nRepair planner\n3 calls / budget 24", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway scheduled field_map actions for Cardinals, Twins, and Athletics."];
+  repair_c [label="[LM Studio subagent]\n+ LocalWiki MCP\nCardinals field repair", fillcolor="#ffe0b8", color="#d87918", tooltip="Input: research participated_in_world_series only. Result confirmed participation."];
+  repair_t [label="[LM Studio subagent]\n+ LocalWiki MCP\nTwins field repair", fillcolor="#ffe0b8", color="#d87918", tooltip="Input: research participated_in_world_series only. Output incorrectly treated missing evidence as inability to confirm."];
+  repair_a [label="[LM Studio subagent]\n+ LocalWiki MCP\nAthletics field repair", fillcolor="#ffe0b8", color="#d87918", tooltip="Input: research participated_in_world_series only. Result remained partial/unsupported."];
+  merge [label="[Gateway]\nMerge repaired fields", fillcolor="#dcecff", color="#4f86c6", tooltip="research_repair_completed: 3 calls, 26 outputs; Athletics remained partial."];
+  reduce [label="[LM Studio LLM]\nFirst structured reducer", fillcolor="#f9dddd", color="#b64b4b", tooltip="Raw output listed Minnesota Twins and Oakland Athletics with participated_in_world_series=unknown."];
+  route_twins [label="[LM Studio top-level LLM]\nresearch_question: Twins", fillcolor="#eadff5", color="#7b55a6", tooltip="Post-reduce raw tool call: Has Minnesota Twins ever participated in a World Series?"];
+  twins_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nTwins follow-up", tooltip="Raw output: Yes; source said the franchise won its second and third World Series."];
+  route_a [label="[LM Studio top-level LLM]\nresearch_question: Athletics", fillcolor="#eadff5", color="#7b55a6", tooltip="Post-reduce raw tool call: Has Oakland Athletics ever participated in a World Series?"];
+  a_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nAthletics follow-up", tooltip="Raw output said yes but incorrectly called 1978 a championship series."];
+  final [label="[LM Studio top-level LLM]\nFinal response\nafter 6 rounds", fillcolor="#e8edf2", color="#69727d", tooltip="Chat completed after the two post-reduce follow-ups. Click for complete request trace."];
+
+  request -> route_list -> list_agent;
+  list_agent -> list_retry [style=dashed, color="#d87918", label="retry"];
+  list_retry -> dataset -> route_map -> map;
+  map -> {braves marlins mets phillies nationals cubs reds brewers pirates cardinals dbacks rockies dodgers padres giants orioles redsox yankees rays bluejays whitesox tigers royals twins angels athletics};
+  tigers -> retry_tigers [style=dashed, color="#d87918"];
+  {braves marlins mets phillies nationals cubs reds brewers pirates cardinals dbacks rockies dodgers padres giants orioles redsox yankees rays bluejays whitesox royals twins angels athletics retry_tigers} -> map_done;
+  map_done -> route_reduce -> review -> plan;
+  plan -> {repair_c repair_t repair_a} [style=dashed, color="#d87918", label="field repair"];
+  {repair_c repair_t repair_a} -> merge [style=dashed, color="#d87918"];
+  merge -> reduce -> route_twins -> twins_agent -> route_a -> a_agent -> final;
+}

@@ -1,0 +1,23 @@
+digraph Request3 {
+  graph [rankdir=LR, bgcolor="#fbfbf8", fontname="Arial", fontsize=11,
+    label="Request 3: MLB aggregate-first route\nHover for event details; click any node for the request-scoped raw gateway trace",
+    labelloc=t, labeljust=l, nodesep=0.3, ranksep=0.8];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=9, margin="0.1,0.07",
+    color="#69727d", fillcolor="#ffffff", URL="request-3-raw.log", target="_blank"];
+  edge [color="#69727d", fontname="Arial", fontsize=8, arrowsize=0.65];
+
+  request [label="[Gateway]\nRequest 3 dequeued", fillcolor="#dcecff", color="#4f86c6", tooltip="Request 3 started after request 2 released; one other request remained queued."];
+  route [label="[LM Studio top-level LLM]\nTool call: research_question", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="Raw LLM->Gateway arguments: Which active MLB teams have never been to the World Series?"];
+  agent [label="[LM Studio subagent]\nAggregate research", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="One clean research subagent handled the aggregate question in five rounds."];
+  search [label="[LocalWiki MCP]\nwiki_search", fillcolor="#def3e4", color="#438a5e", tooltip="Raw query: MLB teams never won World Series. Returned offline Wikipedia search results."];
+  sections [label="[LocalWiki MCP]\nwiki_sections", fillcolor="#def3e4", color="#438a5e", tooltip="Article: List of Major League Baseball franchise postseason droughts."];
+  fetch [label="[LocalWiki MCP]\nwiki_fetch", fillcolor="#def3e4", color="#438a5e", tooltip="Section: Longest current World Series appearance droughts. Returned 1425 characters."];
+  subanswer [label="[LM Studio subagent]\nGrounded answer", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="The subagent conflated never appeared with never won and returned a long inaccurate list. Click for its complete raw answer."];
+  final [label="[LM Studio top-level LLM]\nFinal response\n2 rounds, no retries", fillcolor="#f9dddd", color="#b64b4b",
+    tooltip="Top-level chat completed with 588 answer characters. No list/map/review/repair path ran."];
+
+  request -> route -> agent -> search -> sections -> fetch -> subanswer -> final;
+}

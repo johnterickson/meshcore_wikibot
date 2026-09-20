@@ -1,0 +1,12 @@
+{
+  "model": "nvidia/nemotron-3-nano-4b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 500,
+  "wall_seconds": 243,
+  "answer": "",
+  "thinking": "",
+  "error": "List validation failed: expected 5, received 6 items (6 unique)"
+}

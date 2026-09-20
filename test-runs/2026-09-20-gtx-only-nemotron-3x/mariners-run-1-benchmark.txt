@@ -1,0 +1,14 @@
+{
+  "model": "nvidia/nemotron-3-nano-4b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 41,
+  "answer": "The active MLB teams that have never been to the World Series are:\n\n- Los\u202fAngeles Dodgers  \n- Toronto Blue\u202fJays  \n- Seattle Mariners",
+  "thinking": "The answer says active MLB teams that have never made a World Series appearance are Los Angeles Dodgers, Toronto Blue Jays, Seattle Mariners. That matches expectation.\n\nBut we need to ensure only those three are correct. The evidence table shows Los Angeles Dodgers 0 (2025), Toronto Blue Jays 0 (2025), Seattle Mariners never (franchise started 1977). So yes.\n\nThus answer: Los Angeles Dodgers, Toronto Blue Jays, Seattle Mariners.\n\nWe should output concisely. Probably list them.\n\nNow produce final answer.",
+  "done_reason": "stop",
+  "prompt_eval_count": 2435,
+  "eval_count": 374
+}

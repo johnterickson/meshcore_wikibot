@@ -1,0 +1,8 @@
+UTC_START=2026-09-19T05:55:07.6461943Z
+CASE=/new Who are the Spice Girls (stage names in the form "[adjective] Spice" and real names) and what are their birthdays YYYY/MM/DD?
+UTC_END=2026-09-19T06:01:52.6412836Z
+EXIT_CODE=0
+WALL_SECONDS=724.859
+UTC_END=2026-09-19T06:12:37.0613708Z
+EXIT_CODE=0
+WALL_SECONDS=1049.415

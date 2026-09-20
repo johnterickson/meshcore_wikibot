@@ -1,0 +1,65 @@
+digraph Request1 {
+  graph [rankdir=LR, bgcolor="#fbfbf8", fontname="Arial", fontsize=11,
+    label="Request 1: Spice Girls primary run\nHover for event details; click any node for the complete request-scoped raw gateway trace",
+    labelloc=t, labeljust=l, nodesep=0.22, ranksep=0.75];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=9, margin="0.09,0.06",
+    color="#69727d", fillcolor="#ffffff", URL="request-1-raw.log", target="_blank"];
+  edge [color="#69727d", fontname="Arial", fontsize=8, arrowsize=0.65];
+
+  request [label="[Gateway]\nRequest 1 started", fillcolor="#dcecff", color="#4f86c6",
+    tooltip="chat_request and chat_started at 05:49:48 UTC. Model: nvidia/nemotron-3-nano-4b."];
+  route_question [label="[LM Studio top-level LLM]\nRound 1 tool call\nresearch_question", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="Raw LLM -> Gateway call: research_question for the complete names-and-birthdays question."];
+  question_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nWhole-question research", tooltip="Gateway launched subagent index 1 with the complete question. Attempt 1 returned an empty answer."];
+  question_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nWhole-question attempt 2", fillcolor="#ffe0b8", color="#d87918",
+    tooltip="Gateway retried subagent index 1. Attempt 2 ended malformed with an unexecuted wiki_fetch tool call."];
+  route_list [label="[LM Studio top-level LLM]\nRound 2 tool call\nresearch_list", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="Raw LLM -> Gateway arguments: question='Who are the Spice Girls (stage names in the form [adjective] Spice and real names)?'; purpose='entity_attributes'."];
+  list_agent [label="[LM Studio subagent]\n+ LocalWiki MCP\nDiscover five names", tooltip="Gateway launched subagent index 2. It used LocalWiki and returned a grounded answer containing the five members."];
+  dataset [label="[Gateway]\nresearch_list_created\nD1: 5 subjects", fillcolor="#dcecff", color="#4f86c6",
+    tooltip="Raw list output: Victoria Beckham, Emma Bunton, Melanie Brown, Melanie Chisholm, Geri Halliwell."];
+  route_map [label="[LM Studio top-level LLM]\nRound 3 tool call\nresearch_map", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="Raw LLM -> Gateway call: research_map(dataset=D1), with the stage name, real name, and birthday template."];
+  map [label="[Gateway]\nresearch_map fan-out\n5 records x 3 fields", fillcolor="#dcecff", color="#4f86c6",
+    tooltip="Gateway fans D1 into one clean LM Studio subagent context per subject. Required fields: stage_name, real_name, birthday."];
+
+  victoria [label="[LM Studio subagent]\n+ LocalWiki MCP\nVictoria Beckham", tooltip="Input: provide stage name, real name, and birthday YYYY/MM/DD for Victoria Beckham. Click for raw prompt, wiki calls, and answer."];
+  emma [label="[LM Studio subagent]\n+ LocalWiki MCP\nEmma Bunton", tooltip="Input: provide stage name, real name, and birthday YYYY/MM/DD for Emma Bunton. Click for raw prompt, wiki calls, and answer."];
+  brown [label="[LM Studio subagent]\n+ LocalWiki MCP\nMelanie Brown", tooltip="Input: provide stage name, real name, and birthday YYYY/MM/DD for Melanie Brown. Initial execution became malformed/partial."];
+  chisholm [label="[LM Studio subagent]\n+ LocalWiki MCP\nMelanie Chisholm", tooltip="Input: provide stage name, real name, and birthday YYYY/MM/DD for Melanie Chisholm. Click for raw prompt, wiki calls, and answer."];
+  geri [label="[LM Studio subagent]\n+ LocalWiki MCP\nGeri Halliwell", tooltip="Input: provide stage name, real name, and birthday YYYY/MM/DD for Geri Halliwell. Click for raw prompt, wiki calls, and answer."];
+  brown_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nMelanie Brown attempt 2", fillcolor="#ffe0b8", color="#d87918",
+    tooltip="Gateway execution retry after malformed attempt 1. Raw retry event and second prompt/answer are in the linked trace."];
+  emma_retry [label="[Gateway retry controller]\n-> LM Studio + LocalWiki\nEmma Bunton attempt 2", fillcolor="#ffe0b8", color="#d87918",
+    tooltip="Gateway execution retry after attempt 1 returned an empty failed answer. Attempt 2 returned a partial record."];
+
+  map_done [label="[Gateway]\nM1 stored\n5/5 records", fillcolor="#dcecff", color="#4f86c6",
+    tooltip="research_map_completed: inputCount=5, completedCount=5."];
+  review [label="[LM Studio LLM]\nStructured repair review\n15 field cells", fillcolor="#eadff5", color="#7b55a6",
+    tooltip="LLM reviewed 5 mapped records against 3 required fields. It incorrectly accepted Melanie Brown's stage name and incorrectly rejected some formatted dates. Click for raw review JSON."];
+  plan [label="[Gateway]\nRepair planner\n5 calls / budget 15", fillcolor="#dcecff", color="#4f86c6",
+    tooltip="Gateway converted review/record status into five birthday field_map actions."];
+
+  rv [label="[LM Studio subagent]\n+ LocalWiki MCP\nVictoria: birthday", fillcolor="#ffe0b8", color="#d87918", tooltip="Raw input: Research only the birthday field for Victoria Beckham. Required meaning: YYYY/MM/DD. Output: 1974/04/17."];
+  re [label="[LM Studio subagent]\n+ LocalWiki MCP\nEmma: birthday", fillcolor="#ffe0b8", color="#d87918", tooltip="Raw input: Research only the birthday field for Emma Bunton. Required meaning: YYYY/MM/DD. Output: 1976/01/21."];
+  rb [label="[LM Studio subagent]\n+ LocalWiki MCP\nBrown: birthday", fillcolor="#ffe0b8", color="#d87918", tooltip="Raw input: Research only the birthday field for Melanie Brown. Required meaning: YYYY/MM/DD. Output: 1975/05/29."];
+  rc [label="[LM Studio subagent]\n+ LocalWiki MCP\nChisholm: birthday", fillcolor="#ffe0b8", color="#d87918", tooltip="Raw input: Provide the birthday YYYY/MM/DD for Melanie Chisholm. Output: 1974/01/12."];
+  rg [label="[LM Studio subagent]\n+ LocalWiki MCP\nGeri: birthday", fillcolor="#ffe0b8", color="#d87918", tooltip="Raw input: Research only the birthday field for Geri Halliwell. Required meaning: YYYY/MM/DD. Output: 1972/08/06."];
+
+  merge [label="[Gateway]\nMerge repaired fields\n5 records", fillcolor="#dcecff", color="#4f86c6", tooltip="Gateway merged field results into original records; research_repair_completed repairCalls=5."];
+  reduce [label="[LM Studio LLM]\nStructured reducer", fillcolor="#eadff5", color="#7b55a6", tooltip="LLM input: 5 merged records plus original question. Raw output JSON is in research_reduce_completed."];
+  final [label="[LM Studio top-level LLM]\nFinal response\nsemantic FAIL", fillcolor="#f9dddd", color="#b64b4b", penwidth=1.4,
+    tooltip="Final response retained the wrong Sporty Spice assignment for Melanie Brown and incomplete legal names. Click for all raw events."];
+
+  request -> route_question -> question_agent;
+  question_agent -> question_retry [style=dashed, color="#d87918", label="execution retry"];
+  question_retry -> route_list -> list_agent -> dataset -> route_map -> map;
+  map -> {victoria emma brown chisholm geri};
+  emma -> emma_retry [style=dashed, color="#d87918", label="execution retry"];
+  brown -> brown_retry [style=dashed, color="#d87918", label="execution retry"];
+  {victoria chisholm geri emma_retry brown_retry} -> map_done;
+  map_done -> review -> plan;
+  plan -> {rv re rb rc rg} [style=dashed, color="#d87918", label="field repair"];
+  {rv re rb rc rg} -> merge [style=dashed, color="#d87918"];
+  merge -> reduce -> final;
+}

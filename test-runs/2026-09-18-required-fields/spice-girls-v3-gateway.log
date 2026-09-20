@@ -1,0 +1,93 @@
+home-assistant-gateway-1  | 2026-09-18T23:34:14.006940034Z {"event":"chat_request","requestId":1,"model":"nvidia/nemotron-3-nano-4b","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | 2026-09-18T23:34:14.007316859Z {"event":"chat_started","requestId":1,"waiting":0}
+home-assistant-gateway-1  | 2026-09-18T23:34:23.127912014Z {"event":"lmstudio_tool_call","requestId":1,"round":1,"name":"research_question","arguments":{"question":"What are the stage names in the form \"[adjective] Spice\" and real names and birthdays YYYY/MM/DD for the Spice Girls?"}}
+home-assistant-gateway-1  | 2026-09-18T23:34:23.128722366Z {"event":"subagent_started","requestId":1,"index":1,"question":"What are the stage names in the form \"[adjective] Spice\" and real names and birthdays YYYY/MM/DD for the Spice Girls?"}
+home-assistant-gateway-1  | 2026-09-18T23:34:28.893254693Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":1,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:34:28.894126652Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:34:31.158853185Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_search","characters":2202,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:34:34.836548248Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":2,"name":"wiki_sections","arguments":{"article":"A1"}}
+home-assistant-gateway-1  | 2026-09-18T23:34:34.837021380Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","arguments":{"path":"Spice_Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:34:35.170091984Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","characters":2833,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:34:39.048118130Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":3,"name":"wiki_fetch","arguments":{"section":"S32","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:34:39.051987993Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Spice_Girls","section":"Group_members","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:34:39.295007959Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":583,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:34:46.118531284Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":4,"name":"wiki_fetch","arguments":{"section":"S32","segment":2}}
+home-assistant-gateway-1  | 2026-09-18T23:34:46.118626890Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Spice_Girls","section":"Group_members","segment":2}}
+home-assistant-gateway-1  | 2026-09-18T23:34:46.390439462Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":45,"isError":true}
+home-assistant-gateway-1  | 2026-09-18T23:34:53.653416434Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":5,"name":"wiki_fetch","arguments":{"section":"S28","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:34:53.653477437Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Spice_Girls","section":"Career_records_and_achievements","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:34:53.927449182Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":3483,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:03.182689199Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":6,"name":"wiki_search","arguments":{"query":"Melanie Brown Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:03.182758204Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_search","arguments":{"query":"Melanie Brown Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:04.168238373Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_search","characters":1804,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:08.214125289Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":7,"name":"wiki_sections","arguments":{"article":"A27"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:08.214185493Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","arguments":{"path":"Mel_B"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:08.296920483Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","characters":1052,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:11.441957876Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":8,"name":"wiki_fetch","arguments":{"section":"S39","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:11.442041181Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Mel_B","section":"Early_life","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:11.534741108Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":1292,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:14.847775107Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":9,"name":"wiki_fetch","arguments":{"section":"S45","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:14.847825809Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Mel_B","section":"Personal_life","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:14.935254994Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":3849,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:23.207026005Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":10,"name":"wiki_sections","arguments":{"article":"A34"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:23.207134013Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","arguments":{"path":"Michelle_Stephenson"}}
+home-assistant-gateway-1  | 2026-09-18T23:35:23.272550267Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_sections","characters":395,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:25.836669434Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":1,"round":11,"name":"wiki_fetch","arguments":{"section":"S53","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:25.836760240Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Michelle_Stephenson","section":"Touch_(Spice_Girls)","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:35:25.876443645Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":2464,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:35:56.075798357Z {"event":"subagent_completed","requestId":1,"index":1,"attempt":1,"rounds":12,"answerCharacters":130,"answer":"<tool_call>\n<function=wiki_fetch>\n<parameter=section>\nS58\n</parameter>\n<parameter=segment>\n1\n</parameter>\n</function>\n</tool_call>","evidenceSegments":5,"status":"failed","unresolved":[],"malformed":true,"executionSeconds":92.890688379}
+home-assistant-gateway-1  | 2026-09-18T23:35:56.077495972Z {"event":"subagent_retry","requestId":1,"index":1,"question":"What are the stage names in the form \"[adjective] Spice\" and real names and birthdays YYYY/MM/DD for the Spice Girls?"}
+home-assistant-gateway-1  | 2026-09-18T23:36:01.725582145Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":1,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:01.725668551Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:03.588577549Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":2202,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:08.359376484Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":2,"name":"wiki_sections","arguments":{"article":"A1"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:08.359451589Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_sections","arguments":{"path":"Spice_Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:08.683301367Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_sections","characters":2833,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:13.470795145Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":3,"name":"wiki_fetch","arguments":{"section":"S32","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:36:13.470907553Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","arguments":{"path":"Spice_Girls","section":"Group_members","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:36:13.718210820Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","characters":583,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:17.938771546Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":4,"name":"wiki_search","arguments":{"query":"Melanie Brown birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:17.938804148Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Melanie Brown birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:19.555665378Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":1737,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:25.161080137Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":5,"name":"wiki_search","arguments":{"query":"Spice Girls members birthdays"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:25.161119740Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Spice Girls members birthdays"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:26.284672333Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":1476,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:31.441815494Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":6,"name":"wiki_search","arguments":{"query":"Geri Halliwell birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:31.441885598Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Geri Halliwell birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:32.244866408Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":1762,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:38.321860216Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":7,"name":"wiki_search","arguments":{"query":"Melanie Brown date of birth"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:38.321939021Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Melanie Brown date of birth"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:40.452367762Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":2062,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:46.997073625Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":8,"name":"wiki_sections","arguments":{"article":"A43"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:46.997104826Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_sections","arguments":{"path":"Mel_B"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:47.148721397Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_sections","characters":1052,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:50.421989653Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":9,"name":"wiki_fetch","arguments":{"section":"S39","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:36:50.422080258Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","arguments":{"path":"Mel_B","section":"Early_life","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:36:50.525793517Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","characters":1292,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:36:56.195809831Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":10,"name":"wiki_search","arguments":{"query":"Spice Girls birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:56.195880636Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","arguments":{"query":"Spice Girls birthday"}}
+home-assistant-gateway-1  | 2026-09-18T23:36:57.429929506Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_search","characters":1454,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:37:04.051415676Z {"event":"subagent_tool_call","requestId":1,"index":1,"attempt":2,"round":11,"name":"wiki_fetch","arguments":{"section":"S45","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:37:04.051490081Z {"event":"wiki_tool_call","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","arguments":{"path":"Mel_B","section":"Personal_life","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:37:04.201955106Z {"event":"wiki_tool_result","requestId":1,"subagent":1,"attempt":2,"name":"wiki_fetch","characters":3849,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:37:35.714952472Z {"event":"subagent_completed","requestId":1,"index":1,"attempt":2,"rounds":12,"answerCharacters":130,"answer":"<tool_call>\n<function=wiki_fetch>\n<parameter=section>\nS38\n</parameter>\n<parameter=segment>\n1\n</parameter>\n</function>\n</tool_call>","evidenceSegments":3,"status":"failed","unresolved":[],"malformed":true,"executionSeconds":99.631634296}
+home-assistant-gateway-1  | 2026-09-18T23:37:43.321090310Z {"event":"lmstudio_tool_call","requestId":1,"round":2,"name":"research_list","arguments":{"question":"What are the canonical entity names for the Spice Girls?","purpose":"entity_attributes"}}
+home-assistant-gateway-1  | 2026-09-18T23:37:43.321511437Z {"event":"subagent_started","requestId":1,"index":2,"question":"What are the canonical entity names for the Spice Girls?"}
+home-assistant-gateway-1  | 2026-09-18T23:37:48.687411091Z {"event":"subagent_tool_call","requestId":1,"index":2,"attempt":1,"round":1,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:37:48.687483596Z {"event":"wiki_tool_call","requestId":1,"subagent":2,"attempt":1,"name":"wiki_search","arguments":{"query":"Spice Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:37:50.721433827Z {"event":"wiki_tool_result","requestId":1,"subagent":2,"attempt":1,"name":"wiki_search","characters":2202,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:37:54.857711335Z {"event":"subagent_tool_call","requestId":1,"index":2,"attempt":1,"round":2,"name":"wiki_sections","arguments":{"article":"A1"}}
+home-assistant-gateway-1  | 2026-09-18T23:37:54.857792141Z {"event":"wiki_tool_call","requestId":1,"subagent":2,"attempt":1,"name":"wiki_sections","arguments":{"path":"Spice_Girls"}}
+home-assistant-gateway-1  | 2026-09-18T23:37:55.206199186Z {"event":"wiki_tool_result","requestId":1,"subagent":2,"attempt":1,"name":"wiki_sections","characters":2833,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:38:00.034821479Z {"event":"subagent_tool_call","requestId":1,"index":2,"attempt":1,"round":3,"name":"wiki_fetch","arguments":{"section":"S1","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:38:00.034921886Z {"event":"wiki_tool_call","requestId":1,"subagent":2,"attempt":1,"name":"wiki_fetch","arguments":{"path":"Spice_Girls","section":"lead","segment":1}}
+home-assistant-gateway-1  | 2026-09-18T23:38:00.298373812Z {"event":"wiki_tool_result","requestId":1,"subagent":2,"attempt":1,"name":"wiki_fetch","characters":3997,"isError":false}
+home-assistant-gateway-1  | 2026-09-18T23:38:10.032027461Z {"event":"subagent_completed","requestId":1,"index":2,"attempt":1,"rounds":4,"answerCharacters":140,"answer":"The canonical entity name for the Spice Girls, as defined in Wikipedia’s lead section **S1**, is “**Spice Girls**” – the British girl group.","evidenceSegments":1,"status":"complete","unresolved":[],"malformed":false,"executionSeconds":26.693366817}
+home-assistant-gateway-1  | 2026-09-18T23:38:16.560674356Z {"event":"chat_released","requestId":1,"waiting":0}
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561073882Z Error: List validation failed: expected 5, received 6 items (6 unique)
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561083883Z     at Object.discover (file:///app/dist/server.js:362:27)
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561086983Z     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561089683Z     at async implementation (file:///app/dist/researchTool.js:58:40)
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561121085Z     at async file:///app/node_modules/@lmstudio/sdk/dist/index.mjs:16496:34
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561125986Z     at async FIFOQueue.runInQueue (file:///app/node_modules/@lmstudio/sdk/dist/index.mjs:16015:24)
+home-assistant-gateway-1  | 2026-09-18T23:38:16.561129886Z     at async Promise.all (index 0)

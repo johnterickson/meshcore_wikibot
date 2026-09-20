@@ -411,6 +411,32 @@ The benchmark client then hit Undici's default response-header timeout while the
 
 The next exact candidate is `unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_M.gguf`, approximately 16.5 GB. It is Qwen3.8, not Qwen3.5, and should be downloaded and tested only after Granite is idle.
 
+### Nemotron Clean-Context Researchers
+
+An atomic `/new Victoria Beckham birthday` baseline passed in 14 seconds. Nemotron searched `Victoria Beckham`, opened `Victoria_Beckham`, fetched `Early_life`, and answered `17 April 1974` from explicit evidence.
+
+A parent tool was then tested with nested same-model `.act()` calls. The initial reliable contract exposed one `research_question` at a time; each call started a fresh child chat, LocalWiki client, and handle registry, while children received only wiki tools to prevent recursion. This fixed the five-person query but did not scale to the 30-team Mariners decomposition.
+
+The current design adds request-scoped structured memory. `research_list` captures a grounded answer and fetched evidence, uses a tool-free reasoning-disabled structured extraction to validate the complete canonical list, and stores names plus discovery context as `D1`. Its explicit purpose separates attribute enumeration from set-filter fallback; filter fallback is rejected until aggregate research is partial or failed. `research_map` expands every entity placeholder, declares required fields, deterministically applies one question template to every stored item, and stores generic status-bearing results as `M1`. `research_reduce` reviews the required fields, discovery context, and complete map before final synthesis. It can retry, add, or exclude records, and can recursively map unresolved fields to separate clean researchers. Whole-record and field-level repairs share an eight-call budget. A 30-record contract test processed 30/30 items and reduced all 30 without returning the entity list to the parent context.
+
+Focused tests cover repeated placeholder expansion, aggregate-first fallback gating, repair-plan normalization for failed/wrong-subject/missing/accidental records, and reduction of field subagents into a status-bearing parent record.
+
+The 2026-09-18 repaired reruns are stored under `test-runs/2026-09-18-repair`. Mariners passed in 156.863 seconds through aggregate drought-table research and returned only Seattle Mariners. Spice Girls passed in 238.338 seconds: discovery produced all five people, all repeated placeholders expanded, all five biography records completed with fetched evidence, and the repair review correctly requested no actions.
+
+Ollama streaming now emits `message.thinking` progress deltas for discovery, each map item, retries, and reduction. A live request received its first `done:false` progress record before discovery completed, and a complete atomic stream ended with the grounded `17 April 1974` answer and `done:true`.
+
+The composite question `Who are the Spice Girls (stage and real names) and what are their birthdays YYYY/MM/DD?` passed in 156 seconds. The parent first delegated group membership, then separately researched Melanie Brown, Emma Bunton, Melanie Chisholm, Victoria Beckham, and Geri Halliwell. Every biography researcher searched the exact person, listed sections, fetched its isolated `S1` lead, and returned explicit evidence. The final answer contained all five correct mappings and dates:
+
+| Stage name | Real name | Birthday |
+| --- | --- | --- |
+| Scary Spice | Melanie Brown | 1975/05/29 |
+| Baby Spice | Emma Bunton | 1976/01/21 |
+| Sporty Spice | Melanie Chisholm | 1974/01/12 |
+| Posh Spice | Victoria Beckham | 1974/04/17 |
+| Ginger Spice | Geri Halliwell | 1972/08/06 |
+
+Two failed intermediate designs were discriminating. Giving the parent direct wiki tools let it accumulate and confuse shared handles before attempting delegation. Allowing batched questions let it guess entities before reading the membership result, mislabeling members and adding Jade Goody. The single-question contract forces evidence to arrive before the next planning step. Researchers remain serial to avoid competing workloads on the loaded model; the expected cost is roughly one atomic inference per entity.
+
 ## Pending Baselines
 
 Still run under the exact baseline, sequentially and with a five-minute process bound:

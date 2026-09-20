@@ -1,0 +1,12 @@
+{
+  "model": "qwen/qwen3.8-27b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 500,
+  "wall_seconds": 240,
+  "answer": "",
+  "thinking": "",
+  "error": "\n\n   \u250c Error \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n   \u2502                                                            \u2502\n   \u2502   Engine protocol predict request failed: fetch failed     \u2502\n   \u2502                                                            \u2502\n   \u2502                                                            \u2502\n   \u2502   </> STACK TRACE                                          \u2502\n   \u2502                                                            \u2502\n   \u2502   at file:///app/dist/server.js:495:36                     \u2502\n   \u2502   at process.processTicksAndRejections                     \u2502\n   \u2502   (node:internal/process/task_queues:103:5)                \u2502\n   \u2502                                                            \u2502\n   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+}

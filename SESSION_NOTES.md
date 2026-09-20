@@ -9,7 +9,7 @@ Run an offline Wikipedia assistant stack with Docker:
 1. Kiwix serves a local Wikipedia ZIM.
 2. LocalWiki MCP searches and fetches Kiwix content.
 3. LM Studio runs the Home Assistant model on the host GPUs.
-4. A Node/TypeScript gateway exposes an authenticated Ollama-compatible API and delegates Wikipedia tool orchestration to LM Studio SDK `.act()`.
+4. A Node/TypeScript gateway exposes an authenticated Ollama-compatible API and uses LM Studio SDK `.act()` for parent planning and clean-context Wikipedia researchers.
 
 ## Current Architecture
 
@@ -97,11 +97,19 @@ The LocalWiki service build and live MCP discovery were validated. All three too
 
 ## Home Assistant Gateway
 
-The gateway connects to LocalWiki MCP for each chat request and presents its three operations as LM Studio SDK tools. Search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
+The parent `.act()` receives `research_question` plus request-scoped `research_list`, `research_map`, and `research_reduce` tools. List discovery extracts from both the grounded answer and fetched evidence and stores validated canonical names plus discovery context behind `D1`. Map expands every `{item}` placeholder, declares generic user-derived field requirements, carries bounded discovery context into each researcher, and stores `complete`, `partial`, or `failed` records behind `M1`. Reduce requires one assessment per record and field before its structured repair review. Any unsatisfied assessment deterministically becomes a field map if no explicit retry exists. Repair may also exclude accidental records, add missing entities, or retry a whole record; all work shares an eight-call budget. Researchers run serially and cannot recursively delegate beyond this orchestrator-owned field pass. Child answers require fetched evidence, and empty, no-evidence, or terminal tool-call answers are retried once with another clean context. Researchers use `truncateMiddle` under context pressure; non-cancellation prediction failures degrade to failed records rather than aborting the map.
+
+For set-filter questions, aggregate research is contractually first. `research_list` with purpose `set_filter_fallback` is blocked unless the latest aggregate result is partial or failed. Repeated-attribute questions use purpose `entity_attributes` and proceed directly to list-map-reduce.
+
+An abort-aware FIFO mutex serializes complete `/api/chat` workloads across callers. Streaming callers receive queue-position and start notifications. A live two-client test showed request 1 enter `chat_started`, request 2 receive `chat_queued` at position 1, and no second model workload begin before release.
+
+Contexts are normally bounded: the parent retains tool handles/counts rather than full datasets, and each researcher starts with only its policy plus one atomic question. A researcher can still grow through up to 12 search/section/fetch rounds, so `truncateMiddle` remains a fallback for pathological loops rather than the normal path.
+
+Within a researcher, search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
 
 Each search now returns up to 25 results, matching the successful LM Studio LocalWiki condition. For the MLB benchmark query, this exposes `List of Major League Baseball franchise postseason droughts` at result 21.
 
-LM Studio `.act()` owns prediction rounds, tool-call parsing, reasoning history, and tool-result continuation. The gateway runs tools serially, logs finalized and invalid calls, closes the request-scoped MCP client afterward, and returns the final prediction in Ollama response shape. It removes LM Studio's internal synthetic reasoning separator from visible answers.
+LM Studio `.act()` owns prediction rounds, tool-call parsing, reasoning history, and tool-result continuation at both levels. The gateway logs parent and child calls, closes every MCP client, shares request cancellation with children, and returns the parent prediction in Ollama response shape. It removes LM Studio's internal synthetic reasoning separator from visible answers.
 
 The gateway request defaults are:
 
@@ -114,19 +122,9 @@ The gateway request defaults are:
 - Serial tool execution
 - No benchmark response-header deadline
 
-The gateway implements `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer tokens and `x-api-key` are accepted. A streaming request receives one final NDJSON record, not incremental token events.
+The gateway implements `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer tokens and `x-api-key` are accepted. Streaming requests receive incremental NDJSON `message.thinking` status records for discovery, map progress, retry, and reduction, then one final answer record. Home Assistant's Ollama adapter maps these to `thinking_content`; frontend visibility depends on the active conversation UI.
 
-Current technique-only system prompt:
-
-```text
-Your internal factual knowledge is limited and may be inaccurate, but you have access to an offline copy of Wikipedia through the provided tools. This is your primary source of truth: use it heavily, and do not rely on memory, other tools, or web search.
-
-Use the intentional retrieval sequence: wiki_search, wiki_sections for a promising article, then wiki_fetch for the most relevant section. Article and section handles are short and valid only for this request. Fetch additional segments only when the current segment says another is available and the evidence is still insufficient.
-
-Handles preserve source order and do not indicate relevance. Compare titles before choosing a handle.
-
-Find explicit support for the precise question, preserving its qualifiers and relationships. Once the evidence is sufficient, answer concisely.
-```
+The parent prompt selects direct aggregate research or a list-map-reduce pipeline, requires evidence-only synthesis, and prevents model-managed copying of entity lists. The researcher prompt requires `wiki_search` -> `wiki_sections` -> `wiki_fetch`, exact A-number and S-number handle use, explicit support for every requested field, and biography-lead retrieval for birth dates.
 
 ## Historical Ollama Matrix and LM Studio Parity
 

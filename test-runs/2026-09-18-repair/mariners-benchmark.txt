@@ -1,0 +1,14 @@
+{
+  "model": "nvidia/nemotron-3-nano-4b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 156,
+  "answer": "The only active MLB team that has never made a World Series appearance is **SeattleΓÇ»Mariners**.",
+  "thinking": "The answer says only Seattle Mariners have never made a World Series appearance. That's the active MLB team with longest drought (0). It also lists others with non-zero years.\n\nThus final answer: Seattle Mariners.\n\nWe should output concisely in user's requested format? The user asked \"Which active MLB teams have never been to the World Series?\" So answer is Seattle Mariners.\n\nProvide concise answer.",
+  "done_reason": "stop",
+  "prompt_eval_count": 3801,
+  "eval_count": 1969
+}

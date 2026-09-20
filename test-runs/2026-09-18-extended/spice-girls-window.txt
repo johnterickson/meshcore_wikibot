@@ -1,0 +1,5 @@
+UTC_START=2026-09-18T22:15:34.9351281Z
+COMMAND=docker compose exec -T home-assistant-gateway node dist/benchmark.js nvidia/nemotron-3-nano-4b --question "/new Who are the Spice Girls (stage and real names) and what are their birthdays YYYY/MM/DD?" --num-predict 2048 --temperature 0.2
+UTC_END=2026-09-18T22:22:12.4923363Z
+EXIT_CODE=0
+WALL_SECONDS=397.557

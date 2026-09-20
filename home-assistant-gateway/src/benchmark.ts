@@ -12,7 +12,11 @@ function option(name: string, fallback: string): string {
   return index >= 0 && args[index + 1] ? args[index + 1] : fallback;
 }
 
-const question = option("--question", "Which active MLB teams have never been to the World Series?");
+const question = option("--question", "");
+if (!question) {
+  console.error("--question is required");
+  process.exit(2);
+}
 const numPredict = Number(option("--num-predict", "2048"));
 const temperature = Number(option("--temperature", "0.2"));
 const reasoningBudgetValue = option("--reasoning-budget", "");
@@ -57,7 +61,7 @@ const started = performance.now();
 const response = await postJson(`${gatewayUrl}/api/chat`, requestBody);
 const result = JSON.parse(response.body) as Record<string, any>;
 const message = result.message ?? {};
-console.log(JSON.stringify({
+const output = JSON.stringify({
   model,
   parameters: { temperature, num_predict: numPredict, reasoning_budget: reasoningBudget },
   status: response.status,
@@ -68,5 +72,6 @@ console.log(JSON.stringify({
   done_reason: result.done_reason,
   prompt_eval_count: result.prompt_eval_count,
   eval_count: result.eval_count,
-}, null, 2));
+}, null, 2).replace(/[^\x20-\x7e\r\n]/g, character => `\\u${character.charCodeAt(0).toString(16).padStart(4, "0")}`);
+console.log(output);
 if (response.status < 200 || response.status >= 300) process.exitCode = 1;

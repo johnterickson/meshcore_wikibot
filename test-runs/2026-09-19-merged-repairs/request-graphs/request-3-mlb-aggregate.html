@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request 3 · MLB aggregate-first route</title>
+<style>
+:root { --ink:#19222c; --muted:#68737f; --paper:#f7f8f5; --line:#cad1d8; --gateway:#2176ae; --orchestrator:#7753a5; --subagent:#117864; --warning:#bd5d16; --danger:#b23a48; }
+* { box-sizing:border-box; }
+body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.45 "Segoe UI",sans-serif; letter-spacing:0; }
+header { padding:18px 24px 14px; border-bottom:1px solid var(--line); background:#fff; }
+h1 { margin:0 0 4px; font:600 24px/1.2 Georgia,serif; letter-spacing:0; }
+.meta { display:flex; gap:16px; color:var(--muted); flex-wrap:wrap; }
+.toolbar { display:flex; align-items:center; gap:8px; padding:10px 24px; border-bottom:1px solid var(--line); background:#eef1ed; position:sticky; top:0; z-index:5; }
+.toolbar input { width:min(420px,45vw); padding:7px 10px; border:1px solid #aeb7c0; border-radius:4px; background:#fff; }
+.toolbar button { width:32px; height:32px; border:1px solid #aeb7c0; background:#fff; border-radius:4px; cursor:pointer; font-weight:700; }
+.legend { margin-left:auto; display:flex; gap:12px; flex-wrap:wrap; color:#46515c; font-size:12px; }
+.legend span::before { content:""; display:inline-block; width:10px; height:10px; margin-right:5px; border-radius:2px; background:var(--tone); }
+#viewport { overflow:auto; height:calc(100vh - 121px); padding:18px; }
+#graph { display:block; background:#fff; border:1px solid var(--line); box-shadow:0 2px 12px #1b27331a; }
+.stage-bg { fill:#fafbf9; stroke:#d7dde2; }
+.stage-title { font:600 15px "Segoe UI",sans-serif; fill:#35414c; }
+.stage-note { font:12px "Segoe UI",sans-serif; fill:#74808b; }
+.edge { fill:none; stroke:#9aa5af; stroke-width:1.3; marker-end:url(#arrow); }
+.edge.retry { stroke:var(--warning); stroke-dasharray:6 4; }
+.node { cursor:pointer; outline:none; }
+.node rect { fill:#fff; stroke:#71808d; stroke-width:1.25; rx:5; }
+.node text { pointer-events:none; fill:#18232d; font:12px "Segoe UI",sans-serif; }
+.node .sub { fill:#68737f; font-size:10.5px; }
+.node.gateway rect { fill:#e5f3fb; stroke:var(--gateway); }
+.node.orchestrator rect { fill:#eee7f7; stroke:var(--orchestrator); }
+.node.subagent rect { fill:#e5f4ef; stroke:var(--subagent); }
+.node.warning rect, .node.failed rect, .node.partial rect { fill:#fff0e4; stroke:var(--warning); }
+.node.selected { opacity:1; }
+.node.selected rect { stroke:#111820; stroke-width:3; }
+.node.dim { opacity:.13; }
+.actor-tag { font:700 9px "Segoe UI",sans-serif; text-transform:uppercase; }
+#drawer { position:fixed; inset:0 0 0 auto; width:min(620px,92vw); background:#fff; border-left:1px solid #aeb7c0; box-shadow:-8px 0 30px #17212b2b; transform:translateX(102%); transition:transform .18s ease; z-index:20; display:flex; flex-direction:column; }
+#drawer.open { transform:none; }
+.drawer-head { padding:16px 18px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:flex-start; }
+.drawer-head h2 { margin:0; font:600 19px/1.25 Georgia,serif; letter-spacing:0; }
+.drawer-head button { margin-left:auto; border:0; background:transparent; font-size:23px; cursor:pointer; }
+#details { padding:16px 18px 40px; overflow:auto; }
+.detail-meta { display:grid; grid-template-columns:max-content 1fr; gap:5px 12px; margin-bottom:18px; }
+.detail-meta dt { color:var(--muted); }
+.detail-meta dd { margin:0; overflow-wrap:anywhere; }
+h3 { margin:20px 0 7px; font-size:12px; text-transform:uppercase; color:#53606c; letter-spacing:.04em; }
+pre { margin:0; padding:12px; white-space:pre-wrap; overflow-wrap:anywhere; background:#151d24; color:#e9f0f4; border-radius:5px; font:12px/1.45 Consolas,monospace; letter-spacing:0; max-height:360px; overflow:auto; }
+.empty { color:var(--muted); padding:30px; }
+@media (max-width:800px) { .legend { display:none; } #viewport { padding:8px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Request 3: MLB aggregate-first route</h1>
+  <div class="meta"><span>Incorrect aggregate answer</span><span>15 captured events</span><span>2026-09-19T06:12:43.056604398Z → 2026-09-19T06:13:49.541149313Z</span></div>
+</header>
+<div class="toolbar">
+  <input id="search" type="search" placeholder="Search nodes, prompts, answers, tool calls…" aria-label="Search trace">
+  <button id="zoom-out" title="Zoom out">−</button><button id="zoom-reset" title="Reset zoom">1:1</button><button id="zoom-in" title="Zoom in">+</button>
+  <div class="legend"><span style="--tone:var(--gateway)">Gateway</span><span style="--tone:var(--orchestrator)">Top-level / structured LLM</span><span style="--tone:var(--subagent)">LM Studio subagent + LocalWiki</span><span style="--tone:var(--warning)">Retry / partial</span></div>
+</div>
+<main id="viewport"><svg id="graph" role="img" aria-label="Interactive execution graph"></svg></main>
+<aside id="drawer" aria-label="Node details">
+  <div class="drawer-head"><div><h2 id="detail-title">Node details</h2><div id="detail-subtitle" class="meta"></div></div><button id="close" title="Close details" aria-label="Close details">×</button></div>
+  <div id="details"><div class="empty">Select a node to inspect exact inputs, outputs, LocalWiki calls, and raw events.</div></div>
+</aside>
+<script id="report-data" type="application/json">{"requestId":3,"title":"MLB aggregate-first route","verdict":"Incorrect aggregate answer","eventCount":15,"started":"2026-09-19T06:12:43.056604398Z","ended":"2026-09-19T06:13:49.541149313Z","request":{"id":"request","actor":"gateway","label":"Request 3","subtitle":"Gateway request","tooltip":"Gateway accepted request 3. Click for request metadata.","status":"normal","timestamp":"2026-09-19T06:12:43.056604398Z","input":"Request event not captured","output":"Queued for request-scoped execution.","rawEvents":[],"extra":{"Execution":"Gateway HTTP/chat orchestration","Model":"Not captured"}},"stages":[{"id":"stage-1","number":1,"tool":{"id":"tool-1-0","actor":"orchestrator","label":"research_question","subtitle":"top-level round 1","tooltip":"LM Studio top-level LLM selected research_question. Click for exact arguments.","status":"normal","timestamp":"2026-09-19T06:12:43.056604398Z","input":"The complete top-level prompt is not emitted in this gateway event; see the request context and preceding stage output.","output":{"question":"Which active MLB teams have never been to the World Series?"},"rawEvents":[{"event":"lmstudio_tool_call","requestId":3,"round":1,"name":"research_question","arguments":{"question":"Which active MLB teams have never been to the World Series?"},"timestamp":"2026-09-19T06:12:43.056604398Z","line":1,"order":0}],"extra":{"Execution":"LM Studio top-level orchestration LLM","Direction":"LM Studio -\u003e Gateway tool call","Round":1}},"attempts":[{"id":"subagent-1-1-1","actor":"subagent","label":"Which active MLB teams have never been to the W…","subtitle":"attempt 1 · 3 LocalWiki calls","tooltip":"Which active MLB teams have never been to the World Series?\nStatus: complete; 3 LocalWiki calls","status":"complete","timestamp":"2026-09-19T06:12:43.056672903Z","input":"Which active MLB teams have never been to the World Series?","output":"**Active MLB teams that have never won a World Series (as ofΓÇ»2025)**  \n\n- SeattleΓÇ»Mariners ΓÇô franchise started 1977, no championship yet  \n- PittsburghΓÇ»Pirates ΓÇô last appearanceΓÇ»1979  \n- MilwaukeeΓÇ»Brewers ΓÇô last appearanceΓÇ»1982  \n- BaltimoreΓÇ»Orioles ΓÇô last appearanceΓÇ»1983  \n- CincinnatiΓÇ»Reds ΓÇô last appearanceΓÇ»1990  \n- Athletics (Los AngelesΓÇ»Angels) ΓÇô last appearanceΓÇ»1990  \n- MinnesotaΓÇ»Twins ΓÇô last appearanceΓÇ»1991  \n- SanΓÇ»DiegoΓÇ»Padres ΓÇô last appearanceΓÇ»1998  \n- LosΓÇ»AngelesΓÇ»Angels ΓÇô last appearanceΓÇ»2002 (listed separately)  \n- MiamiΓÇ»Marlins ΓÇô last appearanceΓÇ»2003  \n- ChicagoΓÇ»WhiteΓÇ»Sox ΓÇô last appearanceΓÇ»2005  \n- ColoradoΓÇ»Rockies ΓÇô last appearanceΓÇ»2007  \n- DetroitΓÇ»Tigers ΓÇô last appearanceΓÇ»2012  \n- St.ΓÇ»LouisΓÇ»Cardinals ΓÇô last appearanceΓÇ»2013  \n- SanΓÇ»FranciscoΓÇ»Giants ΓÇô last appearanceΓÇ»2014  \n- KansasΓÇ»CityΓÇ»Royals ΓÇô last appearanceΓÇ»2015  \n- NewΓÇ»YorkΓÇ»Mets ΓÇô last appearanceΓÇ»2015  \n- ChicagoΓÇ»Cubs ΓÇô last appearanceΓÇ»2016  \n- ClevelandΓÇ»Guardians ΓÇô last appearanceΓÇ»2016  \n- BostonΓÇ»RedΓÇ»Sox ΓÇô last appearanceΓÇ»2018  \n- WashingtonΓÇ»Nationals ΓÇô last appearanceΓÇ»2019  \n- TampaΓÇ»BayΓÇ»Rays ΓÇô last appearanceΓÇ»2020  \n- AtlantaΓÇ»Braves ΓÇô last appearanceΓÇ»2021  \n- HoustonΓÇ»Astros ΓÇô last appearanceΓÇ»2022  \n- PhiladelphiaΓÇ»Phillies ΓÇô last appearanceΓÇ»2022  \n- ArizonaΓÇ»Diamondbacks ΓÇô last appearanceΓÇ»2023  \n- TexasΓÇ»Rangers ΓÇô last appearanceΓÇ»2023  \n- NewΓÇ»YorkΓÇ»Yankees ΓÇô last appearanceΓÇ»2024  \n\nThese teams are still active in the MLB and have not yet won a World Series. The list is taken from **Wikipedia article ΓÇ£List of Major League Baseball franchise postseason droughtsΓÇ¥ (A21), section S10**.","rawEvents":[{"event":"subagent_started","requestId":3,"index":1,"question":"Which active MLB teams have never been to the World Series?","timestamp":"2026-09-19T06:12:43.056672903Z","line":2,"order":1},{"event":"subagent_tool_call","requestId":3,"index":1,"attempt":1,"round":1,"name":"wiki_search","arguments":{"query":"MLB teams never won World Series"},"timestamp":"2026-09-19T06:12:48.876618324Z","line":3,"order":2},{"event":"wiki_tool_call","requestId":3,"subagent":1,"attempt":1,"name":"wiki_search","arguments":{"query":"MLB teams never won World Series"},"timestamp":"2026-09-19T06:12:48.876680227Z","line":4,"order":3},{"event":"wiki_tool_result","requestId":3,"subagent":1,"attempt":1,"name":"wiki_search","characters":2064,"isError":false,"timestamp":"2026-09-19T06:12:51.420027858Z","line":5,"order":4},{"event":"subagent_tool_call","requestId":3,"index":1,"attempt":1,"round":2,"name":"wiki_sections","arguments":{"article":"A21"},"timestamp":"2026-09-19T06:12:56.163375313Z","line":6,"order":5},{"event":"wiki_tool_call","requestId":3,"subagent":1,"attempt":1,"name":"wiki_sections","arguments":{"path":"List_of_Major_League_Baseball_franchise_postseason_droughts"},"timestamp":"2026-09-19T06:12:56.163457118Z","line":7,"order":6},{"event":"wiki_tool_result","requestId":3,"subagent":1,"attempt":1,"name":"wiki_sections","characters":2848,"isError":false,"timestamp":"2026-09-19T06:12:56.305887972Z","line":8,"order":7},{"event":"subagent_tool_call","requestId":3,"index":1,"attempt":1,"round":3,"name":"wiki_fetch","arguments":{"section":"A21.S10","segment":1},"timestamp":"2026-09-19T06:13:02.370816718Z","line":9,"order":8},{"event":"subagent_tool_call","requestId":3,"index":1,"attempt":1,"round":4,"name":"wiki_fetch","arguments":{"section":"S10","segment":1},"timestamp":"2026-09-19T06:13:05.537382551Z","line":10,"order":9},{"event":"wiki_tool_call","requestId":3,"subagent":1,"attempt":1,"name":"wiki_fetch","arguments":{"path":"List_of_Major_League_Baseball_franchise_postseason_droughts","section":"Longest_current_World_Series_appearance_droughts","segment":1},"timestamp":"2026-09-19T06:13:05.537497359Z","line":11,"order":10},{"event":"wiki_tool_result","requestId":3,"subagent":1,"attempt":1,"name":"wiki_fetch","characters":1425,"isError":false,"timestamp":"2026-09-19T06:13:05.636180348Z","line":12,"order":11},{"event":"subagent_completed","requestId":3,"index":1,"attempt":1,"rounds":5,"answerCharacters":1572,"answer":"**Active MLB teams that have never won a World Series (as ofΓÇ»2025)**  \n\n- SeattleΓÇ»Mariners ΓÇô franchise started 1977, no championship yet  \n- PittsburghΓÇ»Pirates ΓÇô last appearanceΓÇ»1979  \n- MilwaukeeΓÇ»Brewers ΓÇô last appearanceΓÇ»1982  \n- BaltimoreΓÇ»Orioles ΓÇô last appearanceΓÇ»1983  \n- CincinnatiΓÇ»Reds ΓÇô last appearanceΓÇ»1990  \n- Athletics (Los AngelesΓÇ»Angels) ΓÇô last appearanceΓÇ»1990  \n- MinnesotaΓÇ»Twins ΓÇô last appearanceΓÇ»1991  \n- SanΓÇ»DiegoΓÇ»Padres ΓÇô last appearanceΓÇ»1998  \n- LosΓÇ»AngelesΓÇ»Angels ΓÇô last appearanceΓÇ»2002 (listed separately)  \n- MiamiΓÇ»Marlins ΓÇô last appearanceΓÇ»2003  \n- ChicagoΓÇ»WhiteΓÇ»Sox ΓÇô last appearanceΓÇ»2005  \n- ColoradoΓÇ»Rockies ΓÇô last appearanceΓÇ»2007  \n- DetroitΓÇ»Tigers ΓÇô last appearanceΓÇ»2012  \n- St.ΓÇ»LouisΓÇ»Cardinals ΓÇô last appearanceΓÇ»2013  \n- SanΓÇ»FranciscoΓÇ»Giants ΓÇô last appearanceΓÇ»2014  \n- KansasΓÇ»CityΓÇ»Royals ΓÇô last appearanceΓÇ»2015  \n- NewΓÇ»YorkΓÇ»Mets ΓÇô last appearanceΓÇ»2015  \n- ChicagoΓÇ»Cubs ΓÇô last appearanceΓÇ»2016  \n- ClevelandΓÇ»Guardians ΓÇô last appearanceΓÇ»2016  \n- BostonΓÇ»RedΓÇ»Sox ΓÇô last appearanceΓÇ»2018  \n- WashingtonΓÇ»Nationals ΓÇô last appearanceΓÇ»2019  \n- TampaΓÇ»BayΓÇ»Rays ΓÇô last appearanceΓÇ»2020  \n- AtlantaΓÇ»Braves ΓÇô last appearanceΓÇ»2021  \n- HoustonΓÇ»Astros ΓÇô last appearanceΓÇ»2022  \n- PhiladelphiaΓÇ»Phillies ΓÇô last appearanceΓÇ»2022  \n- ArizonaΓÇ»Diamondbacks ΓÇô last appearanceΓÇ»2023  \n- TexasΓÇ»Rangers ΓÇô last appearanceΓÇ»2023  \n- NewΓÇ»YorkΓÇ»Yankees ΓÇô last appearanceΓÇ»2024  \n\nThese teams are still active in the MLB and have not yet won a World Series. The list is taken from **Wikipedia article ΓÇ£List of Major League Baseball franchise postseason droughtsΓÇ¥ (A21), section S10**.","evidenceSegments":1,"status":"complete","unresolved":[],"malformed":false,"executionSeconds":46.20117224500002,"timestamp":"2026-09-19T06:13:29.268541332Z","line":13,"order":12}],"extra":{"Execution":"LM Studio isolated subagent context","Retrieval":"LocalWiki MCP (offline Wikipedia)","Subagent index":1,"Attempt":1,"Execution seconds":46.20117224500002,"Unresolved":"None","Malformed":"false","LocalWiki calls":[{"sequence":1,"name":"wiki_search","arguments":{"query":"MLB teams never won World Series"},"result":{"characters":2064,"isError":false}},{"sequence":2,"name":"wiki_sections","arguments":{"path":"List_of_Major_League_Baseball_franchise_postseason_droughts"},"result":{"characters":2848,"isError":false}},{"sequence":3,"name":"wiki_fetch","arguments":{"path":"List_of_Major_League_Baseball_franchise_postseason_droughts","section":"Longest_current_World_Series_appearance_droughts","segment":1},"result":{"characters":1425,"isError":false}}]}}],"attemptMeta":[{"id":"subagent-1-1-1","index":1,"attempt":1,"order":1}],"milestones":[],"milestoneMeta":[]}],"final":{"id":"final","actor":"orchestrator","label":"Final response","subtitle":"Incorrect aggregate answer","tooltip":"LM Studio final response. Incorrect aggregate answer. Click for completion metadata.","status":"warning","timestamp":"2026-09-19T06:13:49.540760087Z","input":"The top-level LLM synthesized the final response from preceding tool results.","output":"588 answer characters; doneReason=stop","rawEvents":[{"event":"chat_completed","requestId":3,"model":"nvidia/nemotron-3-nano-4b","rounds":2,"answerCharacters":588,"doneReason":"stop","timestamp":"2026-09-19T06:13:49.540760087Z","line":14,"order":13},{"event":"chat_released","requestId":3,"waiting":1,"timestamp":"2026-09-19T06:13:49.541149313Z","line":15,"order":14}],"extra":{"Execution":"LM Studio top-level LLM, returned through Gateway","Rounds":2,"Released":"2026-09-19T06:13:49.541149313Z"}}}</script>
+<script>
+const report = JSON.parse(document.getElementById("report-data").textContent);
+const svg = document.getElementById("graph");
+const ns = "http://www.w3.org/2000/svg";
+const nodeWidth = 190, nodeHeight = 58, graphWidth = 1900;
+let zoom = 1;
+const positions = new Map(), nodesById = new Map(), edgeSpecs = [];
+
+function el(name, attrs = {}, parent = svg) {
+  const item = document.createElementNS(ns, name);
+  for (const [key, value] of Object.entries(attrs)) item.setAttribute(key, value);
+  parent.appendChild(item);
+  return item;
+}
+function lines(text, width = 27) {
+  const words = String(text).split(/s+/); const output = []; let line = "";
+  for (const word of words) {
+    if ((line + " " + word).trim().length > width && line) { output.push(line); line = word; }
+    else line = (line + " " + word).trim();
+  }
+  if (line) output.push(line); return output.slice(0, 2);
+}
+function nodeSearch(node) { return JSON.stringify(node).toLowerCase(); }
+function addNode(node, x, y, width = nodeWidth) {
+  nodesById.set(node.id, node); positions.set(node.id, { x, y, width, height:nodeHeight });
+  const group = el("g", { class:"node " + node.actor + " " + (node.status ?? ""), tabindex:"0", "data-id":node.id });
+  el("title", {}, group).textContent = node.tooltip;
+  el("rect", { x, y, width, height:nodeHeight }, group);
+  const actor = el("text", { x:x+10, y:y+13, class:"actor-tag" }, group);
+  actor.textContent = node.actor === "orchestrator" ? "LM STUDIO LLM" : node.actor === "subagent" ? "LM STUDIO + LOCALWIKI" : "GATEWAY";
+  const labelLines = lines(node.label);
+  labelLines.forEach((line, index) => { const text = el("text", { x:x+10, y:y+30+index*13 }, group); text.textContent=line; });
+  const subtitle = el("text", { x:x+10, y:y+nodeHeight-7, class:"sub" }, group); subtitle.textContent=String(node.subtitle ?? "").slice(0, 36);
+  group.dataset.search = nodeSearch(node);
+  group.addEventListener("click", () => showDetails(node));
+  group.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") showDetails(node); });
+}
+function addEdge(from, to, retry = false) { if (from && to) edgeSpecs.push({ from, to, retry }); }
+function finalAttemptIds(meta) {
+  const latest = new Map();
+  for (const item of meta) if (!latest.has(item.index) || latest.get(item.index).attempt < item.attempt) latest.set(item.index, item);
+  return [...latest.values()].map(item => item.id);
+}
+function attemptRoots(meta) { return meta.filter(item => item.attempt === 1).map(item => item.id); }
+function connectRetries(meta) {
+  const groups = new Map();
+  for (const item of meta) { const list = groups.get(item.index) ?? []; list.push(item); groups.set(item.index, list); }
+  for (const list of groups.values()) { list.sort((a,b) => a.attempt-b.attempt); for (let i=1;i<list.length;i++) addEdge(list[i-1].id,list[i].id,true); }
+}
+function drawEdge(spec, layer) {
+  const a=positions.get(spec.from), b=positions.get(spec.to); if(!a||!b)return;
+  const x1=a.x+a.width, y1=a.y+a.height/2, x2=b.x, y2=b.y+b.height/2, bend=Math.max(28,(x2-x1)*.45);
+  el("path", { d:"M " + x1 + " " + y1 + " C " + (x1+bend) + " " + y1 + ", " + (x2-bend) + " " + y2 + ", " + x2 + " " + y2, class:"edge" + (spec.retry?" retry":"") }, layer);
+}
+function showDetails(node) {
+  document.querySelectorAll(".node.selected").forEach(item=>item.classList.remove("selected"));
+  document.querySelector('[data-id="' + CSS.escape(node.id) + '"]')?.classList.add("selected");
+  document.getElementById("detail-title").textContent=node.label;
+  document.getElementById("detail-subtitle").textContent=node.subtitle ?? "";
+  const metadata=Object.entries({ Actor:node.actor, Timestamp:node.timestamp, Status:node.status, ...node.extra });
+  const metadataHtml=metadata.map(([k,v])=>"<dt>"+escapeHtml(k)+"</dt><dd>"+escapeHtml(typeof v==="object"?JSON.stringify(v):v)+"</dd>").join("");
+  document.getElementById("details").innerHTML='<dl class="detail-meta">'+metadataHtml+"</dl>"+section("Input / prompt",node.input)+section("Output / response",node.output)+section("Raw captured events",node.rawEvents);
+  document.getElementById("drawer").classList.add("open");
+}
+function escapeHtml(value) { return String(value??"").replace(/[&<>"']/g, char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char])); }
+function section(title,value) { const text=typeof value==="string"?value:JSON.stringify(value,null,2); return "<h3>"+escapeHtml(title)+"</h3><pre>"+escapeHtml(text||"Not captured")+"</pre>"; }
+
+const defs=el("defs"); const marker=el("marker",{id:"arrow",viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"6",markerHeight:"6",orient:"auto-start-reverse"},defs); el("path",{d:"M 0 0 L 10 5 L 0 10 z",fill:"#9aa5af"},marker);
+const edgeLayer=el("g",{class:"edges"}); const nodeLayer=el("g",{class:"nodes"});
+let y=36; addNode(report.request,50,y); let previous=[report.request.id]; y+=105;
+for (const stage of report.stages) {
+  const firstAttemptOrder=Math.min(...stage.attemptMeta.map(item=>item.order),Infinity);
+  const pre=stage.milestones.filter((_,i)=>stage.milestoneMeta[i].order<firstAttemptOrder);
+  const post=stage.milestones.filter((_,i)=>stage.milestoneMeta[i].order>=firstAttemptOrder);
+  const attemptStartX=Math.max(650,325+pre.length*205);
+  const attemptColumns=Math.max(1,Math.floor((1430-attemptStartX)/215)+1);
+  const attemptRows=Math.max(1,Math.ceil(stage.attempts.length/attemptColumns));
+  const stageHeight=Math.max(190,attemptRows*82+105,stage.milestones.length*72+80);
+  el("rect",{x:22,y:y-30,width:graphWidth-44,height:stageHeight,class:"stage-bg"},nodeLayer);
+  const heading=el("text",{x:42,y:y-7,class:"stage-title"},nodeLayer); heading.textContent="Round "+stage.number+": "+stage.tool.label;
+  const note=el("text",{x:260,y:y-7,class:"stage-note"},nodeLayer); note.textContent=stage.attempts.length+" subagent attempt"+(stage.attempts.length===1?"":"s")+" · "+stage.milestones.length+" gateway/structured milestone"+(stage.milestones.length===1?"":"s");
+  addNode(stage.tool,50,y);
+  previous.forEach(id=>addEdge(id,stage.tool.id));
+  let entry=stage.tool.id;
+  pre.forEach((node,index)=>{ addNode(node,285+index*205,y); addEdge(entry,node.id); entry=node.id; });
+  stage.attempts.forEach((node,index)=>addNode(node,attemptStartX+((index%attemptColumns)*215),y+Math.floor(index/attemptColumns)*82));
+  attemptRoots(stage.attemptMeta).forEach(id=>addEdge(entry,id));
+  connectRetries(stage.attemptMeta);
+  let exits=stage.attempts.length?finalAttemptIds(stage.attemptMeta):[entry];
+  post.forEach((node,index)=>{ addNode(node,1645,y+index*72); exits.forEach(id=>addEdge(id,node.id)); exits=[node.id]; });
+  previous=exits.length?exits:[entry]; y+=stageHeight+42;
+}
+addNode(report.final,50,y); previous.forEach(id=>addEdge(id,report.final.id)); y+=95;
+edgeSpecs.forEach(spec=>drawEdge(spec,edgeLayer));
+svg.setAttribute("viewBox","0 0 "+graphWidth+" "+y); svg.style.width=graphWidth+"px"; svg.style.height=y+"px";
+
+function setZoom(next) { zoom=Math.max(.55,Math.min(1.8,next)); svg.style.width=(graphWidth*zoom)+"px"; svg.style.height=(y*zoom)+"px"; }
+document.getElementById("zoom-in").onclick=()=>setZoom(zoom+.15);
+document.getElementById("zoom-out").onclick=()=>setZoom(zoom-.15);
+document.getElementById("zoom-reset").onclick=()=>setZoom(1);
+document.getElementById("close").onclick=()=>document.getElementById("drawer").classList.remove("open");
+document.addEventListener("keydown",event=>{if(event.key==="Escape")document.getElementById("drawer").classList.remove("open");});
+document.getElementById("search").addEventListener("input",event=>{const q=event.target.value.trim().toLowerCase();document.querySelectorAll(".node").forEach(node=>node.classList.toggle("dim",Boolean(q)&&!node.dataset.search.includes(q)));});
+</script>
+</body>
+</html>

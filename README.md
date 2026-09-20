@@ -45,9 +45,15 @@ In Home Assistant, add the **Ollama** integration with:
 | Model | Loaded LM Studio identifier, such as `nvidia/nemotron-3-nano-4b` |
 | Control Home Assistant | Off |
 
-The gateway passes the conversation and three request-scoped tools to LM Studio SDK `.act()`, which owns the reasoning/tool transition and multi-round history. Models see short article handles (`A1`, `A2`) and section handles (`S1`, `S2`) instead of long Kiwix paths and anchors. Handles follow result/document order and do not encode relevance. Section content is returned as native Markdown in block-aware segments; nested tables are converted recursively, tables split only between rows, and split segments repeat their headers.
+The gateway gives the parent planner four request-scoped tools: `research_question`, `research_list`, `research_map`, and `research_reduce`. List discovery stores normalized unique entity names plus grounded discovery context behind a dataset handle such as `D1`; map declares the required fields, carries bounded discovery context into each clean researcher, and stores generic `complete`, `partial`, or `failed` records behind `M1`. Before final synthesis, reduce requires a per-record assessment of every field against its user-derived semantic requirement. Unsatisfied assessments deterministically become field-level repairs even if the model omits an explicit retry. Reduce may also exclude accidental records, add clearly missing entities, or retry a complete record. All repair strategies share an eight-call limit. The model never has to copy long lists between rounds, and the gateway validates map completion. Researchers run serially to avoid concurrent load on the single model.
 
-The compatibility surface includes `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer authentication and `x-api-key` are supported. Streaming requests currently receive one final NDJSON record after `.act()` finishes rather than incremental tokens.
+Set-filter enumeration is a fallback, not the first strategy. A `set_filter_fallback` list request is rejected until aggregate `research_question` has returned a partial or failed result. Attribute-oriented enumeration uses the separate `entity_attributes` purpose.
+
+A gateway-wide abort-aware FIFO mutex permits only one top-level `/api/chat` model workload at a time. Additional streaming requests receive their queue position and start only after the active request releases the model. Disconnecting while queued removes that request without starting inference.
+
+Inside each researcher, article handles (`A1`, `A2`) and section handles (`S1`, `S2`) replace long Kiwix paths and anchors. Handles are isolated to that researcher, follow result/document order, and do not encode relevance. Section content is returned as native Markdown in block-aware segments; nested tables are converted recursively, tables split only between rows, and split segments repeat their headers. An answer is accepted only after a successful `wiki_fetch`; empty answers, no-evidence answers, and terminal tool-call markup are rejected and retried once with fresh context and handles. Child context overflow truncates older middle turns while retaining the policy and original question. Other child prediction failures are isolated to that item, retried once, then recorded as failed instead of aborting the entire map.
+
+The compatibility surface includes `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer authentication and `x-api-key` are supported. Streaming requests receive Ollama-compatible NDJSON `message.thinking` progress records for discovery, each map item, retries, and reduction, followed by one final `done:true` answer. Non-streaming requests still receive one JSON response.
 
 Begin a user message with `/new` to discard earlier conversation history, for example `/new Which active MLB teams have never been to the World Series?`. The most recent `/new` remains the history boundary when Home Assistant sends later follow-up messages.
 
@@ -65,14 +71,16 @@ Run the reproducible gateway benchmark from the container. It intentionally has 
 
 ```powershell
 docker compose exec -T home-assistant-gateway `
-	node dist/benchmark.js nvidia/nemotron-3-nano-4b --num-predict 2048 --temperature 0.2
+	node dist/benchmark.js nvidia/nemotron-3-nano-4b --question "<question>" --num-predict 2048 --temperature 0.2
 ```
+
+Benchmark JSON escapes non-ASCII characters so PowerShell redirection and `Tee-Object` preserve output without code-page corruption. JSON parsers decode those escapes back to the original text.
 
 For the saved Granite condition that limits private reasoning to 64 tokens:
 
 ```powershell
 docker compose exec -T home-assistant-gateway `
-	node dist/benchmark.js granite-4.2-8b --num-predict 2048 --temperature 0.2 --reasoning-budget 64
+	node dist/benchmark.js granite-4.2-8b --question "<question>" --num-predict 2048 --temperature 0.2 --reasoning-budget 64
 ```
 
 Configuration and secrets are in the ignored `.env` file. `.env.example` documents every setting. OpenZIM MCP persists its writable response cache under the ignored `cache/openzim-mcp` directory. Its response cache holds 500 entries for four hours, with a 64 MiB libzim cluster cache and 2048-entry dirent cache for the large Wikipedia archive. To change the ZIM folder or host ports, edit `.env` and run `docker compose up -d` again.

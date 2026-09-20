@@ -1,0 +1,14 @@
+{
+  "model": "nvidia/nemotron-3-nano-4b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 92,
+  "answer": "The only currently active MLB team that has never made it to the World Series is **Seattle\u202fMariners**.",
+  "thinking": "The passage lists teams that have never won a World Series, not necessarily those that have never participated. It includes Seattle Mariners (never), Pittsburgh Pirates (last appearance 1979), etc. But the question is \"have never participated\". The list includes teams with last appearance dates; some have never appeared? Actually all listed have last appearance year, but some may have never participated? For example, Seattle Mariners started in 1977 and never won WS, but they did participate (they were in playoffs?). Actually they didn't make it to WS. So \"never participated\" means never made it to WS. The list includes teams that have never won WS; many may have participated earlier? For example, Atlanta Braves last appearance 2021, so they participated. So we need those with never participated: Seattle Mariners (franchise started 1977) maybe also others like Pittsburgh Pirates had last appearance 1979, meaning they participated in 1979 WS? Actually they lost to Mets? They were in 1979 WS? Yes. So not \"never participated\". The only team that has never participated is Seattle Mariners (franchise started 1977). Also maybe others like Baltimore Orioles last appearance 1983, so they participated.\n\nThus answer: Seattle Mariners have never been to the World Series. But also perhaps other teams like... Let's check list: The table shows \"Never (franchise started in 1977)\" only for Seattle Mariners. So answer is just that team.\n\nBut we need active MLB teams. Seattle Mariners are active. So answer: Seattle Mariners.\n\nWe should verify if any other team never participated? The passage says \"never won\" not \"never participated\". But the question is about participation, not winning. However the table indicates last appearance year; for those with a year, they participated at least once. Only Seattle has \"Never (franchise started in 1977)\". So answer: Seattle Mariners.\n\nThus final answer concise.",
+  "done_reason": "stop",
+  "prompt_eval_count": 2712,
+  "eval_count": 933
+}
