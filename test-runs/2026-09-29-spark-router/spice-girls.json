@@ -1,0 +1,14 @@
+{
+  "model": "spark-x2.5-4b",
+  "parameters": {
+    "temperature": 0.2,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 265,
+  "answer": "Here are the five members of the Spice Girls, with their stage names, real names, and birthdays:\n\n| # | Stage Name | Real Name | Birthday (YYYY/MM/DD) |\n|---|------------|-----------|----------------------|\n| 1 | **Scary Spice** | Melanie \"Mel B\" Brown | 1975/05/29 |\n| 2 | **Baby Spice** | Emma Bunton | 1976/01/21 |\n| 3 | **Sporty Spice** | Melanie \"Melanie C\" Chisholm | 1974/01/12 |\n| 4 | **Posh Spice** | Victoria Beckham | 1974/04/17 |\n| 5 | **Ginger Spice** | Geri Halliwell | 1972/08/06 |\n\nAll birthdays are sourced from Wikipedia articles on each member.",
+  "thinking": "I now have all the information needed. Let me compile the answer.\n\nThe Spice Girls members with their stage names and real names, along with birthdays:\n\n1. Melanie \"Mel B\" Brown \u2014 Scary Spice \u2014 1975/05/29\n2. Emma Bunton \u2014 Baby Spice \u2014 1976/01/21\n3. Melanie \"Melanie C\" Chisholm \u2014 Sporty Spice \u2014 1974/01/12\n4. Victoria Beckham \u2014 Posh Spice \u2014 1974/04/17\n5. Geri Halliwell \u2014 Ginger Spice \u2014 1972/08/06\n\nAll birthdays are in YYYY/MM/DD format as requested.",
+  "done_reason": "stop",
+  "prompt_eval_count": 7838,
+  "eval_count": 1840
+}

@@ -1,0 +1,4 @@
+home-assistant-gateway-1  | 2026-09-30T02:54:01.422488332Z {"event":"control_chat_request","requestId":1,"model":"spark-x2.5-4b","messages":1,"tools":1,"history":{"requestedTools":[],"toolResults":[]},"stream":false}
+home-assistant-gateway-1  | 2026-09-30T02:54:01.422522235Z {"event":"control_chat_started","requestId":1,"waiting":0}
+home-assistant-gateway-1  | 2026-09-30T02:54:03.793644104Z {"event":"control_chat_completed","requestId":1,"model":"spark-x2.5-4b","requestedTools":["HassGetState"],"answerCharacters":0}
+home-assistant-gateway-1  | 2026-09-30T02:54:03.793716212Z {"event":"control_chat_released","requestId":1,"waiting":0}

@@ -1,0 +1,12 @@
+{
+  "model": "spark-x2.5-4b",
+  "http_status": 200,
+  "wall_seconds": 2.51,
+  "tool_call_count": 1,
+  "tool_name": "HassGetState",
+  "argument_name": "Desk lamp",
+  "content": "",
+  "pass": true,
+  "start": "2026-09-30T02:54:01.3157473Z",
+  "end": "2026-09-30T02:54:03.8298815Z"
+}

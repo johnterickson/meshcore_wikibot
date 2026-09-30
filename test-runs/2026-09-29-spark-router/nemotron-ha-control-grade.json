@@ -1,0 +1,12 @@
+{
+  "model": "nvidia/nemotron-3-nano-4b",
+  "http_status": 200,
+  "wall_seconds": 4.289,
+  "tool_call_count": 1,
+  "tool_name": "HassGetState",
+  "argument_name": "desk_lamp",
+  "content": "",
+  "pass": false,
+  "start": "2026-09-30T03:09:56.0521652Z",
+  "end": "2026-09-30T03:10:00.3408770Z"
+}

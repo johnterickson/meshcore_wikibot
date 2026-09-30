@@ -1,0 +1,4 @@
+home-assistant-gateway-1  | 2026-09-30T03:09:56.065368680Z {"event":"control_chat_request","requestId":2,"model":"nvidia/nemotron-3-nano-4b","messages":1,"tools":1,"history":{"requestedTools":[],"toolResults":[]},"stream":false}
+home-assistant-gateway-1  | 2026-09-30T03:09:56.065413383Z {"event":"control_chat_started","requestId":2,"waiting":0}
+home-assistant-gateway-1  | 2026-09-30T03:10:00.337812014Z {"event":"control_chat_completed","requestId":2,"model":"nvidia/nemotron-3-nano-4b","requestedTools":["HassGetState"],"answerCharacters":0}
+home-assistant-gateway-1  | 2026-09-30T03:10:00.337849217Z {"event":"control_chat_released","requestId":2,"waiting":0}
