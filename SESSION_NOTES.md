@@ -105,7 +105,7 @@ An abort-aware FIFO mutex serializes complete `/api/chat` workloads across calle
 
 Contexts are normally bounded: the parent retains tool handles/counts rather than full datasets, and each researcher starts with only its policy plus one atomic question. A researcher can still grow through up to 12 search/section/fetch rounds, so `truncateMiddle` remains a fallback for pathological loops rather than the normal path.
 
-Within a researcher, search paths become request-scoped article handles (`A1`, `A2`), and section IDs become request-scoped handles (`S1`, `S2`). Handles preserve search result and article document order; they do not contain relevance judgments. The gateway resolves handles back to exact LocalWiki arguments internally.
+Within a researcher, exact article paths and descriptive section IDs remain visible. Search results preserve source order and do not contain relevance judgments. The gateway passes those exact LocalWiki arguments through without request-scoped handle translation.
 
 Each search now returns up to 25 results, matching the successful LM Studio LocalWiki condition. For the MLB benchmark query, this exposes `List of Major League Baseball franchise postseason droughts` at result 21.
 
@@ -124,7 +124,7 @@ The gateway request defaults are:
 
 The gateway implements `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer tokens and `x-api-key` are accepted. Streaming requests receive incremental NDJSON `message.thinking` status records for discovery, map progress, retry, and reduction, then one final answer record. Home Assistant's Ollama adapter maps these to `thinking_content`; frontend visibility depends on the active conversation UI.
 
-The parent prompt selects direct aggregate research or a list-map-reduce pipeline, requires evidence-only synthesis, and prevents model-managed copying of entity lists. The researcher prompt requires `wiki_search` -> `wiki_sections` -> `wiki_fetch`, exact A-number and S-number handle use, explicit support for every requested field, and biography-lead retrieval for birth dates.
+The parent prompt selects direct aggregate research or a list-map-reduce pipeline, requires evidence-only synthesis, and prevents model-managed copying of entity lists. The researcher prompt requires `wiki_search` -> `wiki_sections` -> `wiki_fetch`, exact article path and descriptive section ID use, explicit support for every requested field, and biography-lead retrieval for birth dates.
 
 ## Historical Ollama Matrix and LM Studio Parity
 

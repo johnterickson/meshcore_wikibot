@@ -1,0 +1,71 @@
+{
+  "model": "qwen3.8-4b-distill",
+  "targetPromptTokens": 3000,
+  "promptCharacters": 20096,
+  "maxTokens": 128,
+  "repetitions": 3,
+  "concurrency": 1,
+  "warmups": 1,
+  "summary": {
+    "averageWallSeconds": 2.7591609000000012,
+    "averageObservedTtftSeconds": 0.1203924999999993,
+    "averageReportedTtftSeconds": 0.09820833333333334,
+    "averageTokensPerSecond": 48.21616522676701,
+    "averagePromptTokens": 6061,
+    "averagePredictedTokens": 128,
+    "averageWaveWallSeconds": 2.759227500000002
+  },
+  "waves": [
+    {
+      "repetition": 1,
+      "aggregateWallSeconds": 2.7304644999999983,
+      "requests": [
+        {
+          "index": 1,
+          "measured": true,
+          "wallSeconds": 2.7303492000000005,
+          "observedTtftSeconds": 0.11533260000000155,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 48.68683553970316,
+          "reportedTtftSeconds": 0.09383,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "aggregateWallSeconds": 2.8191765000000015,
+      "requests": [
+        {
+          "index": 2,
+          "measured": true,
+          "wallSeconds": 2.819135399999999,
+          "observedTtftSeconds": 0.12789189999999506,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 47.22179668897122,
+          "reportedTtftSeconds": 0.102769,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 3,
+      "aggregateWallSeconds": 2.7280415000000064,
+      "requests": [
+        {
+          "index": 3,
+          "measured": true,
+          "wallSeconds": 2.727998100000004,
+          "observedTtftSeconds": 0.11795300000000133,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 48.73986345162665,
+          "reportedTtftSeconds": 0.098026,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    }
+  ]
+}

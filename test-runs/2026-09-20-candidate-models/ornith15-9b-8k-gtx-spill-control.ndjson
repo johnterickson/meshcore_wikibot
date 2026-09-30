@@ -1,0 +1,34 @@
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.487Z","message":{"role":"assistant","content":"","thinking":"The"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.737Z","message":{"role":"assistant","content":"","thinking":" user"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.737Z","message":{"role":"assistant","content":"","thinking":" wants"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.738Z","message":{"role":"assistant","content":"","thinking":" me"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.738Z","message":{"role":"assistant","content":"","thinking":" to"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.989Z","message":{"role":"assistant","content":"","thinking":" call"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.990Z","message":{"role":"assistant","content":"","thinking":" Hass"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.990Z","message":{"role":"assistant","content":"","thinking":"Get"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:10.990Z","message":{"role":"assistant","content":"","thinking":"State"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.224Z","message":{"role":"assistant","content":"","thinking":" for"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.225Z","message":{"role":"assistant","content":"","thinking":" \""},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.476Z","message":{"role":"assistant","content":"","thinking":"Desk"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.477Z","message":{"role":"assistant","content":"","thinking":" lamp"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.477Z","message":{"role":"assistant","content":"","thinking":"\"."},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.709Z","message":{"role":"assistant","content":"","thinking":" I"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.710Z","message":{"role":"assistant","content":"","thinking":" need"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.956Z","message":{"role":"assistant","content":"","thinking":" to"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.957Z","message":{"role":"assistant","content":"","thinking":" use"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.957Z","message":{"role":"assistant","content":"","thinking":" the"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:11.957Z","message":{"role":"assistant","content":"","thinking":" tool"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.192Z","message":{"role":"assistant","content":"","thinking":","},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.432Z","message":{"role":"assistant","content":"","thinking":" not"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.433Z","message":{"role":"assistant","content":"","thinking":" answer"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.433Z","message":{"role":"assistant","content":"","thinking":" directly"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.433Z","message":{"role":"assistant","content":"","thinking":"."},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.680Z","message":{"role":"assistant","content":"","thinking":" Let"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.680Z","message":{"role":"assistant","content":"","thinking":" me"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.681Z","message":{"role":"assistant","content":"","thinking":" make"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.916Z","message":{"role":"assistant","content":"","thinking":" the"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:12.916Z","message":{"role":"assistant","content":"","thinking":" function"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:13.155Z","message":{"role":"assistant","content":"","thinking":" call"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:13.155Z","message":{"role":"assistant","content":"","thinking":"."},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:13.155Z","message":{"role":"assistant","content":"","thinking":"\n"},"done":false}
+{"model":"ornith-1.5-9b","created_at":"2026-09-21T18:51:15.324Z","message":{"role":"assistant","content":"","tool_calls":[{"function":{"name":"HassGetState","arguments":{"name":"Desk lamp"}}}]},"done":true,"done_reason":"stop"}

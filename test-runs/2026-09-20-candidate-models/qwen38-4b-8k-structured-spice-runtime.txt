@@ -1,0 +1,13 @@
+WINDOW_START=2026-09-21T19:16:38.4139660Z WINDOW_END=2026-09-21T19:23:02.1024461Z REQUEST_ID=6 (requestId5 excluded: unintended wrapper submission) LMS_PS: IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    8192       1           Local     59m / 1h LM_API_1234_V1_MODELS_HTTP=200 HOME_ASSISTANT_11435_HEALTH_HTTP=200 HOME_ASSISTANT_11436_HEALTH_HTTP=200 GPU: Quadro K1200, 900, 4096
+NVIDIA GeForce GTX 1650 SUPER, 3433, 4096 RAM=used_mb=32007.8 total_mb=65441.3 REQUEST_ID6_ORCHESTRATION_SEQUENCE=research_question -> research_list -> research_map -> research_reduce -> chat_completed REQUEST_ID6_ORCHESTRATION_COUNTS=list=5,map_input=5,map_completed=5,reduce_input=5,rounds=5 REQUEST_ID6_STRUCTURED_PARSE_REPAIR_ERRORS=none FINAL_ANSWER: ## The Spice Girls
+
+| Stage Name | Real Name | Birthday |
+|---|---|---|
+| Posh Spice | Victoria Beckham | 1974/04/17 |
+| Scary Spice | Melanie "Mel B" Brown | 1975/05/29 |
+| Sporty Spice | Melanie "Melanie C" Chisholm | 1974/01/12 |
+| Ginger Spice | Geri Halliwell | 1972/08/06 |
+| Baby Spice | Emma Bunton | 1976/01/21 |
+
+The Spice Girls were a British girl group formed in London, England in 1994. They are best known for their debut single "Wannabe" (1996) and their "Girl Power" image. Their debut album *Spice* sold over 23 million copies worldwide, making them the best-selling album by a female group in history. Geri Halliwell left the group in 1998 but they reunited for tours in 2007 and 2019. GRADE_STAGE_NAMES=True GRADE_EXACT_BIRTH_NAMES=False GRADE_FIVE_DATES=True GRADE_YYYY_MM_DD_FORMAT=True GRADE_OVERALL_STRICT=False EXIT_CODE=200 WALL_SECONDS=383 MODEL_REMAINS_RESIDENT=True

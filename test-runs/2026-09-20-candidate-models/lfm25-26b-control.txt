@@ -1,0 +1,19 @@
+{
+  "wall_seconds": 1.808,
+  "ndjson_lines": 62,
+  "done_records": 1,
+  "tool_calls": [
+    {
+      "arguments": {
+        "name": "Desk lamp"
+      },
+      "name": "HassGetState"
+    }
+  ],
+  "num_predict": 512,
+  "content": "",
+  "curl_exit": 0,
+  "pass": true,
+  "model": "lfm25-26b",
+  "temperature": 0.1
+}

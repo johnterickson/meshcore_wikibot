@@ -4,8 +4,10 @@ import express, { type NextFunction, type Request, type Response } from "express
 import { z } from "zod";
 import { AsyncMutex } from "./asyncMutex.js";
 import { config, listExtractionPrompt, reduceReviewSystemPrompt, reduceSystemPrompt, researchSystemPrompt, wikiSystemPrompt } from "./config.js";
+import { createControlGateway } from "./controlGateway.js";
 import { addAssessmentRepairs, buildRepairPlan, completeRepairReviewCoverage, mergeFieldResults, reduceFieldResults, repairCallBudget, repairReviewCoverageIssues, repairReviewMaxTokens, type FieldResearchResult } from "./researchRepair.js";
-import { createResearchTools, normalizeDiscoveredItems, requiresAggregateFirst, unresolvedResearchFields, type ResearchResult } from "./researchTool.js";
+import { parseResearchDirectives, researchModeFromMessages, type ResearchMode } from "./researchMode.js";
+import { createResearchTools, normalizeDiscoveredItems, unresolvedResearchFields, type ResearchResult } from "./researchTool.js";
 import { connectLocalWiki, createWikiTools } from "./wikiTools.js";
 
 type OllamaMessage = {
@@ -16,6 +18,7 @@ type OllamaMessage = {
 type ChatBody = {
   model?: string;
   messages?: OllamaMessage[];
+  tools?: unknown[];
   stream?: boolean;
   options?: {
     temperature?: number;
@@ -57,31 +60,37 @@ function requireAuth(request: Request, response: Response, next: NextFunction) {
 function historyResetIndex(messages: OllamaMessage[]): number {
   for (let index = messages.length - 1; index >= 0; index -= 1) {
     const message = messages[index];
-    if (message.role === "user" && typeof message.content === "string" && /^\/new(?:\s+|$)/i.test(message.content.trimStart())) {
+    if (message.role === "user" && typeof message.content === "string" && parseResearchDirectives(message.content).reset) {
       return index;
     }
   }
   return -1;
 }
 
-function chatMessages(messages: OllamaMessage[]): ChatMessageInput[] {
+function modePrompt(mode: ResearchMode): string {
+  return mode === "map"
+    ? "Request mode: /map. Use research_list, then research_map, then research_reduce. Do not answer before reduction."
+    : "Request mode: /query. Use research_question for the complete request, then answer from its evidence.";
+}
+
+function chatMessages(messages: OllamaMessage[], mode: ResearchMode): ChatMessageInput[] {
   const supportedRoles = new Set(["system", "user", "assistant"]);
   const resetIndex = historyResetIndex(messages);
   const conversation = resetIndex >= 0
-    ? messages.slice(resetIndex).map((message, index) => index === 0
-      ? { ...message, content: message.content?.trimStart().replace(/^\/new(?:\s+|$)/i, "") }
-      : message)
+    ? messages.slice(resetIndex)
     : messages;
   const clientSystemPrompts = messages
     .filter(message => message.role === "system" && typeof message.content === "string")
     .map(message => message.content as string);
   return [
-    { role: "system", content: [...clientSystemPrompts, wikiSystemPrompt].join("\n\n") },
+    { role: "system", content: [...clientSystemPrompts, wikiSystemPrompt, modePrompt(mode)].join("\n\n") },
     ...conversation
       .filter(message => message.role !== "system" && message.role && supportedRoles.has(message.role) && typeof message.content === "string" && message.content.length > 0)
       .map(message => ({
         role: message.role as "system" | "user" | "assistant",
-        content: message.content,
+        content: message.role === "user"
+          ? parseResearchDirectives(message.content as string).content
+          : message.content,
       })),
   ];
 }
@@ -196,8 +205,15 @@ app.post("/api/show", async (request, response) => {
 app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, response) => {
   const requestId = ++chatRequestSequence;
   const body = request.body ?? {};
+  if (body.tools?.length) {
+    response.status(400).json({
+      error: "The public wiki endpoint does not accept client tools. Use the private Home Assistant control endpoint.",
+    });
+    return;
+  }
   const modelName = body.model || config.defaultModel;
   const streaming = body.stream !== false;
+  const researchMode = researchModeFromMessages(body.messages ?? []);
   response.locals.modelName = modelName;
   response.locals.streaming = streaming;
   const predictions: PredictionResult[] = [];
@@ -208,6 +224,7 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
     messages: body.messages?.length ?? 0,
     systemMessages: body.messages?.filter(message => message.role === "system").length ?? 0,
     historyReset: historyResetIndex(body.messages ?? []) >= 0,
+    researchMode,
     stream: streaming,
   }));
   const abortController = new AbortController();
@@ -238,10 +255,10 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
   if (queuePosition > 0) sendProgress("Model available. Starting research.");
   try {
   const model = await lmStudio.llm.model(modelName);
-  const originalRequest = [...(body.messages ?? [])]
+  const originalRequest = parseResearchDirectives([...(body.messages ?? [])]
     .reverse()
     .find(message => message.role === "user" && typeof message.content === "string")
-    ?.content?.trimStart().replace(/^\/new(?:\s+|$)/i, "") ?? "";
+    ?.content ?? "").content;
   let subagentCount = 0;
   const runResearch = async (question: string): Promise<ResearchResult> => {
     const index = ++subagentCount;
@@ -364,7 +381,7 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
     evidence: result.evidence.slice(0, 1).map(value => boundedLogText(value, 800)),
   }));
   const tools = createResearchTools({
-    aggregateFirstRequired: requiresAggregateFirst(originalRequest),
+    mode: researchMode,
     progress: sendProgress,
     observe: (event, details) => console.info(JSON.stringify({ event, requestId, ...details })),
     research: async question => runResearch(question),
@@ -530,7 +547,7 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
       return answer || "No supported reduction was produced.";
     },
   });
-  const result = await model.act(chatMessages(body.messages ?? []), tools, {
+  const result = await model.act(chatMessages(body.messages ?? [], researchMode), tools, {
       temperature: body.options?.temperature ?? config.defaultTemperature,
       maxTokens: body.options?.num_predict ?? config.defaultMaxTokens,
       maxPredictionRounds: config.maxPredictionRounds,
@@ -601,4 +618,21 @@ app.use((error: unknown, _request: Request, response: Response, _next: NextFunct
 
 app.listen(config.port, "0.0.0.0", () => {
   console.info(`LM Studio gateway listening on ${config.port}`);
+});
+
+const controlApp = createControlGateway({
+  lmStudioHttpUrl: config.lmStudioHttpUrl,
+  lmStudioApiKey: config.lmStudioApiKey,
+  apiKey: config.controlGatewayApiKey,
+  defaultModel: config.defaultModel,
+  defaultTemperature: config.defaultTemperature,
+  defaultMaxTokens: config.defaultMaxTokens,
+  mutex: chatMutex,
+});
+
+controlApp.listen(config.controlPort, "0.0.0.0", () => {
+  if (config.controlGatewayApiKey === config.gatewayApiKey) {
+    console.warn("CONTROL_GATEWAY_API_KEY is unset; the private control listener is using GATEWAY_API_KEY.");
+  }
+  console.info(`LM Studio Home Assistant control gateway listening on ${config.controlPort}`);
 });

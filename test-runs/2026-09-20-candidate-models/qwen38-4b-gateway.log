@@ -1,0 +1,19 @@
+home-assistant-gateway-1  | 2026-09-21T03:46:32.832713986Z {"event":"control_chat_request","requestId":29,"model":"qwen38-4b-distill","messages":1,"tools":1,"history":{"requestedTools":[],"toolResults":[]},"stream":true}
+home-assistant-gateway-1  | 2026-09-21T03:46:32.832809295Z {"event":"control_chat_started","requestId":29,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T03:46:40.622643733Z {"event":"control_chat_completed","requestId":29,"model":"qwen38-4b-distill","requestedTools":["HassGetState"]}
+home-assistant-gateway-1  | 2026-09-21T03:46:40.622688237Z {"event":"control_chat_released","requestId":29,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T03:46:42.104074542Z {"event":"chat_request","requestId":7,"model":"qwen38-4b-distill","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | 2026-09-21T03:46:42.104109545Z {"event":"chat_started","requestId":7,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T18:07:30.175249113Z {"event":"chat_request","requestId":8,"model":"qwen38-9b-distill","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | 2026-09-21T18:07:30.175311922Z {"event":"chat_queued","requestId":8,"position":1}
+home-assistant-gateway-1  | 2026-09-21T18:08:20.161525378Z npm error path /app
+home-assistant-gateway-1  | 2026-09-21T18:08:20.161560382Z npm error command failed
+home-assistant-gateway-1  | 2026-09-21T18:08:20.161564083Z npm error signal SIGTERM
+home-assistant-gateway-1  | 2026-09-21T18:08:20.161683699Z npm error command sh -c node dist/server.js
+home-assistant-gateway-1  | 2026-09-21T18:08:20.163674664Z npm notice
+home-assistant-gateway-1  | 2026-09-21T18:08:20.163693766Z npm notice New major version of npm available! 10.9.8 -> 12.0.2
+home-assistant-gateway-1  | 2026-09-21T18:08:20.163697767Z npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+home-assistant-gateway-1  | 2026-09-21T18:08:20.163700567Z npm notice To update run: npm install -g npm@12.0.2
+home-assistant-gateway-1  | 2026-09-21T18:08:20.163703267Z npm notice
+home-assistant-gateway-1  | 2026-09-21T18:08:20.164460668Z npm error A complete log of this run can be found in: /home/node/.npm/_logs/2026-09-20T20_01_10_226Z-debug-0.log
+

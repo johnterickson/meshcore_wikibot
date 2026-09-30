@@ -1,0 +1,22 @@
+{
+  "before": {
+    "utc": "2026-09-22T02:04:21.5625909Z",
+    "ramUsedMB": 20501.1,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 387, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 49, 4096, 0"
+    ],
+    "lmsPs": "No models are currently loaded.\r\n\r\nTo load a model, run:\r\n\r\n    lms load <model path>"
+  },
+  "after": {
+    "utc": "2026-09-22T02:06:28.0739039Z",
+    "ramUsedMB": 27711.5,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 387, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 3911, 4096, 88"
+    ],
+    "lmsPs": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    32768      4           Local     60m / 1h"
+  }
+}

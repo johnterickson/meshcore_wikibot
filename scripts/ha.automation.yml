@@ -1,0 +1,73 @@
+alias: wikibot DM
+description: wikibot
+triggers:
+  - event_type: meshcore_message
+    trigger: event
+conditions:
+  - condition: template
+    value_template: |
+      {{ trigger.event.data.message_type == 'direct' }}
+  - condition: template
+    value_template: |
+      {{ trigger.event.data.receiver_name == 'meshcore' }}
+  - condition: template
+    value_template: |
+      {{ trigger.event.data.sender_name != 'johnlaptop-HA' }}
+actions:
+  - action: meshcore.send_message
+    data:
+      node_id: '{{ trigger.event.data.sender_name }}'
+      message: '[thinking]'
+  - variables:
+      conversation_agent: >-
+        {{ 'conversation.ha_control' if trigger.event.data.sender_name ==
+        'johnlaptop-room' else 'conversation.wikibot' }}
+  - action: system_log.write
+    data:
+      level: warning
+      message: >-
+        MeshCore conversation route: sender={{ trigger.event.data.sender_name |
+        tojson }}, agent={{ conversation_agent | tojson }}
+  - action: conversation.process
+    continue_on_error: true
+    data:
+      agent_id: '{{ conversation_agent }}'
+      text: '{{ trigger.event.data.message }}'
+      conversation_id: '{{ trigger.event.data.sender_name }}'
+    response_variable: resp
+  - action: system_log.write
+    data:
+      level: warning
+      message: |
+        Wikibot response: {{ resp | tojson }}
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ resp.response.speech.plain.speech | default('', true) | trim |
+              length > 0 }}
+        sequence:
+          - variables:
+              chunks: >
+                {% set text = resp.response.speech.plain.speech %} {% set ns =
+                namespace(result=[]) %} {% for i in range(0, text|length, 100)
+                %}
+                  {% set ns.result = ns.result + [text[i:i+100]] %}
+                {% endfor %} {{ ns.result }}
+          - repeat:
+              for_each: '{{ chunks }}'
+              sequence:
+                - action: meshcore.send_message
+                  data:
+                    node_id: '{{ trigger.event.data.sender_name }}'
+                    message: '{{ repeat.item }}'
+                - delay:
+                    milliseconds: 1000
+    default:
+      - action: meshcore.send_message
+        data:
+          node_id: '{{ trigger.event.data.sender_name }}'
+          message: 'Wikibot error: model unavailable. Try again in a minute.'
+mode: single
+trace:
+  stored_traces: 200

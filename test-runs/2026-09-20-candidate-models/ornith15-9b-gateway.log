@@ -1,0 +1,7 @@
+home-assistant-gateway-1  | 2026-09-21T18:11:43.159575286Z {"event":"chat_request","requestId":3,"model":"ornith15-9b","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | 2026-09-21T18:11:43.159609690Z {"event":"chat_queued","requestId":3,"position":1}
+home-assistant-gateway-1  | 2026-09-21T18:35:42.325693509Z npm error path /app
+home-assistant-gateway-1  | 2026-09-21T18:35:42.325754416Z npm error command failed
+home-assistant-gateway-1  | 2026-09-21T18:35:42.325763517Z npm error signal SIGTERM
+home-assistant-gateway-1  | 2026-09-21T18:35:42.326319575Z npm error command sh -c node dist/server.js
+home-assistant-gateway-1  | 2026-09-21T18:35:42.329909449Z npm error A complete log of this run can be found in: /home/node/.npm/_logs/2026-09-21T18_08_24_266Z-debug-0.log

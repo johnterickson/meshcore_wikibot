@@ -1,0 +1,51 @@
+{
+  "utc_start": "2026-09-21T20:32:57.2658199Z",
+  "utc_end": "2026-09-21T20:33:03.9461708Z",
+  "request": {
+    "stream": false,
+    "tool_argument_name": "Desk lamp",
+    "temperature": 0.6,
+    "max_tokens": 512,
+    "tool_name": "HassGetState",
+    "secret_free": true,
+    "model": "qwen3.8-4b-distill"
+  },
+  "http_status": 200,
+  "latency_seconds": 5.625,
+  "finish_reason": "tool_calls",
+  "strict_grade": true,
+  "tool_name_returned": "HassGetState",
+  "tool_argument_name_returned": "Desk lamp",
+  "usage": {
+    "prompt_tokens": 288,
+    "completion_tokens": 82,
+    "total_tokens": 370,
+    "completion_tokens_details": {
+      "reasoning_tokens": 51
+    }
+  },
+  "parse_error": "",
+  "resource_snapshots": [
+    {
+      "label": "initial",
+      "lms_ps": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    262144     1           Local     59m / 1h",
+      "lm_api_models_http": "200",
+      "gateway_health_http": "200",
+      "gateway_models_http": "404",
+      "ram": "used_mb=32354.2 total_mb=65441.3",
+      "gpu": "Quadro K1200, 663, 4096\r\nNVIDIA GeForce GTX 1650 SUPER, 3829, 4096",
+      "resident": true
+    },
+    {
+      "label": "direct_after",
+      "lms_ps": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    262144     1           Local     60m / 1h",
+      "lm_api_models_http": "200",
+      "gateway_health_http": "200",
+      "gateway_models_http": "404",
+      "ram": "used_mb=32221.5 total_mb=65441.3",
+      "gpu": "Quadro K1200, 663, 4096\r\nNVIDIA GeForce GTX 1650 SUPER, 3839, 4096",
+      "resident": true
+    }
+  ],
+  "residency": true
+}

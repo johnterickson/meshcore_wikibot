@@ -1,0 +1,69 @@
+{
+  "utc_time": "2026-09-21T18:30:32.9266668Z",
+  "config": {
+    "model": "qwen3.8-4b-distill",
+    "context": 8192,
+    "parallel_count": 3,
+    "observed_gpu_plan": "current runtime plan observed; no settings changed",
+    "temperature": 0.6,
+    "max_tokens": 512
+  },
+  "http": {
+    "status": 200,
+    "curl_exit": 0,
+    "health_status": 200
+  },
+  "wall_seconds": 22.126,
+  "finish_reason": "tool_calls",
+  "assistant_content": "",
+  "tool_calls": [
+    {
+      "name": "HassGetState",
+      "arguments": {
+        "name": "Desk lamp"
+      }
+    }
+  ],
+  "strict_pass": true,
+  "model_resident_after": true,
+  "gpu_memory": {
+    "before": [
+      {
+        "gpu": "Quadro K1200",
+        "used_mb": 936.0,
+        "total_mb": 4096.0
+      },
+      {
+        "gpu": "NVIDIA GeForce GTX 1650 SUPER",
+        "used_mb": 3877.0,
+        "total_mb": 4096.0
+      }
+    ],
+    "after": [
+      {
+        "gpu": "Quadro K1200",
+        "used_mb": 919.0,
+        "total_mb": 4096.0
+      },
+      {
+        "gpu": "NVIDIA GeForce GTX 1650 SUPER",
+        "used_mb": 3879.0,
+        "total_mb": 4096.0
+      }
+    ],
+    "delta": [
+      {
+        "gpu": "Quadro K1200",
+        "before_used_mb": 936.0,
+        "after_used_mb": 919.0,
+        "delta_used_mb": -17.0
+      },
+      {
+        "gpu": "NVIDIA GeForce GTX 1650 SUPER",
+        "before_used_mb": 3877.0,
+        "after_used_mb": 3879.0,
+        "delta_used_mb": 2.0
+      }
+    ]
+  }
+}

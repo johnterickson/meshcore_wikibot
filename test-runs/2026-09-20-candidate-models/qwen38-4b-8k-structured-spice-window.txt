@@ -1,0 +1,15 @@
+UTC_START=2026-09-21T19:16:38.4139660Z
+MODEL=qwen3.8-4b-distill
+SOURCE=empero-ai/Qwen3.8-4B-Distill-GGUF
+QUANT=Q4_K_M
+CONTEXT_LENGTH=8192
+PARALLEL=1
+K1200=excluded
+SPILL_ALLOWED=true
+QUESTION=/new Who are the Spice Girls (stage names in the form "[adjective] Spice" and real names) and what are their birthdays YYYY/MM/DD?
+NUM_PREDICT=2048
+TEMPERATURE=0.6
+WALL_SECONDS=293.48
+UTC_END=2026-09-21T19:23:02.1024461Z
+EXIT_CODE=0
+WALL_SECONDS=383.688

@@ -1,0 +1,75 @@
+{
+  "model": "qwen3.8-9b-distill",
+  "config": {
+    "context_length": 8192,
+    "parallel": 1,
+    "gpu": "GTX-only",
+    "spill_allowed": true,
+    "temperature": 0.6,
+    "num_predict": 512
+  },
+  "http_status": 200,
+  "curl_exit": 0,
+  "latency_ms": 6280.9,
+  "parsed_response_calls": [
+    {
+      "name": "HassGetState",
+      "arguments": {
+        "name": "Desk lamp"
+      },
+      "parseable": true
+    }
+  ],
+  "stream_done_reasons": [
+    "stop"
+  ],
+  "gateway": {
+    "control_chat_completed_found": true,
+    "requestedTools": "home-assistant-gateway-1  | 2026-09-21T18:41:54.795136641Z {\"event\":\"control_chat_completed\",\"requestId\":4,\"model\":\"qwen3.8-9b-distill\",\"requestedTools\":[\"HassGetState\"]}"
+  },
+  "discrepancy": {
+    "stream_parser_missed_authoritative_call": false,
+    "response_call_count": 1
+  },
+  "pass": true,
+  "residency": {
+    "before": true,
+    "after": true
+  },
+  "health": {
+    "before_http": 200,
+    "after_http": 200
+  },
+  "resources": {
+    "before": {
+      "gpu": [
+        {
+          "name": "Quadro K1200",
+          "used_mb": 900,
+          "total_mb": 4096
+        },
+        {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "used_mb": 3886,
+          "total_mb": 4096
+        }
+      ],
+      "ram_used_mb": 28514.3
+    },
+    "after": {
+      "gpu": [
+        {
+          "name": "Quadro K1200",
+          "used_mb": 900,
+          "total_mb": 4096
+        },
+        {
+          "name": "NVIDIA GeForce GTX 1650 SUPER",
+          "used_mb": 3886,
+          "total_mb": 4096
+        }
+      ],
+      "ram_used_mb": 28528.1
+    }
+  }
+}

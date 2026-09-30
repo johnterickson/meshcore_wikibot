@@ -1,0 +1,19 @@
+{
+  "wall_seconds": 1.819,
+  "ndjson_lines": 46,
+  "done_records": 1,
+  "tool_calls": [
+    {
+      "arguments": {
+        "name": "Desk lamp"
+      },
+      "name": "HassGetState"
+    }
+  ],
+  "num_predict": 512,
+  "content": "",
+  "curl_exit": 0,
+  "pass": true,
+  "model": "qwen38-2b-distill",
+  "temperature": 0.6
+}

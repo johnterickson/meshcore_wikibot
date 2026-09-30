@@ -1,0 +1,5 @@
+home-assistant-gateway-1  | 2026-09-21T18:51:10.073013719Z {"event":"control_chat_request","requestId":6,"model":"ornith-1.5-9b","messages":1,"tools":1,"history":{"requestedTools":[],"toolResults":[]},"stream":true}
+home-assistant-gateway-1  | 2026-09-21T18:51:10.073041922Z {"event":"control_chat_started","requestId":6,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T18:51:15.325054591Z {"event":"control_chat_completed","requestId":6,"model":"ornith-1.5-9b","requestedTools":["HassGetState"]}
+home-assistant-gateway-1  | 2026-09-21T18:51:15.325097596Z {"event":"control_chat_released","requestId":6,"waiting":0}
+

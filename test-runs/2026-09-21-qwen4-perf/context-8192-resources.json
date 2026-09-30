@@ -1,0 +1,23 @@
+{
+  "name": "context-8192",
+  "before": {
+    "utc": "2026-09-21T23:40:05.9061696Z",
+    "ramUsedMB": 23981.4,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 606, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 3151, 4096, 0"
+    ],
+    "lmsPs": "IDENTIFIER                   MODEL                        STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nnvidia/nemotron-3-nano-4b    nvidia/nemotron-3-nano-4b    IDLE      2.84 GB    8192       4           Local     60m / 1h"
+  },
+  "after": {
+    "utc": "2026-09-21T23:41:01.3081463Z",
+    "ramUsedMB": 23906.1,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 606, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 3425, 4096, 70"
+    ],
+    "lmsPs": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    8192       1           Local     60m / 1h"
+  }
+}

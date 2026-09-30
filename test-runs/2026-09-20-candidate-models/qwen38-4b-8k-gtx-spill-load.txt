@@ -1,0 +1,200 @@
+UTC_START=2026-09-21T18:36:03.5762118Z
+CONTEXT=8192
+PARALLEL=1
+GPU_PLAN=GTX_ONLY_GLOBAL_SETTING
+SPILL_ALLOWED_USER_SETTING
+COMMAND: docker compose restart home-assistant-gateway
+RESTART_EXIT=0
+ Container wikibot-home-assistant-gateway-1 Restarting 
+ Container wikibot-home-assistant-gateway-1 Started 
+HEALTH_11435=200
+HEALTH_BODY_11435={"status":true,"backend":"lmstudio"}
+HEALTH_11436=200
+HEALTH_BODY_11436={"status":true,"backend":"lmstudio","mode":"home-assistant-control"}
+COMMAND: lms unload --all
+UNLOAD_EXIT=0
+No models to unload.
+COMMAND: lms load qwen3.8-4b-distill --context-length 8192 --identifier qwen3.8-4b-distill --ttl 3600 --parallel 1 --gpu max
+LOAD_EXIT=0
+
+[?25l
+Loading qwen3.8-4b-distill 0% Γáï[?25l
+Loading qwen3.8-4b-distill 0% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% Γá╣[?25l
+Loading qwen3.8-4b-distill 2% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γáª[?25l
+Loading qwen3.8-4b-distill 7% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáç[?25l
+Loading qwen3.8-4b-distill 11% Γáç[?25l
+Loading qwen3.8-4b-distill 11% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% Γáï[?25l
+Loading qwen3.8-4b-distill 12% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╕[?25l
+Loading qwen3.8-4b-distill 17% Γá╕[?25l
+Loading qwen3.8-4b-distill 17% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáº[?25l
+Loading qwen3.8-4b-distill 21% Γáº[?25l
+Loading qwen3.8-4b-distill 21% Γáç[?25l
+Loading qwen3.8-4b-distill 21% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% Γáï[?25l
+Loading qwen3.8-4b-distill 23% Γáï[?25l
+Loading qwen3.8-4b-distill 23% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 23% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá┤[?25l
+Loading qwen3.8-4b-distill 27% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáç[?25l
+Loading qwen3.8-4b-distill 30% Γáç[?25l
+Loading qwen3.8-4b-distill 30% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 30% Γáï[?25l
+Loading qwen3.8-4b-distill 31% Γáï[?25l
+Loading qwen3.8-4b-distill 31% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╕[?25l
+Loading qwen3.8-4b-distill 33% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáº[?25l
+Loading qwen3.8-4b-distill 35% Γáç[?25l
+Loading qwen3.8-4b-distill 36% Γáç[?25l
+Loading qwen3.8-4b-distill 36% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% Γáï[?25l
+Loading qwen3.8-4b-distill 38% Γáï[?25l
+Loading qwen3.8-4b-distill 38% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá┤[?25l
+Loading qwen3.8-4b-distill 40% Γáª[?25l
+Loading qwen3.8-4b-distill 41% Γáª[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáç[?25l
+Loading qwen3.8-4b-distill 41% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 42% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 42% Γáï[?25l
+Loading qwen3.8-4b-distill 43% Γáï[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% Γá╣[?25l
+Loading qwen3.8-4b-distill 43% Γá╕[?25l
+Loading qwen3.8-4b-distill 44% Γá╕[?25l
+Loading qwen3.8-4b-distill 44% Γá╝[?25l
+Loading qwen3.8-4b-distill 45% Γá╝[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γáª[?25l
+Loading qwen3.8-4b-distill 45% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% Γáï[?25l
+Loading qwen3.8-4b-distill 47% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 48% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╝[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáç[?25l
+Loading qwen3.8-4b-distill 50% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 51% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 53% Γáç[?25l
+Loading qwen3.8-4b-distill 54% Γáç[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% Γáï[?25l
+Loading qwen3.8-4b-distill 54% Γáï[?25l
+Loading qwen3.8-4b-distill 54% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╕[?25l
+Loading qwen3.8-4b-distill 55% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáº[?25l
+Loading qwen3.8-4b-distill 56% Γáç[?25l
+Loading qwen3.8-4b-distill 57% Γáç[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 57% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 100% Γá╣
+Model loaded successfully in 8.75s.
+(2.59 GiB)
+To use the model in the API/SDK, use the identifier "qwen3.8-4b-distill".
+[K[?25h
+COMMAND: lms ps
+
+IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    8192       1           Local     60m / 1h
+
+PROCESS_FIELDS=main-gpu,tensor-split,n-gpu-layers
+PID=28952 NAME=llama-server.exe CMD=C:\Users\johnterickson\.lmstudio\extensions\backends\llama.cpp-win-x86_64-nvidia-cuda-avx2-2.41.0\llama-server.exe --model D:\.lmstudio\empero-ai\Qwen3.8-4B-Distill-GGUF\Qwen3.8-4B-Q4_K_M.gguf --host 127.0.0.1 --port 61244 --api-key RnqnB-RyAq7nC9RyjwBhYrmZvV1v4a_k0BpK8DFgkvg --verbosity 3 --no-webui --jinja --chat-template-file C:\Users\johnterickson\.lmstudio\.internal\temp\lmstudio-chat-template-nLZ6IJ\chat-template.jinja --ctx-size 8192 --n-gpu-layers 999999 --n-cpu-moe 0 --main-gpu 0 --tensor-split 1 --split-mode layer --ctx-checkpoints 32 --batch-size 2048 --ubatch-size 512 --threads 4 --parallel 1 --cache-type-k f16 --cache-type-v f16 --flash-attn on --kv-offload --kv-unified --load-mode mmap+mlock --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-n-min 0 --spec-draft-p-min 0
+COMMAND: nvidia-smi --query-gpu=index,name,memory.used,memory.total --format=csv,noheader,nounits
+0, Quadro K1200, 900, 4096
+1, NVIDIA GeForce GTX 1650 SUPER, 3408, 4096
+SYSTEM_RAM_TOTAL_MB=65441.3
+SYSTEM_RAM_FREE_MB=41966.4
+SYSTEM_RAM_USED_MB=23474.9
+UTC_END=2026-09-21T18:36:19.7020603Z

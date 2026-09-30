@@ -1,0 +1,6 @@
+MODEL=qwen3.8-4b-distill CONFIGURED_CONTEXT_LENGTH=262144 PARALLEL=1 ORDERED_STAGES=direct HA -> Mariners gateway -> Spice gateway RESULTS:
+DIRECT_HA status=200 latency=5.625 strict=True
+MARINERS exit=0 wall=85.013 strict=False LM_API=200 GW_HEALTH=200 GW_MODELS=404
+SPICE exit=0 wall=591.096 strict=False LM_API=200 GW_HEALTH=200 GW_MODELS=404
+ORDERED_TOOL_ORCHESTRATION_EVENTS=fetch=44, research_dataset=1, research_list=2, research_map=8, research_question=1, research_recursive=2, research_reduce=3, research_repair=5, search=46, subagent=76, subagent_completed=10, subagent_retry=1, subagent_started=9, subagent_tool_call=38, tool_call=42, wiki=190, Wikipedia=23 TOKEN_COUNTS_WHEN_AVAILABLE=num_predict": 2048 FINAL_LMS_RESIDENT=True FINAL_LM_API_HTTP=200 FINAL_GATEWAY_HEALTH_HTTP=200 FINAL_GATEWAY_MODELS_HTTP=404 FINAL_RAM=used_mb=39737.3 total_mb=65441.3 FINAL_GPU=Quadro K1200, 810, 4096
+NVIDIA GeForce GTX 1650 SUPER, 3843, 4096 WARNING: configured 256K context is not equivalent to consuming 256K unless actual prompt token counts approach 256K. SECRET_HANDLING: no secrets printed or stored.

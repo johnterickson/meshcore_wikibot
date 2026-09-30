@@ -1,0 +1,110 @@
+UTC_RUN_START=2026-09-21T20:55:52.5790037Z
+PRECHECK_ACTIVE_PROCESS_COUNT=0
+UTC=2026-09-21T20:55:52.9205544Z COMMAND=lms 
+EXIT_CODE=1
+STDOUT_BEGIN
+lms is LM Studio's CLI utility for your models, server, and inference runtime.
+CLI commit: 69d945a
+STDOUT_END
+STDERR_BEGIN
+Usage: lms [options] [command]
+
+Local models
+   chat               Start an interactive chat with a model
+   get                Search and download local models or Hub artifacts
+   load               Load a model
+   unload             Unload a model
+   ls                 List the models available on disk
+   ps                 List the models currently loaded in memory
+   import             Import a model file into LM Studio
+
+Serve
+   server             Commands for managing the local server
+   log                Log incoming and outgoing messages
+
+Remote Instances
+   link               Commands for managing LM Link
+
+Runtime
+   runtime            Manage and update the inference runtime
+
+Develop & Publish (Beta)
+   clone              Clone an artifact from LM Studio Hub to a local folder
+   push               Uploads the artifact in the current folder to LM Studio Hub
+   dev                Starts a plugin dev server in the current folder
+   login              Authenticate with LM Studio
+   logout             Log out of LM Studio
+   whoami             Check the current authentication status
+
+Learn more:           https://lmstudio.ai/docs/developer
+Join our Discord:     https://discord.gg/lmstudio
+STDERR_END
+PRECHECK_CURRENT_MODEL_IDLE=False
+RESULT=FAILURE Current model not confirmed IDLE
+
+===== RETRY (qwen3.8-9b-distill 256K load) =====
+UTC=2026-09-21T20:56:40.5102626Z
+EXACT_COMMAND=lms load qwen3.8-9b-distill --context-length 262144 --parallel 1 --gpu max --identifier qwen3.8-9b-distill --ttl 3600 -y
+STDOUT_BEGIN
+[?25lLoading qwen3.8-9b-distill 0% ⠋[?25lLoading qwen3.8-9b-distill 0% ⠙[?25lLoading qwen3.8-9b-distill 2% ⠙[?25lLoading qwen3.8-9b-distill 2% ⠹[?25lLoading qwen3.8-9b-distill 4% ⠹[?25lLoading qwen3.8-9b-distill 4% ⠸[?25lLoading qwen3.8-9b-distill 4% ⠼[?25lLoading qwen3.8-9b-distill 6% ⠼[?25lLoading qwen3.8-9b-distill 6% ⠴[?25lLoading qwen3.8-9b-distill 7% ⠴[?25lLoading qwen3.8-9b-distill 7% ⠦[?25lLoading qwen3.8-9b-distill 9% ⠦[?25lLoading qwen3.8-9b-distill 9% ⠧[?25lLoading qwen3.8-9b-distill 11% ⠧[?25lLoading qwen3.8-9b-distill 11% ⠇[?25lLoading qwen3.8-9b-distill 11% ⠏[?25lLoading qwen3.8-9b-distill 12% ⠏[?25lLoading qwen3.8-9b-distill 12% ⠋[?25lLoading qwen3.8-9b-distill 14% ⠋[?25lLoading qwen3.8-9b-distill 14% ⠙[?25lLoading qwen3.8-9b-distill 15% ⠙[?25lLoading qwen3.8-9b-distill 15% ⠹[?25lLoading qwen3.8-9b-distill 17% ⠹[?25lLoading qwen3.8-9b-distill 17% ⠸[?25lLoading qwen3.8-9b-distill 17% ⠼[?25lLoading qwen3.8-9b-distill 18% ⠼[?25lLoading qwen3.8-9b-distill 18% ⠴[?25lLoading qwen3.8-9b-distill 19% ⠴[?25lLoading qwen3.8-9b-distill 19% ⠦[?25lLoading qwen3.8-9b-distill 21% ⠦[?25lLoading qwen3.8-9b-distill 21% ⠧[?25lLoading qwen3.8-9b-distill 21% ⠇[?25lLoading qwen3.8-9b-distill 22% ⠇[?25lLoading qwen3.8-9b-distill 22% ⠏[?25lLoading qwen3.8-9b-distill 23% ⠏[?25lLoading qwen3.8-9b-distill 23% ⠋[?25lLoading qwen3.8-9b-distill 24% ⠋[?25lLoading qwen3.8-9b-distill 24% ⠙[?25lLoading qwen3.8-9b-distill 26% ⠙[?25lLoading qwen3.8-9b-distill 26% ⠹[?25lLoading qwen3.8-9b-distill 26% ⠸[?25lLoading qwen3.8-9b-distill 27% ⠸[?25lLoading qwen3.8-9b-distill 27% ⠼[?25lLoading qwen3.8-9b-distill 28% ⠼[?25lLoading qwen3.8-9b-distill 28% ⠴[?25lLoading qwen3.8-9b-distill 29% ⠴[?25lLoading qwen3.8-9b-distill 29% ⠦[?25lLoading qwen3.8-9b-distill 30% ⠦[?25lLoading qwen3.8-9b-distill 30% ⠧[?25lLoading qwen3.8-9b-distill 30% ⠇[?25lLoading qwen3.8-9b-distill 31% ⠇[?25lLoading qwen3.8-9b-distill 31% ⠏[?25lLoading qwen3.8-9b-distill 32% ⠏[?25lLoading qwen3.8-9b-distill 32% ⠋[?25lLoading qwen3.8-9b-distill 33% ⠋[?25lLoading qwen3.8-9b-distill 33% ⠙[?25lLoading qwen3.8-9b-distill 34% ⠙[?25lLoading qwen3.8-9b-distill 34% ⠹[?25lLoading qwen3.8-9b-distill 34% ⠸[?25lLoading qwen3.8-9b-distill 34% ⠸[?25lLoading qwen3.8-9b-distill 34% ⠼[?25lLoading qwen3.8-9b-distill 35% ⠼[?25lLoading qwen3.8-9b-distill 35% ⠴[?25lLoading qwen3.8-9b-distill 36% ⠴[?25lLoading qwen3.8-9b-distill 36% ⠦[?25lLoading qwen3.8-9b-distill 36% ⠧[?25lLoading qwen3.8-9b-distill 37% ⠧[?25lLoading qwen3.8-9b-distill 37% ⠇[?25lLoading qwen3.8-9b-distill 38% ⠇[?25lLoading qwen3.8-9b-distill 38% ⠏[?25lLoading qwen3.8-9b-distill 38% ⠏[?25lLoading qwen3.8-9b-distill 38% ⠋[?25lLoading qwen3.8-9b-distill 39% ⠋[?25lLoading qwen3.8-9b-distill 39% ⠙[?25lLoading qwen3.8-9b-distill 39% ⠹[?25lLoading qwen3.8-9b-distill 40% ⠹[?25lLoading qwen3.8-9b-distill 40% ⠸[?25lLoading qwen3.8-9b-distill 41% ⠸[?25lLoading qwen3.8-9b-distill 41% ⠼[?25lLoading qwen3.8-9b-distill 41% ⠼[?25lLoading qwen3.8-9b-distill 41% ⠴[?25lLoading qwen3.8-9b-distill 42% ⠴[?25lLoading qwen3.8-9b-distill 42% ⠦[?25lLoading qwen3.8-9b-distill 42% ⠧[?25lLoading qwen3.8-9b-distill 43% ⠧[?25lLoading qwen3.8-9b-distill 43% ⠇[?25lLoading qwen3.8-9b-distill 43% ⠇[?25lLoading qwen3.8-9b-distill 43% ⠏[?25lLoading qwen3.8-9b-distill 44% ⠏[?25lLoading qwen3.8-9b-distill 44% ⠋[?25lLoading qwen3.8-9b-distill 45% ⠋[?25lLoading qwen3.8-9b-distill 45% ⠙[?25lLoading qwen3.8-9b-distill 45% ⠹[?25lLoading qwen3.8-9b-distill 45% ⠹[?25lLoading qwen3.8-9b-distill 45% ⠸[?25lLoading qwen3.8-9b-distill 46% ⠸[?25lLoading qwen3.8-9b-distill 46% ⠼[?25lLoading qwen3.8-9b-distill 46% ⠼[?25lLoading qwen3.8-9b-distill 46% ⠴[?25lLoading qwen3.8-9b-distill 46% ⠦[?25lLoading qwen3.8-9b-distill 47% ⠦[?25lLoading qwen3.8-9b-distill 47% ⠧[?25lLoading qwen3.8-9b-distill 48% ⠧[?25lLoading qwen3.8-9b-distill 48% ⠇[?25lLoading qwen3.8-9b-distill 48% ⠇[?25lLoading qwen3.8-9b-distill 48% ⠏[?25lLoading qwen3.8-9b-distill 49% ⠏[?25lLoading qwen3.8-9b-distill 49% ⠋[?25lLoading qwen3.8-9b-distill 49% ⠙[?25lLoading qwen3.8-9b-distill 49% ⠙[?25lLoading qwen3.8-9b-distill 49% ⠹[?25lLoading qwen3.8-9b-distill 50% ⠹[?25lLoading qwen3.8-9b-distill 50% ⠸[?25lLoading qwen3.8-9b-distill 50% ⠸[?25lLoading qwen3.8-9b-distill 50% ⠼[?25lLoading qwen3.8-9b-distill 50% ⠴[?25lLoading qwen3.8-9b-distill 51% ⠴[?25lLoading qwen3.8-9b-distill 51% ⠦[?25lLoading qwen3.8-9b-distill 51% ⠦[?25lLoading qwen3.8-9b-distill 51% ⠧[?25lLoading qwen3.8-9b-distill 52% ⠧[?25lLoading qwen3.8-9b-distill 52% ⠇[?25lLoading qwen3.8-9b-distill 52% ⠏[?25lLoading qwen3.8-9b-distill 52% ⠏[?25lLoading qwen3.8-9b-distill 52% ⠋[?25lLoading qwen3.8-9b-distill 53% ⠋[?25lLoading qwen3.8-9b-distill 53% ⠙[?25lLoading qwen3.8-9b-distill 53% ⠙[?25lLoading qwen3.8-9b-distill 53% ⠹[?25lLoading qwen3.8-9b-distill 53% ⠸[?25lLoading qwen3.8-9b-distill 53% ⠸[?25lLoading qwen3.8-9b-distill 53% ⠼[?25lLoading qwen3.8-9b-distill 54% ⠼[?25lLoading qwen3.8-9b-distill 54% ⠴[?25lLoading qwen3.8-9b-distill 54% ⠴[?25lLoading qwen3.8-9b-distill 54% ⠦[?25lLoading qwen3.8-9b-distill 54% ⠧[?25lLoading qwen3.8-9b-distill 55% ⠧[?25lLoading qwen3.8-9b-distill 55% ⠇[?25lLoading qwen3.8-9b-distill 55% ⠇[?25lLoading qwen3.8-9b-distill 55% ⠏[?25lLoading qwen3.8-9b-distill 56% ⠏[?25lLoading qwen3.8-9b-distill 56% ⠋[?25lLoading qwen3.8-9b-distill 56% ⠋[?25lLoading qwen3.8-9b-distill 56% ⠙[?25lLoading qwen3.8-9b-distill 56% ⠹[?25lLoading qwen3.8-9b-distill 56% ⠹[?25lLoading qwen3.8-9b-distill 56% ⠸[?25lLoading qwen3.8-9b-distill 57% ⠸[?25lLoading qwen3.8-9b-distill 57% ⠼[?25lLoading qwen3.8-9b-distill 57% ⠼[?25lLoading qwen3.8-9b-distill 57% ⠴[?25lLoading qwen3.8-9b-distill 57% ⠴[?25lLoading qwen3.8-9b-distill 57% ⠦[?25lLoading qwen3.8-9b-distill 57% ⠧[?25lLoading qwen3.8-9b-distill 58% ⠧[?25lLoading qwen3.8-9b-distill 58% ⠇[?25lLoading qwen3.8-9b-distill 58% ⠇[?25lLoading qwen3.8-9b-distill 58% ⠏[?25lLoading qwen3.8-9b-distill 58% ⠏[?25lLoading qwen3.8-9b-distill 58% ⠋[?25lLoading qwen3.8-9b-distill 58% ⠙[?25lLoading qwen3.8-9b-distill 59% ⠙[?25lLoading qwen3.8-9b-distill 59% ⠹[?25lLoading qwen3.8-9b-distill 59% ⠹[?25lLoading qwen3.8-9b-distill 59% ⠸[?25lLoading qwen3.8-9b-distill 59% ⠸[?25lLoading qwen3.8-9b-distill 59% ⠼[?25lLoading qwen3.8-9b-distill 59% ⠴[?25lLoading qwen3.8-9b-distill 60% ⠴[?25lLoading qwen3.8-9b-distill 60% ⠦[?25lLoading qwen3.8-9b-distill 60% ⠦[?25lLoading qwen3.8-9b-distill 60% ⠧[?25lLoading qwen3.8-9b-distill 60% ⠧[?25lLoading qwen3.8-9b-distill 60% ⠇[?25lLoading qwen3.8-9b-distill 61% ⠇[?25lLoading qwen3.8-9b-distill 61% ⠏[?25lLoading qwen3.8-9b-distill 61% ⠋[?25lLoading qwen3.8-9b-distill 61% ⠋[?25lLoading qwen3.8-9b-distill 61% ⠙[?25lLoading qwen3.8-9b-distill 61% ⠙[?25lLoading qwen3.8-9b-distill 61% ⠹[?25lLoading qwen3.8-9b-distill 62% ⠹[?25lLoading qwen3.8-9b-distill 62% ⠸[?25lLoading qwen3.8-9b-distill 62% ⠸[?25lLoading qwen3.8-9b-distill 62% ⠼[?25lLoading qwen3.8-9b-distill 62% ⠴[?25lLoading qwen3.8-9b-distill 62% ⠴[?25lLoading qwen3.8-9b-distill 62% ⠦[?25lLoading qwen3.8-9b-distill 63% ⠦[?25lLoading qwen3.8-9b-distill 63% ⠧[?25lLoading qwen3.8-9b-distill 63% ⠧[?25lLoading qwen3.8-9b-distill 63% ⠇[?25lLoading qwen3.8-9b-distill 63% ⠇[?25lLoading qwen3.8-9b-distill 63% ⠏[?25lLoading qwen3.8-9b-distill 63% ⠋[?25lLoading qwen3.8-9b-distill 63% ⠋[?25lLoading qwen3.8-9b-distill 63% ⠙[?25lLoading qwen3.8-9b-distill 64% ⠙[?25lLoading qwen3.8-9b-distill 64% ⠹[?25lLoading qwen3.8-9b-distill 64% ⠹[?25lLoading qwen3.8-9b-distill 64% ⠸[?25lLoading qwen3.8-9b-distill 64% ⠸[?25lLoading qwen3.8-9b-distill 64% ⠼[?25lLoading qwen3.8-9b-distill 64% ⠴[?25lLoading qwen3.8-9b-distill 64% ⠴[?25lLoading qwen3.8-9b-distill 64% ⠦[?25lLoading qwen3.8-9b-distill 65% ⠦[?25lLoading qwen3.8-9b-distill 65% ⠧[?25lLoading qwen3.8-9b-distill 65% ⠧[?25lLoading qwen3.8-9b-distill 65% ⠇[?25lLoading qwen3.8-9b-distill 65% ⠏[?25lLoading qwen3.8-9b-distill 65% ⠏[?25lLoading qwen3.8-9b-distill 65% ⠋[?25lLoading qwen3.8-9b-distill 65% ⠋[?25lLoading qwen3.8-9b-distill 65% ⠙[?25lLoading qwen3.8-9b-distill 66% ⠙[?25lLoading qwen3.8-9b-distill 66% ⠹[?25lLoading qwen3.8-9b-distill 66% ⠹[?25lLoading qwen3.8-9b-distill 66% ⠸[?25lLoading qwen3.8-9b-distill 66% ⠼[?25lLoading qwen3.8-9b-distill 66% ⠼[?25lLoading qwen3.8-9b-distill 66% ⠴[?25lLoading qwen3.8-9b-distill 66% ⠴[?25lLoading qwen3.8-9b-distill 66% ⠦[?25lLoading qwen3.8-9b-distill 67% ⠦[?25lLoading qwen3.8-9b-distill 67% ⠧[?25lLoading qwen3.8-9b-distill 67% ⠇[?25lLoading qwen3.8-9b-distill 67% ⠇[?25lLoading qwen3.8-9b-distill 67% ⠏[?25lLoading qwen3.8-9b-distill 67% ⠏[?25lLoading qwen3.8-9b-distill 67% ⠋[?25lLoading qwen3.8-9b-distill 67% ⠋[?25lLoading qwen3.8-9b-distill 67% ⠙[?25lLoading qwen3.8-9b-distill 67% ⠙[?25lLoading qwen3.8-9b-distill 67% ⠹[?25lLoading qwen3.8-9b-distill 67% ⠸[?25lLoading qwen3.8-9b-distill 68% ⠸[?25lLoading qwen3.8-9b-distill 68% ⠼[?25lLoading qwen3.8-9b-distill 68% ⠼[?25lLoading qwen3.8-9b-distill 68% ⠴[?25lLoading qwen3.8-9b-distill 68% ⠴[?25lLoading qwen3.8-9b-distill 68% ⠦[?25lLoading qwen3.8-9b-distill 68% ⠧[?25lLoading qwen3.8-9b-distill 68% ⠧[?25lLoading qwen3.8-9b-distill 68% ⠇[?25lLoading qwen3.8-9b-distill 68% ⠇[?25lLoading qwen3.8-9b-distill 68% ⠏[?25lLoading qwen3.8-9b-distill 69% ⠏[?25lLoading qwen3.8-9b-distill 69% ⠋[?25lLoading qwen3.8-9b-distill 69% ⠋[?25lLoading qwen3.8-9b-distill 69% ⠙[?25lLoading qwen3.8-9b-distill 69% ⠹[?25lLoading qwen3.8-9b-distill 69% ⠹[?25lLoading qwen3.8-9b-distill 69% ⠸[?25lLoading qwen3.8-9b-distill 69% ⠸[?25lLoading qwen3.8-9b-distill 69% ⠼[?25lLoading qwen3.8-9b-distill 69% ⠼[?25lLoading qwen3.8-9b-distill 69% ⠴[?25lLoading qwen3.8-9b-distill 70% ⠴[?25lLoading qwen3.8-9b-distill 70% ⠦[?25lLoading qwen3.8-9b-distill 70% ⠧[?25lLoading qwen3.8-9b-distill 70% ⠧[?25lLoading qwen3.8-9b-distill 70% ⠇[?25lLoading qwen3.8-9b-distill 70% ⠇[?25lLoading qwen3.8-9b-distill 70% ⠏[?25lLoading qwen3.8-9b-distill 70% ⠏[?25lLoading qwen3.8-9b-distill 70% ⠋[?25lLoading qwen3.8-9b-distill 70% ⠋[?25lLoading qwen3.8-9b-distill 70% ⠙[?25lLoading qwen3.8-9b-distill 100% ⠙[K[?25h
+STDOUT_END
+STDERR_BEGIN
+Model loaded successfully in 14.39s.
+(5.38 GiB)
+To use the model in the API/SDK, use the identifier "qwen3.8-9b-distill".
+STDERR_END
+EXIT_CODE=0
+SYSTEM_RAM_BEFORE=used_mb=21229.9 total_mb=65441.3
+PER_GPU_MEMORY_BEFORE
+Quadro K1200, 693, 4096
+NVIDIA GeForce GTX 1650 SUPER, 68, 4096
+SYSTEM_RAM_AFTER=used_mb=38253.6 total_mb=65441.3
+PER_GPU_MEMORY_AFTER
+Quadro K1200, 693, 4096
+NVIDIA GeForce GTX 1650 SUPER, 3857, 4096
+FINAL_LMS_PS_BEGIN
+IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     60m / 1h
+FINAL_LMS_PS_END
+PARSED_ROW=qwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     60m / 1h
+PARSED_FIELDS_1_TO_7=qwen3.8-9b-distill | qwen3.8-9b-distill | IDLE | 5.78 | GB | 262144 | 1
+LM_API_V1_MODELS_HTTP=200
+VALIDATION_REQUIREMENTS=identifier qwen3.8-9b-distill; status IDLE; context 262144; parallel 1; API HTTP 200
+VALIDATION_PASS=True
+
+===== RETRY (qwen3.8-9b-distill 256K load) =====
+UTC=
+2026-09-21T20:56:51.5229382Z
+EXACT_COMMAND=
+lms load qwen3.8-9b-distill --context-length 262144 --parallel 1 --gpu max --identifier qwen3.8-9b-distill --ttl 3600 -y
+STDOUT_BEGIN
+[K[?25h
+STDOUT_END
+STDERR_BEGIN
+Error: A model with identifier qwen3.8-9b-distill already exists.
+STDERR_END
+EXIT_CODE=
+1
+SYSTEM_RAM_BEFORE=
+used_mb=38013.1 total_mb=65441.3
+PER_GPU_MEMORY_BEFORE
+Quadro K1200, 693, 4096
+NVIDIA GeForce GTX 1650 SUPER, 3857, 4096
+SYSTEM_RAM_AFTER=
+used_mb=37998.4 total_mb=65441.3
+PER_GPU_MEMORY_AFTER
+Quadro K1200, 693, 4096
+NVIDIA GeForce GTX 1650 SUPER, 3857, 4096
+FINAL_LMS_PS_BEGIN
+IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     60m / 1h
+FINAL_LMS_PS_END
+PARSED_ROW=
+qwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     60m / 1h
+PARSED_FIELDS_1_TO_7=
+qwen3.8-9b-distill | qwen3.8-9b-distill | IDLE | 5.78 | GB | 262144 | 1
+LM_API_V1_MODELS_HTTP=
+200
+VALIDATION_REQUIREMENTS=identifier qwen3.8-9b-distill; status IDLE; context 262144; parallel 1; API HTTP 200
+VALIDATION_PASS=
+False

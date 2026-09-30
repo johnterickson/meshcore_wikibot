@@ -1,0 +1,71 @@
+{
+  "model": "qwen3.8-4b-distill",
+  "targetPromptTokens": 3000,
+  "promptCharacters": 20096,
+  "maxTokens": 128,
+  "repetitions": 3,
+  "concurrency": 1,
+  "warmups": 1,
+  "summary": {
+    "averageWallSeconds": 4.320042433333331,
+    "averageObservedTtftSeconds": 0.15423710000000088,
+    "averageReportedTtftSeconds": 0.12098166666666667,
+    "averageTokensPerSecond": 30.52075196546143,
+    "averagePromptTokens": 6061,
+    "averagePredictedTokens": 128,
+    "averageWaveWallSeconds": 4.320095499999998
+  },
+  "waves": [
+    {
+      "repetition": 1,
+      "aggregateWallSeconds": 4.2831479999999935,
+      "requests": [
+        {
+          "index": 1,
+          "measured": true,
+          "wallSeconds": 4.283046799999997,
+          "observedTtftSeconds": 0.15384419999999954,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 30.78235661966096,
+          "reportedTtftSeconds": 0.126159,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "aggregateWallSeconds": 4.3116806999999975,
+      "requests": [
+        {
+          "index": 2,
+          "measured": true,
+          "wallSeconds": 4.311650699999999,
+          "observedTtftSeconds": 0.1497088999999978,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 30.555369095626034,
+          "reportedTtftSeconds": 0.11748600000000001,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 3,
+      "aggregateWallSeconds": 4.365457800000004,
+      "requests": [
+        {
+          "index": 3,
+          "measured": true,
+          "wallSeconds": 4.3654297999999985,
+          "observedTtftSeconds": 0.1591582000000053,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 30.224530181097293,
+          "reportedTtftSeconds": 0.1193,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    }
+  ]
+}

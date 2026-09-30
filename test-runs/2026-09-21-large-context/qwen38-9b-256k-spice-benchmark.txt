@@ -1,0 +1,12 @@
+{
+  "model": "qwen3.8-9b-distill",
+  "parameters": {
+    "temperature": 0.6,
+    "num_predict": 2048
+  },
+  "status": 500,
+  "wall_seconds": 811,
+  "answer": "",
+  "thinking": "",
+  "error": "List research produced no fetched evidence"
+}

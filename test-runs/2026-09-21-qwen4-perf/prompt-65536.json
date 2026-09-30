@@ -1,0 +1,37 @@
+{
+  "model": "qwen3.8-4b-distill",
+  "targetPromptTokens": 65536,
+  "promptCharacters": 435101,
+  "maxTokens": 128,
+  "repetitions": 1,
+  "concurrency": 1,
+  "warmups": 0,
+  "summary": {
+    "averageWallSeconds": 3532.4436086,
+    "averageObservedTtftSeconds": 3505.3379776999996,
+    "averageReportedTtftSeconds": 3505.109474,
+    "averageTokensPerSecond": 4.689181309189146,
+    "averagePromptTokens": 131131,
+    "averagePredictedTokens": 128,
+    "averageWaveWallSeconds": 3532.443862
+  },
+  "waves": [
+    {
+      "repetition": 1,
+      "aggregateWallSeconds": 3532.443862,
+      "requests": [
+        {
+          "index": 1,
+          "measured": true,
+          "wallSeconds": 3532.4436086,
+          "observedTtftSeconds": 3505.3379776999996,
+          "promptTokens": 131131,
+          "predictedTokens": 128,
+          "tokensPerSecond": 4.689181309189146,
+          "reportedTtftSeconds": 3505.109474,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    }
+  ]
+}

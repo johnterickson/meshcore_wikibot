@@ -1,0 +1,187 @@
+NODE=C:\Program Files\nodejs\node.exe
+LOAD_SCRIPT=D:\wikibot\home-assistant-gateway\dist\loadPerfModel.js
+PERF_SCRIPT=D:\wikibot\home-assistant-gateway\dist\perfBenchmark.js
+EXPLICIT_UNLOAD_BEFORE_EVERY_CELL=true
+START_UTC=2026-09-22T02:02:07.4423975Z
+=== KV_GPU_on ===
+UNLOAD_IDENTIFIERS=nvidia/nemotron-3-nano-4b
+Model "nvidia/nemotron-3-nano-4b" unloaded.
+LMS_PS_AFTER_UNLOAD:
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+LMS_PS_AFTER_LOAD:
+IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    32768      4           Local     60m / 1h
+GPU_ALLOCATION:
+Quadro K1200, 387
+NVIDIA GeForce GTX 1650 SUPER, 3861
+KV_CELL_COMPLETED=on
+=== KV_GPU_off ===
+UNLOAD_IDENTIFIERS=qwen3.8-4b-distill
+Model "qwen3.8-4b-distill" unloaded.
+LMS_PS_AFTER_UNLOAD:
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+LMS_PS_AFTER_LOAD:
+IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    32768      4           Local     60m / 1h
+GPU_ALLOCATION:
+Quadro K1200, 387
+NVIDIA GeForce GTX 1650 SUPER, 3861
+KV_CELL_COMPLETED=off
+=== RESTORE_SERVICE ===
+UNLOAD_IDENTIFIERS=qwen3.8-4b-distill
+Model "qwen3.8-4b-distill" unloaded.
+LMS_PS_AFTER_UNLOAD:
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+[?25l
+Loading nvidia/nemotron-3-nano-4b 0% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 0% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 2% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 2% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 2% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 4% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 4% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 6% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 6% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 7% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 7% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 7% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 9% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 9% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 11% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 11% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 12% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 12% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 12% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 14% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 14% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 15% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 15% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 17% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 17% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 17% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 18% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 18% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 19% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 19% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 21% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 21% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 21% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 22% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 22% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 23% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 23% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 24% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 24% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 24% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 26% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 26% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 27% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 27% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 28% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 28% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 28% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 29% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 29% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 30% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 30% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 31% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 31% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 31% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 32% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 32% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 33% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 33% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 34% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 34% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 34% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 34% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 34% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 35% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 35% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 36% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 36% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 36% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 37% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 37% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 38% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 38% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 38% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 38% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 38% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 39% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 39% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 40% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 40% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 41% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 41% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 41% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 41% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 41% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 42% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 42% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 42% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 43% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 43% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 43% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 43% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 44% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 44% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 45% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 45% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 45% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 45% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 45% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 46% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 46% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 46% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 46% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 46% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 47% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 47% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 48% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 48% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 48% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 48% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 48% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 49% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 49% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 49% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 49% Γá┤[?25l
+Loading nvidia/nemotron-3-nano-4b 49% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 50% Γáª[?25l
+Loading nvidia/nemotron-3-nano-4b 50% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 50% Γáº[?25l
+Loading nvidia/nemotron-3-nano-4b 50% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 51% Γáç[?25l
+Loading nvidia/nemotron-3-nano-4b 51% ΓáÅ[?25l
+Loading nvidia/nemotron-3-nano-4b 51% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 51% Γáï[?25l
+Loading nvidia/nemotron-3-nano-4b 51% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 52% ΓáÖ[?25l
+Loading nvidia/nemotron-3-nano-4b 52% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 52% Γá╣[?25l
+Loading nvidia/nemotron-3-nano-4b 52% Γá╕[?25l
+Loading nvidia/nemotron-3-nano-4b 52% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 53% Γá╝[?25l
+Loading nvidia/nemotron-3-nano-4b 100% Γá╝
+Model loaded successfully in 7.07s.
+(2.64 GiB)
+To use the model in the API/SDK, use the identifier "nvidia/nemotron-3-nano-4b".
+[K[?25h
+RESTORE_EXIT=0
+FINAL_LMS_PS:
+IDENTIFIER                   MODEL                        STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+nvidia/nemotron-3-nano-4b    nvidia/nemotron-3-nano-4b    IDLE      2.84 GB    8192       4           Local     60m / 1h
+END_UTC=2026-09-22T02:06:41.6869921Z

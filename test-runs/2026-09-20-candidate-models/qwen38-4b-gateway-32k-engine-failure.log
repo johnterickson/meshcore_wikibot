@@ -1,0 +1,17 @@
+home-assistant-gateway-1  | {"event":"chat_request","requestId":6,"model":"qwen38-4b-distill","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | {"event":"chat_started","requestId":6,"waiting":0}
+home-assistant-gateway-1  | {"event":"chat_released","requestId":6,"waiting":0}
+home-assistant-gateway-1  | [Error: 
+home-assistant-gateway-1  | 
+home-assistant-gateway-1  |    Γöî Error ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+home-assistant-gateway-1  |    Γöé                                                            Γöé
+home-assistant-gateway-1  |    Γöé   Engine protocol predict request failed: fetch failed     Γöé
+home-assistant-gateway-1  |    Γöé                                                            Γöé
+home-assistant-gateway-1  |    Γöé                                                            Γöé
+home-assistant-gateway-1  |    Γöé   </> STACK TRACE                                          Γöé
+home-assistant-gateway-1  |    Γöé                                                            Γöé
+home-assistant-gateway-1  |    Γöé   at file:///app/dist/server.js:519:36                     Γöé
+home-assistant-gateway-1  |    Γöé   at process.processTicksAndRejections                     Γöé
+home-assistant-gateway-1  |    Γöé   (node:internal/process/task_queues:103:5)                Γöé
+home-assistant-gateway-1  |    Γöé                                                            Γöé
+home-assistant-gateway-1  |    ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ]

@@ -1,0 +1,5 @@
+home-assistant-gateway-1  | 2026-09-21T18:41:48.575053085Z {"event":"control_chat_request","requestId":4,"model":"qwen3.8-9b-distill","messages":1,"tools":1,"history":{"requestedTools":[],"toolResults":[]},"stream":true}
+home-assistant-gateway-1  | 2026-09-21T18:41:48.984720016Z {"event":"control_chat_started","requestId":4,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T18:41:54.795136641Z {"event":"control_chat_completed","requestId":4,"model":"qwen3.8-9b-distill","requestedTools":["HassGetState"]}
+home-assistant-gateway-1  | 2026-09-21T18:41:54.795171844Z {"event":"control_chat_released","requestId":4,"waiting":0}
+

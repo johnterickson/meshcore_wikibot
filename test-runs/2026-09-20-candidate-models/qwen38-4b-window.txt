@@ -1,0 +1,10 @@
+UTC window start=2026-09-21T03:46:32.7874044Z
+UTC window end=2026-09-21T18:08:20.2226420Z
+SOURCE=empero-ai/Qwen3.8-4B-Distill-GGUF
+QUANT=Q4_K_M
+CONTEXT_LENGTH=16384
+GPU_PLAN=GTX_PRIORITY_50_PERCENT_OFFLOAD
+parameters=HA temperature=0.6 num_predict=512; Wiki num_predict=2048 temperature=0.6
+case=HA smoke then conditional Wiki benchmark
+ending exit=137
+wall seconds=51698.496

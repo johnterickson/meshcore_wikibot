@@ -10,7 +10,7 @@ Common settings:
 ## Mariners
 
 ```text
-/new Which active MLB teams have never been to the World Series?
+/new /query Which active MLB teams have never been to the World Series?
 ```
 
 Expected answer: Seattle Mariners only. Grade "been to" as a World Series appearance, not a championship win.
@@ -18,14 +18,20 @@ Expected answer: Seattle Mariners only. Grade "been to" as a World Series appear
 ```powershell
 docker compose exec -T home-assistant-gateway `
   node dist/benchmark.js nvidia/nemotron-3-nano-4b `
-  --question "/new Which active MLB teams have never been to the World Series?" `
+  --question "/new /query Which active MLB teams have never been to the World Series?" `
   --num-predict 2048 --temperature 0.2
 ```
 
 ## Spice Girls
 
 ```text
-/new Who are the Spice Girls (stage names in the form "[adjective] Spice" and real names) and what are their birthdays YYYY/MM/DD?
+/new /map Who are the Spice Girls (stage names in the form "[adjective] Spice" and real names) and what are their birthdays YYYY/MM/DD?
+```
+
+and
+
+```text
+/new /query Who are the Spice Girls (stage names in the form "[adjective] Spice" and real names) and what are their birthdays YYYY/MM/DD?
 ```
 
 Expected answer:
@@ -38,9 +44,11 @@ Expected answer:
 | Ginger Spice | Geraldine Estelle Halliwell | 1972/08/06 |
 | Posh Spice | Victoria Caroline Adams | 1974/04/17 |
 
+For the real-name column, accept a documented full birth name or current legal name. For example, `Melanie Janine Brown` and `Melanie Janine Brown McPhee` are both acceptable.
+
 ```powershell
 docker compose exec -T home-assistant-gateway `
   node dist/benchmark.js nvidia/nemotron-3-nano-4b `
-  --question "/new Who are the Spice Girls (stage names in the form `"[adjective] Spice`" and real names) and what are their birthdays YYYY/MM/DD?" `
+  --question "/new /map Who are the Spice Girls (stage names in the form `"[adjective] Spice`" and real names) and what are their birthdays YYYY/MM/DD?" `
   --num-predict 2048 --temperature 0.2
 ```

@@ -1,0 +1,10 @@
+CURRENT LMS PS:
+
+IDENTIFIER           MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen38-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    16384      1           Local     60m / 1h
+
+
+PER-GPU MEMORY:
+Quadro K1200, 1760, 4096
+NVIDIA GeForce GTX 1650 SUPER, 2628, 4096
+

@@ -1,0 +1,120 @@
+{
+  "model": "qwen3.8-4b-distill",
+  "targetPromptTokens": 3000,
+  "promptCharacters": 20096,
+  "maxTokens": 128,
+  "repetitions": 2,
+  "concurrency": 4,
+  "warmups": 1,
+  "summary": {
+    "averageWallSeconds": 10.543370912500002,
+    "averageObservedTtftSeconds": 6.4734432375000015,
+    "averageReportedTtftSeconds": 0.133408,
+    "averageTokensPerSecond": 31.250042535100953,
+    "averagePromptTokens": 6061,
+    "averagePredictedTokens": 128,
+    "averageWaveWallSeconds": 16.915694049999995
+  },
+  "waves": [
+    {
+      "repetition": 1,
+      "aggregateWallSeconds": 16.832424699999997,
+      "requests": [
+        {
+          "index": 1,
+          "measured": true,
+          "wallSeconds": 4.230221600000005,
+          "observedTtftSeconds": 0.15965419999999722,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.235104913060653,
+          "reportedTtftSeconds": 0.13384200000000002,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 2,
+          "measured": true,
+          "wallSeconds": 8.365969399999994,
+          "observedTtftSeconds": 4.377060000000005,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.880614879159914,
+          "reportedTtftSeconds": 0.126638,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 3,
+          "measured": true,
+          "wallSeconds": 12.572601199999998,
+          "observedTtftSeconds": 8.522530099999996,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.396530015947953,
+          "reportedTtftSeconds": 0.13728100000000001,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 4,
+          "measured": true,
+          "wallSeconds": 16.8278938,
+          "observedTtftSeconds": 12.727415799999996,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.006881330317285,
+          "reportedTtftSeconds": 0.122195,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "aggregateWallSeconds": 16.998963399999994,
+      "requests": [
+        {
+          "index": 5,
+          "measured": true,
+          "wallSeconds": 4.233558700000009,
+          "observedTtftSeconds": 0.17159120000000985,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.297053394744562,
+          "reportedTtftSeconds": 0.125091,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 6,
+          "measured": true,
+          "wallSeconds": 8.469055200000003,
+          "observedTtftSeconds": 4.394819799999998,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.19118650045448,
+          "reportedTtftSeconds": 0.14985900000000002,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 7,
+          "measured": true,
+          "wallSeconds": 12.6543373,
+          "observedTtftSeconds": 8.615111900000004,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 31.512240148082714,
+          "reportedTtftSeconds": 0.130002,
+          "stopReason": "maxPredictedTokensReached"
+        },
+        {
+          "index": 8,
+          "measured": true,
+          "wallSeconds": 16.993330100000005,
+          "observedTtftSeconds": 12.819362900000007,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 30.480729099040047,
+          "reportedTtftSeconds": 0.14235599999999998,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { addAssessmentRepairs, buildRepairPlan, completeRepairReviewCoverage, mergeFieldResults, reduceFieldResults, repairCallBudget, repairReviewCoverageIssues, repairReviewMaxTokens, type RepairReview } from "./researchRepair.js";
-import { expandResearchQuestion, normalizeDiscoveredItems, requiresAggregateFirst, researchListBlockReason, setFilterListBlockReason, unresolvedResearchFields } from "./researchTool.js";
+import { createResearchTools, discoveryQuestionBlockReason, expandResearchQuestion, normalizeDiscoveredItems, requiresAggregateFirst, researchListBlockReason, setFilterListBlockReason, unresolvedResearchFields } from "./researchTool.js";
 
 test("expandResearchQuestion replaces every item placeholder", () => {
   assert.equal(
@@ -150,6 +150,34 @@ test("request classification prevents entity-attribute bypass for set filters", 
   assert.equal(researchListBlockReason(true, "set_filter_fallback", partial), undefined);
 });
 
+test("discovery questions reject per-entity attributes", () => {
+  assert.equal(discoveryQuestionBlockReason("Who are the members of the Spice Girls?"), undefined);
+  assert.match(discoveryQuestionBlockReason(
+    "Who are the Spice Girls? Provide each member's stage name and full legal birth name.",
+  ) ?? "", /Discovery must ask only/);
+  assert.match(discoveryQuestionBlockReason(
+    "Who are the members and what are their birthdays?",
+  ) ?? "", /research_map/);
+});
+
+test("research modes expose only their permitted tools", () => {
+  const workspace = (mode: "query" | "map") => ({
+    mode,
+    research: async (question: string) => ({ question, answer: "answer", status: "complete" as const, unresolved: [], evidence: ["evidence"] }),
+    discover: async () => ({ items: ["item"], context: "context" }),
+    reduce: async () => "answer",
+    progress: () => undefined,
+    observe: () => undefined,
+  });
+
+  assert.deepEqual(createResearchTools(workspace("query")).map(tool => tool.name), ["research_question"]);
+  assert.deepEqual(createResearchTools(workspace("map")).map(tool => tool.name), [
+    "research_list",
+    "research_map",
+    "research_reduce",
+  ]);
+});
+
 test("incomplete repair reviews are rejected and completed as unsatisfied", () => {
   const records = [{ item: "First" }, { item: "Second" }];
   const fields = [
@@ -264,5 +292,16 @@ test("discovery prompts require one item per unique subject", async () => {
   process.env.LOCALWIKI_MCP_AUTH_TOKEN ??= "test-token";
   const { listExtractionPrompt, wikiSystemPrompt } = await import("./config.js");
   assert.match(wikiSystemPrompt, /one canonical identifier per subject/);
+  assert.match(wikiSystemPrompt, /question must contain only the membership question/);
   assert.match(listExtractionPrompt, /never emit those names as separate items/);
+});
+
+test("research prompt requires plain-text termination", async () => {
+  process.env.GATEWAY_API_KEY ??= "test-key";
+  process.env.LOCALWIKI_MCP_AUTH_TOKEN ??= "test-token";
+  const { researchSystemPrompt } = await import("./config.js");
+  assert.match(researchSystemPrompt, /Tool calls are cheaper and more reliable than speculative reasoning/);
+  assert.match(researchSystemPrompt, /Search sparingly with short exact subjects/);
+  assert.match(researchSystemPrompt, /Stop calling tools immediately once fetched evidence fully answers the question/);
+  assert.match(researchSystemPrompt, /Never print or serialize tool calls as text/);
 });

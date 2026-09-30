@@ -1,5 +1,6 @@
 import { tool, type Tool } from "@lmstudio/sdk";
 import { z } from "zod";
+import type { ResearchMode } from "./researchMode.js";
 
 export type ResearchResult = {
   question: string;
@@ -28,7 +29,7 @@ type ResearchMap = {
 };
 
 type ResearchWorkspace = {
-  aggregateFirstRequired: boolean;
+  mode: ResearchMode;
   research: (question: string) => Promise<ResearchResult>;
   discover: (question: string) => Promise<{ items: string[]; context: string }>;
   reduce: (
@@ -86,6 +87,15 @@ export function researchListBlockReason(
   return purpose === "set_filter_fallback" ? setFilterListBlockReason(latestAggregateResult) : undefined;
 }
 
+export function discoveryQuestionBlockReason(question: string): string | undefined {
+  const requestsAttributes = /\b(?:birth(?:day| date| name)|date of birth|stage name|real name|legal name|nickname|alias|attribute|field)\b/i.test(question)
+    || /\b(?:provide|include|give)\b.{0,100}\b(?:each|their|every)\b/i.test(question)
+    || /\band\s+(?:what|when|where|how)\b/i.test(question);
+  return requestsAttributes
+    ? "Discovery must ask only which unique subjects belong to the set. Remove all dates, labels, aliases, and other per-subject attributes; request them later with research_map."
+    : undefined;
+}
+
 export function normalizeDiscoveredItems(items: string[]): string[] {
   const seen = new Set<string>();
   return items.flatMap(item => {
@@ -106,7 +116,6 @@ export function unresolvedResearchFields(answer: string): string[] {
 export function createResearchTools(workspace: ResearchWorkspace): Tool[] {
   const datasets = new Map<string, ResearchDataset>();
   const maps = new Map<string, ResearchMap>();
-  let latestAggregateResult: ResearchResult | undefined;
   const progressLabel = (value: string) => value.replace(/\s+/g, " ").trim().slice(0, 120);
 
   const researchQuestion = tool({
@@ -119,7 +128,6 @@ export function createResearchTools(workspace: ResearchWorkspace): Tool[] {
     implementation: async ({ question }) => {
       workspace.progress("Researching the question.");
       const result = await workspace.research(question);
-      latestAggregateResult = result;
       workspace.progress("Research complete.");
       return JSON.stringify(result);
     },
@@ -127,7 +135,7 @@ export function createResearchTools(workspace: ResearchWorkspace): Tool[] {
 
   const researchList = tool({
     name: "research_list",
-    description: "Discover and store one canonical identifier for each unique subject in the complete set. Aliases and alternate labels for the same subject must not become separate items. Do not request attributes here. Returns a dataset handle and validated count for research_map.",
+    description: "Discover and store one canonical identifier for each unique subject in the complete set. The question must ask only who or what belongs to the set. Omit every requested per-subject attribute from this call; aliases, labels, dates, and other fields belong in research_map. Returns a dataset handle and validated count for research_map.",
     parameters: {
       question: z.string().min(1).max(300)
         .describe("Ask only for a complete list of canonical entity names, without dates or other attributes"),
@@ -135,11 +143,10 @@ export function createResearchTools(workspace: ResearchWorkspace): Tool[] {
         .describe("Use entity_attributes for per-entity facts. Use set_filter_fallback only after aggregate research could not answer a set-filter question."),
     },
     implementation: async ({ question, purpose }) => {
-      const blockedReason = researchListBlockReason(workspace.aggregateFirstRequired, purpose, latestAggregateResult);
-      if (blockedReason) {
-        const reason = blockedReason;
-        workspace.observe("research_list_blocked", { purpose, reason });
-        return JSON.stringify({ error: reason });
+      const questionReason = discoveryQuestionBlockReason(question);
+      if (questionReason) {
+        workspace.observe("research_list_blocked", { purpose, reason: questionReason });
+        return JSON.stringify({ error: questionReason });
       }
       workspace.progress("Discovering records.");
       const { items, context } = await workspace.discover(question);
@@ -210,5 +217,7 @@ export function createResearchTools(workspace: ResearchWorkspace): Tool[] {
     },
   });
 
-  return [researchQuestion, researchList, researchMap, researchReduce];
+  return workspace.mode === "map"
+    ? [researchList, researchMap, researchReduce]
+    : [researchQuestion];
 }

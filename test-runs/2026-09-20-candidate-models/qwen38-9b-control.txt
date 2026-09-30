@@ -1,0 +1,1 @@
+{"model":"qwen38-9b-distill","config":{"stream":true,"temperature":0.6,"num_predict":512},"curl_exit":0,"wall_seconds":9.117,"line_count":2,"done_count":1,"done_reason":"stop","tool_calls":[],"combined_content":"","pass":false}

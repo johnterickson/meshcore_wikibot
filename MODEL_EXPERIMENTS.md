@@ -1,6 +1,6 @@
 # Model Experiments
 
-Last updated: 2026-09-17
+Last updated: 2026-09-21
 
 ## Objective
 
@@ -343,7 +343,7 @@ Interpretation: the ten-minute client bound was not the cause of this failure. T
 
 ### Unbiased Handles and Section Retrieval
 
-LocalWiki was changed to the intentional `wiki_search` -> `wiki_sections` -> `wiki_fetch` flow. The gateway presents request-scoped article handles (`A1`, `A2`) and section handles (`S1`, `S2`) while resolving exact paths and section IDs internally. Handles preserve Kiwix result order and Wikipedia document order; they contain no relevance ranking. Section fetches use block-aware segments, keep table rows intact, and repeat table headers across segments. Older tool messages are compacted every four rounds while preserving handle maps and the two latest evidence segments verbatim.
+LocalWiki uses the intentional `wiki_search` -> `wiki_sections` -> `wiki_fetch` flow. The gateway now preserves exact article paths and descriptive section IDs so models can select evidence by meaning. Search results preserve Kiwix result order and contain no relevance ranking. Section fetches use block-aware segments, keep table rows intact, and repeat table headers across segments. Older tool messages are compacted every four rounds while preserving the two latest evidence segments verbatim.
 
 Live retrieval validation passed:
 
@@ -437,6 +437,58 @@ The composite question `Who are the Spice Girls (stage and real names) and what 
 
 Two failed intermediate designs were discriminating. Giving the parent direct wiki tools let it accumulate and confuse shared handles before attempting delegation. Allowing batched questions let it guess entities before reading the membership result, mislabeling members and adding Jade Goody. The single-question contract forces evidence to arrive before the next planning step. Researchers remain serial to avoid competing workloads on the loaded model; the expected cost is roughly one atomic inference per entity.
 
+### Qwen3.8, LFM2.5, and Ornith Candidate Matrix
+
+Five additional candidates were tested on 2026-09-20. The corrected 4B and 9B runs used 8,192 context, parallel 1, the GTX 1650 SUPER with the Quadro K1200 excluded from LM Studio, and system-RAM spill allowed. The earlier Qwen 2B and LFM2.5 2.6B runs used 32,768 context and were not repeated under the corrected 8K configuration.
+
+| Model | HA tool call | Mariners wiki | Runtime result |
+| --- | --- | --- | --- |
+| Qwen3.8 Distill 2B Q6_K | Pass, 1.819 s | Fail, 12.986 s; hallucinated many teams | Stable 32K baseline |
+| LFM2.5 2.6B Q6_K | Pass, 1.808 s | Error, 367.394 s; structured extraction failed | Stable 32K baseline |
+| Qwen3.8 Distill 4B Q4_K_M | Direct pass, 22.126 s; private gateway pass, 2.149 s | Fail, 99.876 s; returned nine incorrect teams | Stable and resident at corrected 8K |
+| Qwen3.8 Distill 9B Q4_K_M | Direct pass, 10.432 s; private gateway pass, 6.281 s | **Pass**, 163.247 s; Seattle Mariners alone | Stable and resident at corrected 8K |
+| Ornith 1.5 9B Q4_K_M | Direct pass, 10.027 s; private gateway pass, 5.318 s | Fail, 214.548 s; output exhausted before a definitive answer | Stable and resident at corrected 8K |
+
+The Qwen 9B runtime summary's automatic `STRICT_SEMANTIC_GRADE=FAIL` line is a harness artifact: its captured answer explicitly says only one active team qualifies and names the Seattle Mariners, which passes the stated rubric. Ornith's reported non-residency was likewise an identifier-matching error; `lms ps` showed it resident before and after the run.
+
+A separate structured Qwen 4B Spice Girls test at 8K completed list-map-reduce over all five members in 383.688 seconds. All stage names, dates, and `YYYY/MM/DD` formatting passed. The strict overall grade failed because the reducer replaced full birth names from the map records with common public names. This confirms that structured map-reduce solves the free-form 8K retention and looping problem, while exact-field preservation still needs deterministic validation or stricter reduction.
+
+Earlier failures with larger contexts, mixed K1200 offload, or disallowed RAM spill must not be characterized as intrinsic Qwen or Ornith instability. The corrected 8K runs remained resident. Full artifacts and grading notes are in `test-runs/2026-09-20-candidate-models/README.md`.
+
+### Qwen3.8 256K Configured Context
+
+Qwen3.8 Distill 4B and 9B both loaded and remained stable with 262,144 configured context, parallel 1, GPU max, and system-RAM spill allowed. This demonstrates loadability, not 256K recall: completed research responses used only 2,350 to 2,744 prompt tokens.
+
+| Model | HA tool call | Mariners | Spice Girls |
+| --- | --- | --- | --- |
+| Qwen3.8 Distill 4B | Pass, 5.625 s | Fail, 85.013 s; substituted World Series wins for appearances | Fail, 591.096 s; wrong names and two wrong dates |
+| Qwen3.8 Distill 9B | Pass, 13.507 s | **Pass**, 363 s; Seattle Mariners alone | Error, 811.339 s; both researchers exhausted the 12-round child limit |
+
+The 9B Spice error said list research produced no fetched evidence, but its attempts actually retained four and six evidence segments. Each attempt ended at the prediction-round limit with literal tool-call markup instead of a final answer, was marked malformed, and was discarded. Retrieval and runtime remained healthy.
+
+The matrix is not a pure model-only comparison. The 4B run used the older request-scoped Wiki handles; the 9B run used exact article paths and descriptive section IDs after handle translation was removed. Full artifacts and memory measurements are in `test-runs/2026-09-21-large-context/README.md`.
+
+A subsequent Qwen 9B run at 8K, parallel 1, and temperature 0.2 completed the Spice Girls pipeline with all five records, stage names, real names, birthdays, and exact date formatting in 2,102.568 seconds. `Melanie Janine Brown McPhee` is accepted as a documented current/legal-name interpretation, so the run passes. It still wasted two 12-round aggregate attempts before list-map-reduce. Explicit request modes now remove that ambiguity: unprefixed requests and `/query` expose only `research_question`, while `/map` exposes only `research_list`, `research_map`, and `research_reduce`. `/new` composes with either mode.
+
+### Qwen3.8 4B Performance Matrix
+
+A direct LM Studio SDK matrix measured Qwen3.8 Distill 4B Q4_K_M across configured context, parallelism, actual prompt length, and KV-cache placement. Every cell manually unloaded all models and verified an empty LM Studio state before loading the next configuration.
+
+With a fixed 6,061-token prompt and 128 generated tokens, 8K context produced 48.22 tok/s, 32K produced 30.52 tok/s, 128K produced 26.31 tok/s, and 256K produced 26.06 tok/s. Higher configured context is therefore not free on this hardware. Four simultaneous requests at 32K completed in a 16.92-second wave with parallel 1, compared with 132.27 seconds at parallel 4. Actual 32,835-token and 131,131-token prompts had TTFTs of 471.6 and 3,505.3 seconds respectively.
+
+The corrected KV comparison ran on the GTX 1650 SUPER. GPU KV and RAM KV were effectively tied: 6.254 versus 6.279 seconds wall time and 21.06 versus 21.00 tok/s. Keep GPU KV enabled.
+
+For this model, the operational profile is 8K context, parallel 1, GPU KV enabled, FP16 KV, and temperature 0.2. Use 32K only when a request demonstrably needs the additional headroom. Do not make 128K or 256K the default. This performance result does not qualify Qwen 4B as the shared model: it passed HA tool calling but failed the Mariners appearance predicate. Keep Nemotron as the shared default; Qwen 9B is the slower quality-focused alternative. Full artifacts are in `test-runs/2026-09-21-qwen4-perf/README.md`.
+
+### Spark X2.5 4B
+
+`spark-x2.5-4b` completed both direct LocalWiki discriminators in one request each with an evidence-first prompt that treats fetched passages as authoritative, favors tool use over speculative reasoning, searches sparingly, and stops when explicit evidence is sufficient.
+
+- Mariners: passed the graded predicate by fetching the `Longest_current_World_Series_appearance_droughts` section and identifying only the Seattle Mariners.
+- Spice Girls: fetched the group introduction and all five member introductions, then returned birth, current/common, and stage names with all five dates in `YYYY/MM/DD` format.
+
+The Mariners trace exposed a stale LM Studio plugin bundle: its advertised schema accepted section `1` as intro, but the executing implementation rejected it and `wiki_sections` still returned `lead`. The model recovered by selecting the exact descriptive section. Its final aside incorrectly described the Seattle Pilots as the Mariners' predecessor; that unsupported claim does not affect the graded answer but means the response was not entirely error-free. Spark is therefore a strong Wikipedia candidate, not yet the shared default. It still needs the private Home Assistant tool-call discriminator and a controlled runtime/resource measurement. Raw traces are in `manual_runs/spark.mariners.txt` and `manual_runs/spark.spicegirls.txt`.
+
 ## Pending Baselines
 
 Still run under the exact baseline, sequentially and with a five-minute process bound:
@@ -448,7 +500,6 @@ Potential follow-up candidates after those:
 - `qwen3.5:4b`
 - `qwen3:8b`
 - `qwen3.5:9b`
-- Ornith 9B
 
 ## Next Iteration Strategy
 

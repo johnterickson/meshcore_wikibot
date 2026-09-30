@@ -1,0 +1,51 @@
+{
+  "config": {
+    "context_length": 262144,
+    "parallel": 1,
+    "temperature": 0.6,
+    "actual_tool_execution": false,
+    "model": "qwen3.8-9b-distill",
+    "stream": false,
+    "max_tokens": 512
+  },
+  "http_status": 200,
+  "latency_seconds": 13.507,
+  "raw_response_fields": {
+    "usage": {
+      "prompt_tokens": 288,
+      "completion_tokens": 62,
+      "total_tokens": 350,
+      "completion_tokens_details": {
+        "reasoning_tokens": 31
+      }
+    },
+    "tool_name": "HassGetState",
+    "finish_reason": "tool_calls",
+    "tool_argument_name": "Desk lamp"
+  },
+  "strict_exact_tool_grade": true,
+  "parse_error": "",
+  "resource_snapshots": [
+    {
+      "label": "initial",
+      "lms_ps": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     59m / 1h",
+      "lm_api_models_http": "200",
+      "health_11435": "200",
+      "health_11436": "200",
+      "ram": "used_mb=38117.4 total_mb=65441.3",
+      "gpu": "Quadro K1200, 693, 4096\r\nNVIDIA GeForce GTX 1650 SUPER, 3857, 4096",
+      "resident": true
+    },
+    {
+      "label": "direct_after",
+      "lms_ps": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    262144     1           Local     60m / 1h",
+      "lm_api_models_http": "200",
+      "health_11435": "200",
+      "health_11436": "200",
+      "ram": "used_mb=38007.6 total_mb=65441.3",
+      "gpu": "Quadro K1200, 693, 4096\r\nNVIDIA GeForce GTX 1650 SUPER, 3863, 4096",
+      "resident": true
+    }
+  ],
+  "residency": true
+}

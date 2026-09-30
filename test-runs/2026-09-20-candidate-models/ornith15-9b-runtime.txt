@@ -1,0 +1,11 @@
+LMS PS:
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+
+PER-GPU MEMORY:
+Quadro K1200, 900, 4096
+NVIDIA GeForce GTX 1650 SUPER, 46, 4096
+

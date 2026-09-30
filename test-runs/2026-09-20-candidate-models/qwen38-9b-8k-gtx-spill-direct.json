@@ -1,0 +1,93 @@
+{
+  "config": {
+    "endpoint": "http://127.0.0.1:1234/v1/chat/completions",
+    "model": "qwen3.8-9b-distill",
+    "stream": false,
+    "temperature": 0.6,
+    "max_tokens": 512,
+    "tool_choice": "required",
+    "tool": "HassGetState",
+    "required_argument": "name:string",
+    "additionalProperties": false
+  },
+  "latency_ms": 10432.2,
+  "http_status": 200,
+  "api_health": {
+    "before": {
+      "http_status": 200,
+      "healthy": true
+    },
+    "after": {
+      "http_status": 200,
+      "healthy": true
+    }
+  },
+  "finish_reason": "tool_calls",
+  "content": "",
+  "parsed_tool_calls": [
+    {
+      "type": "function",
+      "id": "HLjwyIKhcbyIVFwLS4phtf9leesVdKXI",
+      "function": {
+        "name": "HassGetState",
+        "arguments": "{\"name\":\"Desk lamp\"}"
+      }
+    }
+  ],
+  "strict_pass": true,
+  "residency": {
+    "before": true,
+    "after": true,
+    "lms_ps_before": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    8192       1           Local     60m / 1h",
+    "lms_ps_after": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-9b-distill    qwen3.8-9b-distill    IDLE      5.78 GB    8192       1           Local     60m / 1h"
+  },
+  "resources": {
+    "gpu_before": [
+      {
+        "name": "Quadro K1200",
+        "used_mb": 900,
+        "total_mb": 4096
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "used_mb": 3876,
+        "total_mb": 4096
+      }
+    ],
+    "gpu_after": [
+      {
+        "name": "Quadro K1200",
+        "used_mb": 900,
+        "total_mb": 4096
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "used_mb": 3886,
+        "total_mb": 4096
+      }
+    ],
+    "gpu_delta": [
+      {
+        "name": "Quadro K1200",
+        "used_mb_delta": 0,
+        "total_mb_delta": 0
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "used_mb_delta": 10,
+        "total_mb_delta": 0
+      }
+    ],
+    "ram_before": {
+      "total_mb": 65441.3,
+      "free_mb": 37120.9,
+      "used_mb": 28320.4
+    },
+    "ram_after": {
+      "total_mb": 65441.3,
+      "free_mb": 36940.3,
+      "used_mb": 28501.0
+    },
+    "ram_used_mb_delta": 180.59999999999854
+  }
+}

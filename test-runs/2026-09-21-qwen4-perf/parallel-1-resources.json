@@ -1,0 +1,23 @@
+{
+  "name": "parallel-1",
+  "before": {
+    "utc": "2026-09-21T23:46:02.8009551Z",
+    "ramUsedMB": 33532.5,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 622, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 3883, 4096, 21"
+    ],
+    "lmsPs": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    262144     1           Local     60m / 1h"
+  },
+  "after": {
+    "utc": "2026-09-21T23:47:58.0191619Z",
+    "ramUsedMB": 24426.5,
+    "ramTotalMB": 65441.3,
+    "gpu": [
+      "Quadro K1200, 622, 4096, 0",
+      "NVIDIA GeForce GTX 1650 SUPER, 3915, 4096, 89"
+    ],
+    "lmsPs": "IDENTIFIER            MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nqwen3.8-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    32768      1           Local     60m / 1h"
+  }
+}

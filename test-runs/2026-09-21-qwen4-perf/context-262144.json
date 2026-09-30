@@ -1,0 +1,71 @@
+{
+  "model": "qwen3.8-4b-distill",
+  "targetPromptTokens": 3000,
+  "promptCharacters": 20096,
+  "maxTokens": 128,
+  "repetitions": 3,
+  "concurrency": 1,
+  "warmups": 1,
+  "summary": {
+    "averageWallSeconds": 5.048984766666661,
+    "averageObservedTtftSeconds": 0.172749366666656,
+    "averageReportedTtftSeconds": 0.14789966666666668,
+    "averageTokensPerSecond": 26.058510012973418,
+    "averagePromptTokens": 6061,
+    "averagePredictedTokens": 128,
+    "averageWaveWallSeconds": 5.049074966666672
+  },
+  "waves": [
+    {
+      "repetition": 1,
+      "aggregateWallSeconds": 5.037948500000013,
+      "requests": [
+        {
+          "index": 1,
+          "measured": true,
+          "wallSeconds": 5.037730499999991,
+          "observedTtftSeconds": 0.17347979999998642,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 26.11963781317343,
+          "reportedTtftSeconds": 0.139966,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "aggregateWallSeconds": 5.024234800000006,
+      "requests": [
+        {
+          "index": 2,
+          "measured": true,
+          "wallSeconds": 5.024212299999999,
+          "observedTtftSeconds": 0.1715686999999889,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 26.1878672229767,
+          "reportedTtftSeconds": 0.15239599999999998,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    },
+    {
+      "repetition": 3,
+      "aggregateWallSeconds": 5.085041599999997,
+      "requests": [
+        {
+          "index": 3,
+          "measured": true,
+          "wallSeconds": 5.085011499999993,
+          "observedTtftSeconds": 0.17319959999999265,
+          "promptTokens": 6061,
+          "predictedTokens": 128,
+          "tokensPerSecond": 25.86802500277012,
+          "reportedTtftSeconds": 0.151337,
+          "stopReason": "maxPredictedTokensReached"
+        }
+      ]
+    }
+  ]
+}

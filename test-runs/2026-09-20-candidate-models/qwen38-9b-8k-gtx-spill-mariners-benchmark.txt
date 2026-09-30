@@ -1,0 +1,14 @@
+{
+  "model": "qwen3.8-9b-distill",
+  "parameters": {
+    "temperature": 0.6,
+    "num_predict": 2048
+  },
+  "status": 200,
+  "wall_seconds": 162,
+  "answer": "## Answer\n\nOnly **one** active MLB team has never appeared in a World Series:\n\n- **Seattle Mariners** \u2014 The franchise was established in 1977 and has never made a World Series appearance (49 seasons without an appearance).\n\nAll other current MLB franchises have at least one World Series appearance, even if it was many decades ago. For example, the Pittsburgh Pirates last appeared in 1979 (46 seasons ago), the Milwaukee Brewers in 1982, and so on down to the Los Angeles Dodgers and Toronto Blue Jays, who most recently appeared in 2025.",
+  "thinking": "The research question returned a complete answer. The only active MLB team that has never appeared in the World Series is the Seattle Mariners, who have gone through 49 seasons without an appearance (from their founding in 1977 to present).\n\nAll other current MLB franchises have at least one World Series appearance in their history.",
+  "done_reason": "stop",
+  "prompt_eval_count": 2579,
+  "eval_count": 509
+}

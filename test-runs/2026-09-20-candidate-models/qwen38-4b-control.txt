@@ -1,0 +1,12 @@
+model=qwen38-4b-distill
+CONTEXT_LENGTH=16384
+GPU_OFFLOAD=0.5
+temperature=0.6
+num_predict=512
+curl/http status=200
+wall seconds=7.824
+done count=0
+done_reason=
+tool calls=
+combined content=
+pass=False

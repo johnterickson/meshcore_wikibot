@@ -1,0 +1,8 @@
+=== LMS PS ===
+
+IDENTIFIER    MODEL          STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+lfm25-26b     lfm2.5-2.6b    IDLE      2.22 GB    32768      1           Local     60m / 1h
+
+=== GPU MEMORY ===
+0, Quadro K1200, 867 MiB, 4096 MiB
+1, NVIDIA GeForce GTX 1650 SUPER, 2903 MiB, 4096 MiB

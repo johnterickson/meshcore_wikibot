@@ -1,0 +1,54 @@
+{
+  "model": "ornith-1.5-9b",
+  "configuration": {
+    "context_length": 8192,
+    "parallel": 1,
+    "temperature": 0.6,
+    "spill_allowed": true,
+    "num_predict": 512,
+    "k1200_excluded": true
+  },
+  "status": {
+    "http_status": "200",
+    "utc_start": "2026-09-21T18:51:09.9942670Z",
+    "latency_ms": 5317.7,
+    "utc_end": "2026-09-21T18:51:15.3334698Z",
+    "curl_exit": 0
+  },
+  "parsed": {
+    "done_reason": "stop",
+    "done": 1,
+    "tool_calls": [
+      {
+        "type": "",
+        "name": "HassGetState",
+        "arguments": {
+          "name": "Desk lamp"
+        }
+      }
+    ],
+    "chunks": 34
+  },
+  "gateway": {
+    "completion_observed": true,
+    "requestedTools": [
+      "requestedTools\":[],\"toolResults\":[]},\"stream\":true}\r\nhome-assistant-gateway-1  | 2026-09-21T18:51:10.073041922Z {\"event\":\"control_chat_started\",\"requestId\":6,\"waiting\":0}\r\nhome-assistant-gateway-1  | 2026-09-21T18:51:15.325054591Z {\"event\":\"control_chat_completed\",\"requestId\":6,\"model\":\"ornith-1.5-9b\",\"requestedTools\":[\"HassGetState\"]}\r\nhome-assistant-gateway-1  | 2026-09-21T18:51:15.325097596Z {\"event\":\"control_chat_released\",\"requestId\":6,\"waiting\":0}\r\n"
+    ],
+    "authoritative": true
+  },
+  "discrepancy": {
+    "stream_calls": 1,
+    "gateway_requestedTools": 1
+  },
+  "pass": true,
+  "residency": {
+    "loaded": false
+  },
+  "health": {
+    "health": 200,
+    "v1/models": null
+  },
+  "resources": {
+    "gpu": "Quadro K1200, 900, 4096\r\nNVIDIA GeForce GTX 1650 SUPER, 3889, 4096"
+  }
+}

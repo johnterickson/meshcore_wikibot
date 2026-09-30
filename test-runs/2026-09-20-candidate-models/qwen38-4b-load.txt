@@ -1,0 +1,1288 @@
+UTC start: 2026-09-21T03:41:49.7525710Z
+
+=== lms unload --all ===
+Unloading "lfm25-26b"...
+Unloaded 1 model.
+unload exit code: 0
+
+=== lms load -y qwen3.8-4b-distill -c 32768 --gpu max --identifier qwen38-4b-distill --ttl 3600 --parallel 1 ===
+[?25l
+Loading qwen3.8-4b-distill 0% Γáï[?25l
+Loading qwen3.8-4b-distill 0% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% Γá╣[?25l
+Loading qwen3.8-4b-distill 2% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá┤[?25l
+Loading qwen3.8-4b-distill 6% Γáª[?25l
+Loading qwen3.8-4b-distill 7% Γáª[?25l
+Loading qwen3.8-4b-distill 7% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáç[?25l
+Loading qwen3.8-4b-distill 11% Γáç[?25l
+Loading qwen3.8-4b-distill 11% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 11% Γáï[?25l
+Loading qwen3.8-4b-distill 12% Γáï[?25l
+Loading qwen3.8-4b-distill 12% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╕[?25l
+Loading qwen3.8-4b-distill 15% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáº[?25l
+Loading qwen3.8-4b-distill 19% Γáç[?25l
+Loading qwen3.8-4b-distill 21% Γáç[?25l
+Loading qwen3.8-4b-distill 21% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% Γáï[?25l
+Loading qwen3.8-4b-distill 23% Γáï[?25l
+Loading qwen3.8-4b-distill 23% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 23% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá┤[?25l
+Loading qwen3.8-4b-distill 27% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáç[?25l
+Loading qwen3.8-4b-distill 30% Γáç[?25l
+Loading qwen3.8-4b-distill 30% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 30% Γáï[?25l
+Loading qwen3.8-4b-distill 31% Γáï[?25l
+Loading qwen3.8-4b-distill 31% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╕[?25l
+Loading qwen3.8-4b-distill 33% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáº[?25l
+Loading qwen3.8-4b-distill 36% Γáº[?25l
+Loading qwen3.8-4b-distill 36% Γáç[?25l
+Loading qwen3.8-4b-distill 36% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% Γáï[?25l
+Loading qwen3.8-4b-distill 38% Γáï[?25l
+Loading qwen3.8-4b-distill 38% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 38% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá┤[?25l
+Loading qwen3.8-4b-distill 41% Γá┤[?25l
+Loading qwen3.8-4b-distill 41% Γáª[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáç[?25l
+Loading qwen3.8-4b-distill 42% Γáç[?25l
+Loading qwen3.8-4b-distill 42% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 43% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 43% Γáï[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% Γá╣[?25l
+Loading qwen3.8-4b-distill 44% Γá╣[?25l
+Loading qwen3.8-4b-distill 44% Γá╕[?25l
+Loading qwen3.8-4b-distill 45% Γá╕[?25l
+Loading qwen3.8-4b-distill 45% Γá╝[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γáª[?25l
+Loading qwen3.8-4b-distill 46% Γáª[?25l
+Loading qwen3.8-4b-distill 46% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% Γáï[?25l
+Loading qwen3.8-4b-distill 48% Γáï[?25l
+Loading qwen3.8-4b-distill 48% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╝[?25l
+Loading qwen3.8-4b-distill 49% Γá╝[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáç[?25l
+Loading qwen3.8-4b-distill 51% Γáç[?25l
+Loading qwen3.8-4b-distill 51% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 53% Γáç[?25l
+Loading qwen3.8-4b-distill 54% Γáç[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% Γáï[?25l
+Loading qwen3.8-4b-distill 55% Γáï[?25l
+Loading qwen3.8-4b-distill 55% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╕[?25l
+Loading qwen3.8-4b-distill 56% Γá╕[?25l
+Loading qwen3.8-4b-distill 56% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáº[?25l
+Loading qwen3.8-4b-distill 57% Γáº[?25l
+Loading qwen3.8-4b-distill 57% Γáç[?25l
+Loading qwen3.8-4b-distill 57% Γáç[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╕[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γáª[?25l
+Loading qwen3.8-4b-distill 59% Γáª[?25l
+Loading qwen3.8-4b-distill 59% Γáº[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% Γáï[?25l
+Loading qwen3.8-4b-distill 60% Γáï[?25l
+Loading qwen3.8-4b-distill 60% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╝[?25l
+Loading qwen3.8-4b-distill 61% Γá╝[?25l
+Loading qwen3.8-4b-distill 61% Γá┤[?25l
+Loading qwen3.8-4b-distill 61% Γáª[?25l
+Loading qwen3.8-4b-distill 61% Γáª[?25l
+Loading qwen3.8-4b-distill 61% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáç[?25l
+Loading qwen3.8-4b-distill 62% Γáç[?25l
+Loading qwen3.8-4b-distill 62% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 63% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 63% Γá╣[?25l
+Loading qwen3.8-4b-distill 63% Γá╣[?25l
+Loading qwen3.8-4b-distill 63% Γá╕[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá┤[?25l
+Loading qwen3.8-4b-distill 63% Γá┤[?25l
+Loading qwen3.8-4b-distill 63% Γáª[?25l
+Loading qwen3.8-4b-distill 64% Γáª[?25l
+Loading qwen3.8-4b-distill 64% Γáº[?25l
+Loading qwen3.8-4b-distill 64% Γáº[?25l
+Loading qwen3.8-4b-distill 64% Γáç[?25l
+Loading qwen3.8-4b-distill 64% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 64% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 64% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╕[?25l
+Loading qwen3.8-4b-distill 65% Γá╕[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá┤[?25l
+Loading qwen3.8-4b-distill 65% Γá┤[?25l
+Loading qwen3.8-4b-distill 65% Γáª[?25l
+Loading qwen3.8-4b-distill 65% Γáº[?25l
+Loading qwen3.8-4b-distill 66% Γáº[?25l
+Loading qwen3.8-4b-distill 66% Γáç[?25l
+Loading qwen3.8-4b-distill 66% Γáç[?25l
+Loading qwen3.8-4b-distill 66% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 66% Γáï[?25l
+Loading qwen3.8-4b-distill 66% Γáï[?25l
+Loading qwen3.8-4b-distill 66% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 100% ΓáÖ
+Model loaded successfully in 12.51s.
+(2.59 GiB)
+To use the model in the API/SDK, use the identifier "qwen38-4b-distill".
+[K[?25h
+load exit code: 0
+
+=== lms ps ===
+
+IDENTIFIER           MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen38-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    32768      1           Local     60m / 1h
+
+lms ps exit code: 0
+
+=== nvidia-smi memory ===
+0, Quadro K1200, 2239 MiB, 4096 MiB
+1, NVIDIA GeForce GTX 1650 SUPER, 3485 MiB, 4096 MiB
+nvidia-smi exit code: 0
+
+UTC end: 2026-09-21T03:42:05.2654613Z
+
+=== 16K RETRY AFTER INFERENCE UNLOAD ===
+UTC start: 2026-09-21T03:43:43.4919786Z
+
+--- lms unload --all output (exit 0) ---
+No models to unload.
+
+--- lms load output (exit 1) ---
+[?25l
+Loading qwen3.8-4b-distill 0% Γáï[?25l
+Loading qwen3.8-4b-distill 0% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% Γá╣[?25l
+Loading qwen3.8-4b-distill 2% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γáª[?25l
+Loading qwen3.8-4b-distill 7% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáç[?25l
+Loading qwen3.8-4b-distill 11% Γáç[?25l
+Loading qwen3.8-4b-distill 11% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% Γáï[?25l
+Loading qwen3.8-4b-distill 12% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╕[?25l
+Loading qwen3.8-4b-distill 15% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáº[?25l
+Loading qwen3.8-4b-distill 19% Γáç[?25l
+Loading qwen3.8-4b-distill 21% Γáç[?25l
+Loading qwen3.8-4b-distill 21% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% Γáï[?25l
+Loading qwen3.8-4b-distill 23% Γáï[?25l
+Loading qwen3.8-4b-distill 23% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 23% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá┤[?25l
+Loading qwen3.8-4b-distill 27% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáç[?25l
+Loading qwen3.8-4b-distill 30% Γáç[?25l
+Loading qwen3.8-4b-distill 30% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 30% Γáï[?25l
+Loading qwen3.8-4b-distill 31% Γáï[?25l
+Loading qwen3.8-4b-distill 31% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╕[?25l
+Loading qwen3.8-4b-distill 33% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáº[?25l
+Loading qwen3.8-4b-distill 35% Γáç[?25l
+Loading qwen3.8-4b-distill 36% Γáç[?25l
+Loading qwen3.8-4b-distill 36% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 37% Γáï[?25l
+Loading qwen3.8-4b-distill 38% Γáï[?25l
+Loading qwen3.8-4b-distill 38% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá┤[?25l
+Loading qwen3.8-4b-distill 40% Γáª[?25l
+Loading qwen3.8-4b-distill 41% Γáª[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáç[?25l
+Loading qwen3.8-4b-distill 42% Γáç[?25l
+Loading qwen3.8-4b-distill 42% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 42% Γáï[?25l
+Loading qwen3.8-4b-distill 43% Γáï[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% Γá╣[?25l
+Loading qwen3.8-4b-distill 44% Γá╣[?25l
+Loading qwen3.8-4b-distill 44% Γá╕[?25l
+Loading qwen3.8-4b-distill 44% Γá╝[?25l
+Loading qwen3.8-4b-distill 45% Γá╝[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γáª[?25l
+Loading qwen3.8-4b-distill 45% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% Γáï[?25l
+Loading qwen3.8-4b-distill 48% Γáï[?25l
+Loading qwen3.8-4b-distill 48% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╕[?25l
+Loading qwen3.8-4b-distill 49% Γá╝[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáª[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáç[?25l
+Loading qwen3.8-4b-distill 50% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 51% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 52% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá╝[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 53% Γáç[?25l
+Loading qwen3.8-4b-distill 54% Γáç[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% Γáï[?25l
+Loading qwen3.8-4b-distill 54% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╕[?25l
+Loading qwen3.8-4b-distill 56% Γá╕[?25l
+Loading qwen3.8-4b-distill 56% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáº[?25l
+Loading qwen3.8-4b-distill 57% Γáº[?25l
+Loading qwen3.8-4b-distill 57% Γáç[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╕[?25l
+Loading qwen3.8-4b-distill 58% Γá╕[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γáª[?25l
+Loading qwen3.8-4b-distill 59% Γáº[?25l
+Loading qwen3.8-4b-distill 59% Γáº[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% Γáï[?25l
+Loading qwen3.8-4b-distill 60% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 60% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╝[?25l
+Loading qwen3.8-4b-distill 61% Γá┤[?25l
+Loading qwen3.8-4b-distill 61% Γá┤[?25l
+Loading qwen3.8-4b-distill 61% Γáª[?25l
+Loading qwen3.8-4b-distill 61% Γáª[?25l
+Loading qwen3.8-4b-distill 61% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáç[?25l
+Loading qwen3.8-4b-distill 62% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 62% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 63% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 63% Γá╣[?25l
+Loading qwen3.8-4b-distill 63% Γá╕[?25l
+Loading qwen3.8-4b-distill 63% Γá╕[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá┤[?25l
+Loading qwen3.8-4b-distill 63% Γáª[?25l
+Loading qwen3.8-4b-distill 63% Γáª[?25l
+Loading qwen3.8-4b-distill 63% Γáº[?25l
+Loading qwen3.8-4b-distill 64% Γáº[?25l
+Loading qwen3.8-4b-distill 64% Γáç[?25l
+Loading qwen3.8-4b-distill 64% Γáç[?25l
+Loading qwen3.8-4b-distill 64% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 64% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 64% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╕[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá┤[?25l
+Loading qwen3.8-4b-distill 65% Γá┤[?25l
+Loading qwen3.8-4b-distill 65% Γáª[?25l
+Loading qwen3.8-4b-distill 65% Γáª[?25l
+Loading qwen3.8-4b-distill 65% Γáº[?25l
+Loading qwen3.8-4b-distill 65% Γáç[?25l
+Loading qwen3.8-4b-distill 66% Γáç[?25l
+Loading qwen3.8-4b-distill 66% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 66% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 66% Γáï[?25l
+Loading qwen3.8-4b-distill 66% Γáï[?25l
+Loading qwen3.8-4b-distill 66% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 66% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 66% Γá╣[?25l
+Loading qwen3.8-4b-distill 66% Γá╕[?25l
+Loading qwen3.8-4b-distill 67% Γá╕[?25l
+Loading qwen3.8-4b-distill 67% Γá╝[?25l
+Loading qwen3.8-4b-distill 67% Γá╝[?25l
+Loading qwen3.8-4b-distill 67% Γá┤[?25l
+Loading qwen3.8-4b-distill 67% Γáª[?25l
+Loading qwen3.8-4b-distill 67% Γáª[?25l
+Loading qwen3.8-4b-distill 67% Γáº[?25l
+Loading qwen3.8-4b-distill 67% Γáº[?25l
+Loading qwen3.8-4b-distill 67% Γáç[?25l
+Loading qwen3.8-4b-distill 67% Γáç[?25l
+Loading qwen3.8-4b-distill 67% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 67% Γáï[?25l
+Loading qwen3.8-4b-distill 68% Γáï[?25l
+Loading qwen3.8-4b-distill 68% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 68% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 68% Γá╣[?25l
+Loading qwen3.8-4b-distill 68% Γá╣[?25l
+Loading qwen3.8-4b-distill 68% Γá╕[?25l
+Loading qwen3.8-4b-distill 68% Γá╝[?25l
+Loading qwen3.8-4b-distill 68% Γá╝[?25l
+Loading qwen3.8-4b-distill 68% Γá┤[?25l
+Loading qwen3.8-4b-distill 68% Γá┤[?25l
+Loading qwen3.8-4b-distill 68% Γáª[?25l
+Loading qwen3.8-4b-distill 69% Γáª[?25l
+Loading qwen3.8-4b-distill 69% Γáº[?25l
+Loading qwen3.8-4b-distill 69% Γáç[?25l
+Loading qwen3.8-4b-distill 69% Γáç[?25l
+Loading qwen3.8-4b-distill 69% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 69% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 69% Γáï[?25l
+Loading qwen3.8-4b-distill 69% Γáï[?25l
+Loading qwen3.8-4b-distill 69% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 69% Γá╣[?25l
+Loading qwen3.8-4b-distill 69% Γá╣[?25l
+Loading qwen3.8-4b-distill 69% Γá╕[?25l
+Loading qwen3.8-4b-distill 70% Γá╕[?25l
+Loading qwen3.8-4b-distill 70% Γá╝[?25l
+Loading qwen3.8-4b-distill 70% Γá╝[?25l
+Loading qwen3.8-4b-distill 70% Γá┤[?25l
+Loading qwen3.8-4b-distill 70% Γáª[?25l
+Loading qwen3.8-4b-distill 70% Γáª[?25l
+Loading qwen3.8-4b-distill 70% Γáº[?25l
+Loading qwen3.8-4b-distill 70% Γáº[?25l
+Loading qwen3.8-4b-distill 70% Γáç[?25l
+Loading qwen3.8-4b-distill 70% Γáç[?25l
+Loading qwen3.8-4b-distill 70% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 70% Γáï[?25l
+Loading qwen3.8-4b-distill 71% Γáï[?25l
+Loading qwen3.8-4b-distill 71% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 71% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 71% Γá╣[?25l
+Loading qwen3.8-4b-distill 71% Γá╕[?25l
+Loading qwen3.8-4b-distill 71% Γá╕[?25l
+Loading qwen3.8-4b-distill 71% Γá╝[?25l
+Loading qwen3.8-4b-distill 71% Γá╝[?25l
+Loading qwen3.8-4b-distill 71% Γá┤[?25l
+Loading qwen3.8-4b-distill 71% Γá┤[?25l
+Loading qwen3.8-4b-distill 71% Γáª[?25l
+Loading qwen3.8-4b-distill 71% Γáº[?25l
+Loading qwen3.8-4b-distill 71% Γáº[?25l
+Loading qwen3.8-4b-distill 71% Γáç[?25l
+Loading qwen3.8-4b-distill 72% Γáç[?25l
+Loading qwen3.8-4b-distill 72% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 72% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 72% Γáï[?25l
+Loading qwen3.8-4b-distill 72% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 72% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 72% Γá╣[?25l
+Loading qwen3.8-4b-distill 72% Γá╣[?25l
+Loading qwen3.8-4b-distill 72% Γá╕[?25l
+Loading qwen3.8-4b-distill 72% Γá╕[?25l
+Loading qwen3.8-4b-distill 72% Γá╝[?25l
+Loading qwen3.8-4b-distill 72% Γá┤[?25l
+Loading qwen3.8-4b-distill 72% Γá┤[?25l
+Loading qwen3.8-4b-distill 72% Γáª[?25l
+Loading qwen3.8-4b-distill 72% Γáª[?25l
+Loading qwen3.8-4b-distill 72% Γáº[?25l
+Loading qwen3.8-4b-distill 73% Γáº[?25l
+Loading qwen3.8-4b-distill 73% Γáç[?25l
+Loading qwen3.8-4b-distill 73% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 73% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 73% Γáï[?25l
+Loading qwen3.8-4b-distill 73% Γáï[?25l
+Loading qwen3.8-4b-distill 73% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 73% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 73% Γá╣[?25l
+Loading qwen3.8-4b-distill 73% Γá╕[?25l
+Loading qwen3.8-4b-distill 73% Γá╕[?25l
+Loading qwen3.8-4b-distill 73% Γá╝[?25l
+Loading qwen3.8-4b-distill 73% Γá╝[?25l
+Loading qwen3.8-4b-distill 73% Γá┤[?25l
+Loading qwen3.8-4b-distill 73% Γá┤[?25l
+Loading qwen3.8-4b-distill 73% Γáª[?25l
+Loading qwen3.8-4b-distill 73% Γáº[?25l
+Loading qwen3.8-4b-distill 74% Γáº[?25l
+Loading qwen3.8-4b-distill 74% Γáç[?25l
+Loading qwen3.8-4b-distill 74% Γáç[?25l
+Loading qwen3.8-4b-distill 74% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 74% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 74% Γáï[?25l
+Loading qwen3.8-4b-distill 74% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 74% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 74% Γá╣[?25l
+Loading qwen3.8-4b-distill 74% Γá╣[?25l
+Loading qwen3.8-4b-distill 74% Γá╕[?25l
+Loading qwen3.8-4b-distill 74% Γá╝[?25l
+Loading qwen3.8-4b-distill 74% Γá╝[?25l
+Loading qwen3.8-4b-distill 74% Γá┤[?25l
+Loading qwen3.8-4b-distill 74% Γá┤[?25l
+Loading qwen3.8-4b-distill 74% Γáª[?25l
+Loading qwen3.8-4b-distill 75% Γáª[?25l
+Loading qwen3.8-4b-distill 75% Γáº[?25l
+Loading qwen3.8-4b-distill 75% Γáç[?25l
+Loading qwen3.8-4b-distill 75% Γáç[?25l
+Loading qwen3.8-4b-distill 75% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 75% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 75% Γáï[?25l
+Loading qwen3.8-4b-distill 75% Γáï[?25l
+Loading qwen3.8-4b-distill 75% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 75% Γá╣[?25l
+Loading qwen3.8-4b-distill 75% Γá╣[?25l
+Loading qwen3.8-4b-distill 75% Γá╕[?25l
+Loading qwen3.8-4b-distill 75% Γá╕[?25l
+Loading qwen3.8-4b-distill 75% Γá╝[?25l
+Loading qwen3.8-4b-distill 75% Γá╝[?25l
+Loading qwen3.8-4b-distill 75% Γá┤[?25l
+Loading qwen3.8-4b-distill 75% Γáª[?25l
+Loading qwen3.8-4b-distill 75% Γáª[?25l
+Loading qwen3.8-4b-distill 75% Γáº[?25l
+Loading qwen3.8-4b-distill 76% Γáº[?25l
+Loading qwen3.8-4b-distill 76% Γáç[?25l
+Loading qwen3.8-4b-distill 76% Γáç[?25l
+Loading qwen3.8-4b-distill 76% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 76% Γáï[?25l
+Loading qwen3.8-4b-distill 76% Γáï[?25l
+Loading qwen3.8-4b-distill 76% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 76% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 76% Γá╣[?25l
+Loading qwen3.8-4b-distill 76% Γá╣[?25l
+Loading qwen3.8-4b-distill 76% Γá╕[?25l
+Loading qwen3.8-4b-distill 76% Γá╝[?25l
+Loading qwen3.8-4b-distill 76% Γá╝[?25l
+Loading qwen3.8-4b-distill 76% Γá┤[?25l
+Loading qwen3.8-4b-distill 76% Γá┤[?25l
+Loading qwen3.8-4b-distill 76% Γáª[?25l
+Loading qwen3.8-4b-distill 76% Γáª[?25l
+Loading qwen3.8-4b-distill 76% Γáº[?25l
+Loading qwen3.8-4b-distill 76% Γáç[?25l
+Loading qwen3.8-4b-distill 76% Γáç[?25l
+Loading qwen3.8-4b-distill 76% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 77% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 77% Γáï[?25l
+Loading qwen3.8-4b-distill 77% Γáï[?25l
+Loading qwen3.8-4b-distill 77% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 77% Γá╣[?25l
+Loading qwen3.8-4b-distill 77% Γá╣[?25l
+Loading qwen3.8-4b-distill 77% Γá╕[?25l
+Loading qwen3.8-4b-distill 77% Γá╕[?25l
+Loading qwen3.8-4b-distill 77% Γá╝[?25l
+Loading qwen3.8-4b-distill 77% Γá╝[?25l
+Loading qwen3.8-4b-distill 77% Γá┤[?25l
+Loading qwen3.8-4b-distill 77% Γá┤[?25l
+Loading qwen3.8-4b-distill 77% Γáª[?25l
+Loading qwen3.8-4b-distill 77% Γáº[?25l
+Loading qwen3.8-4b-distill 77% Γáº[?25l
+Loading qwen3.8-4b-distill 77% Γáç[?25l
+Loading qwen3.8-4b-distill 77% Γáç[?25l
+Loading qwen3.8-4b-distill 77% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 77% Γáï[?25l
+Loading qwen3.8-4b-distill 77% Γáï[?25l
+Loading qwen3.8-4b-distill 77% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 78% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 78% Γá╣[?25l
+Loading qwen3.8-4b-distill 78% Γá╣[?25l
+Loading qwen3.8-4b-distill 78% Γá╕[?25l
+Loading qwen3.8-4b-distill 78% Γá╝[?25l
+Loading qwen3.8-4b-distill 78% Γá╝[?25l
+Loading qwen3.8-4b-distill 78% Γá┤[?25l
+Loading qwen3.8-4b-distill 78% Γá┤[?25l
+Loading qwen3.8-4b-distill 78% Γáª[?25l
+Loading qwen3.8-4b-distill 78% Γáª[?25l
+Loading qwen3.8-4b-distill 78% Γáº[?25l
+Loading qwen3.8-4b-distill 78% Γáç[?25l
+Loading qwen3.8-4b-distill 78% Γáç[?25l
+Loading qwen3.8-4b-distill 78% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 78% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 78% Γáï[?25l
+Loading qwen3.8-4b-distill 78% Γáï[?25l
+Loading qwen3.8-4b-distill 78% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 78% Γá╣[?25l
+Loading qwen3.8-4b-distill 78% Γá╣[?25l
+Loading qwen3.8-4b-distill 78% Γá╕[?25l
+Loading qwen3.8-4b-distill 78% Γá╕[?25l
+Loading qwen3.8-4b-distill 78% Γá╝[?25l
+Loading qwen3.8-4b-distill 79% Γá╝[?25l
+Loading qwen3.8-4b-distill 79% Γá┤[?25l
+Loading qwen3.8-4b-distill 79% Γáª[?25l
+Loading qwen3.8-4b-distill 79% Γáª[?25l
+Loading qwen3.8-4b-distill 79% Γáº[?25l
+Loading qwen3.8-4b-distill 79% Γáº[?25l
+Loading qwen3.8-4b-distill 79% Γáç[?25l
+Loading qwen3.8-4b-distill 79% Γáç[?25l
+Loading qwen3.8-4b-distill 79% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 79% Γáï[?25l
+Loading qwen3.8-4b-distill 79% Γáï[?25l
+Loading qwen3.8-4b-distill 79% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 79% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 79% Γá╣[?25l
+Loading qwen3.8-4b-distill 79% Γá╣[?25l
+Loading qwen3.8-4b-distill 79% Γá╕[?25l
+Loading qwen3.8-4b-distill 79% Γá╝[?25l
+Loading qwen3.8-4b-distill 79% Γá╝[?25l
+Loading qwen3.8-4b-distill 79% Γá┤[?25l
+Loading qwen3.8-4b-distill 79% Γá┤[?25l
+Loading qwen3.8-4b-distill 79% Γáª[?25l
+Loading qwen3.8-4b-distill 79% Γáª[?25l
+Loading qwen3.8-4b-distill 79% Γáº[?25l
+Loading qwen3.8-4b-distill 79% Γáç[?25l
+Loading qwen3.8-4b-distill 79% Γáç[?25l
+Loading qwen3.8-4b-distill 79% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 79% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 79% Γáï[?25l
+Loading qwen3.8-4b-distill 80% Γáï[?25l
+Loading qwen3.8-4b-distill 80% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 80% Γá╣[?25l
+Loading qwen3.8-4b-distill 80% Γá╣[?25l
+Loading qwen3.8-4b-distill 80% Γá╕[?25l
+Loading qwen3.8-4b-distill 80% Γá╕[?25l
+Loading qwen3.8-4b-distill 80% Γá╝[?25l
+Loading qwen3.8-4b-distill 80% Γá╝[?25l
+Loading qwen3.8-4b-distill 80% Γá┤[?25l
+Loading qwen3.8-4b-distill 80% Γáª[?25l
+Loading qwen3.8-4b-distill 80% Γáª[?25l
+Loading qwen3.8-4b-distill 80% Γáº[?25l
+Loading qwen3.8-4b-distill 80% Γáº[?25l
+Loading qwen3.8-4b-distill 80% Γáç[?25l
+Loading qwen3.8-4b-distill 80% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 80% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 80% Γáï[?25l
+Loading qwen3.8-4b-distill 80% Γáï[?25l
+Loading qwen3.8-4b-distill 80% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 80% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 80% Γá╣[?25l
+Loading qwen3.8-4b-distill 80% Γá╕[?25l
+Loading qwen3.8-4b-distill 80% Γá╕[?25l
+Loading qwen3.8-4b-distill 80% Γá╝[?25l
+Loading qwen3.8-4b-distill 80% Γá╝[?25l
+Loading qwen3.8-4b-distill 80% Γá┤[?25l
+Loading qwen3.8-4b-distill 80% Γá┤[?25l
+Loading qwen3.8-4b-distill 80% Γáª[?25l
+Loading qwen3.8-4b-distill 80% Γáº[?25l
+Loading qwen3.8-4b-distill 81% Γáº[?25l
+Loading qwen3.8-4b-distill 81% Γáç[?25l
+Loading qwen3.8-4b-distill 81% Γáç[?25l
+Loading qwen3.8-4b-distill 81% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 81% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 81% Γáï[?25l
+Loading qwen3.8-4b-distill 81% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 81% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 81% Γá╣[?25l
+Loading qwen3.8-4b-distill 81% Γá╣[?25l
+Loading qwen3.8-4b-distill 81% Γá╕[?25l
+Loading qwen3.8-4b-distill 81% Γá╕[?25l
+Loading qwen3.8-4b-distill 81% Γá╝[?25l
+Loading qwen3.8-4b-distill 81% Γá┤[?25l
+Loading qwen3.8-4b-distill 81% Γá┤[?25l
+Loading qwen3.8-4b-distill 81% Γáª[?25l
+Loading qwen3.8-4b-distill 81% Γáª[?25l
+Loading qwen3.8-4b-distill 81% Γáº[?25l
+Loading qwen3.8-4b-distill 81% Γáº[?25l
+Loading qwen3.8-4b-distill 81% Γáç[?25l
+Loading qwen3.8-4b-distill 81% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 81% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 81% Γáï[?25l
+Loading qwen3.8-4b-distill 81% Γáï[?25l
+Loading qwen3.8-4b-distill 81% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 81% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 81% Γá╣[?25l
+Loading qwen3.8-4b-distill 81% Γá╕[?25l
+Loading qwen3.8-4b-distill 81% Γá╕[?25l
+Loading qwen3.8-4b-distill 81% Γá╝[?25l
+Loading qwen3.8-4b-distill 81% Γá╝[?25l
+Loading qwen3.8-4b-distill 81% Γá┤[?25l
+Loading qwen3.8-4b-distill 82% Γá┤[?25l
+Loading qwen3.8-4b-distill 82% Γáª[?25l
+Loading qwen3.8-4b-distill 82% Γáº[?25l
+Loading qwen3.8-4b-distill 82% Γáº[?25l
+Loading qwen3.8-4b-distill 82% Γáç[?25l
+Loading qwen3.8-4b-distill 82% Γáç[?25l
+Loading qwen3.8-4b-distill 82% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 82% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 82% Γáï[?25l
+Loading qwen3.8-4b-distill 82% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 82% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 82% Γá╣[?25l
+Loading qwen3.8-4b-distill 82% Γá╣[?25l
+Loading qwen3.8-4b-distill 82% Γá╕[?25l
+Loading qwen3.8-4b-distill 82% Γá╕[?25l
+Loading qwen3.8-4b-distill 82% Γá╝[?25l
+Loading qwen3.8-4b-distill 82% Γá┤[?25l
+Loading qwen3.8-4b-distill 82% Γá┤[?25l
+Loading qwen3.8-4b-distill 82% Γáª[?25l
+Loading qwen3.8-4b-distill 82% Γáª[?25l
+Loading qwen3.8-4b-distill 82% Γáº[?25l
+Loading qwen3.8-4b-distill 82% Γáº[?25l
+Loading qwen3.8-4b-distill 82% Γáç[?25l
+Loading qwen3.8-4b-distill 82% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 82% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 82% Γáï[?25l
+Loading qwen3.8-4b-distill 82% Γáï[?25l
+Loading qwen3.8-4b-distill 82% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 82% Γá╣[?25l
+Loading qwen3.8-4b-distill 82% Γá╣[?25l
+Loading qwen3.8-4b-distill 82% Γá╕[?25l
+Loading qwen3.8-4b-distill 82% Γá╕[?25l
+Loading qwen3.8-4b-distill 82% Γá╝[?25l
+Loading qwen3.8-4b-distill 82% Γá╝[?25l
+Loading qwen3.8-4b-distill 82% Γá┤[?25l
+Loading qwen3.8-4b-distill 82% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáº[?25l
+Loading qwen3.8-4b-distill 83% Γáº[?25l
+Loading qwen3.8-4b-distill 83% Γáç[?25l
+Loading qwen3.8-4b-distill 83% Γáç[?25l
+Loading qwen3.8-4b-distill 83% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 83% Γáï[?25l
+Loading qwen3.8-4b-distill 83% Γáï[?25l
+Loading qwen3.8-4b-distill 83% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 83% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 83% Γá╣[?25l
+Loading qwen3.8-4b-distill 83% Γá╣[?25l
+Loading qwen3.8-4b-distill 83% Γá╕[?25l
+Loading qwen3.8-4b-distill 83% Γá╝[?25l
+Loading qwen3.8-4b-distill 83% Γá╝[?25l
+Loading qwen3.8-4b-distill 83% Γá┤[?25l
+Loading qwen3.8-4b-distill 83% Γá┤[?25l
+Loading qwen3.8-4b-distill 83% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáº[?25l
+Loading qwen3.8-4b-distill 83% Γáç[?25l
+Loading qwen3.8-4b-distill 83% Γáç[?25l
+Loading qwen3.8-4b-distill 83% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 83% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 83% Γáï[?25l
+Loading qwen3.8-4b-distill 83% Γáï[?25l
+Loading qwen3.8-4b-distill 83% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 83% Γá╣[?25l
+Loading qwen3.8-4b-distill 83% Γá╣[?25l
+Loading qwen3.8-4b-distill 83% Γá╕[?25l
+Loading qwen3.8-4b-distill 83% Γá╕[?25l
+Loading qwen3.8-4b-distill 83% Γá╝[?25l
+Loading qwen3.8-4b-distill 83% Γá╝[?25l
+Loading qwen3.8-4b-distill 83% Γá┤[?25l
+Loading qwen3.8-4b-distill 83% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáª[?25l
+Loading qwen3.8-4b-distill 83% Γáº[?25l
+Loading qwen3.8-4b-distill 83% Γáº[?25l
+Loading qwen3.8-4b-distill 83% Γáç[?25l
+Loading qwen3.8-4b-distill 83% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 83% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 83% Γáï[?25l
+Loading qwen3.8-4b-distill 84% Γáï[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% Γá╣[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╝[?25l
+Loading qwen3.8-4b-distill 84% Γá╝[?25l
+Loading qwen3.8-4b-distill 84% Γá┤[?25l
+Loading qwen3.8-4b-distill 84% Γá┤[?25l
+Loading qwen3.8-4b-distill 84% Γáª[?25l
+Loading qwen3.8-4b-distill 84% Γáº[?25l
+Loading qwen3.8-4b-distill 84% Γáº[?25l
+Loading qwen3.8-4b-distill 84% Γáç[?25l
+Loading qwen3.8-4b-distill 84% Γáç[?25l
+Loading qwen3.8-4b-distill 84% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 84% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 84% Γáï[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% Γá╣[?25l
+Loading qwen3.8-4b-distill 84% Γá╣[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╝[?25l
+Loading qwen3.8-4b-distill 84% Γá┤[?25l
+Loading qwen3.8-4b-distill 84% Γá┤[?25l
+Loading qwen3.8-4b-distill 84% Γáª[?25l
+Loading qwen3.8-4b-distill 84% Γáª[?25l
+Loading qwen3.8-4b-distill 84% Γáº[?25l
+Loading qwen3.8-4b-distill 84% Γáº[?25l
+Loading qwen3.8-4b-distill 84% Γáç[?25l
+Loading qwen3.8-4b-distill 84% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 84% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 84% Γáï[?25l
+Loading qwen3.8-4b-distill 84% Γáï[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 84% Γá╣[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╕[?25l
+Loading qwen3.8-4b-distill 84% Γá╝[?25l
+Loading qwen3.8-4b-distill 84% Γá╝[?25l
+Loading qwen3.8-4b-distill 84% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γáª[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáç[?25l
+Loading qwen3.8-4b-distill 85% Γáç[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% Γáï[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% Γá╣[?25l
+Loading qwen3.8-4b-distill 85% Γá╣[?25l
+Loading qwen3.8-4b-distill 85% Γá╕[?25l
+Loading qwen3.8-4b-distill 85% Γá╕[?25l
+Loading qwen3.8-4b-distill 85% Γá╝[?25l
+Loading qwen3.8-4b-distill 85% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γáª[?25l
+Loading qwen3.8-4b-distill 85% Γáª[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáç[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% Γáï[?25l
+Loading qwen3.8-4b-distill 85% Γáï[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% Γá╣[?25l
+Loading qwen3.8-4b-distill 85% Γá╕[?25l
+Loading qwen3.8-4b-distill 85% Γá╕[?25l
+Loading qwen3.8-4b-distill 85% Γá╝[?25l
+Loading qwen3.8-4b-distill 85% Γá╝[?25l
+Loading qwen3.8-4b-distill 85% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γá┤[?25l
+Loading qwen3.8-4b-distill 85% Γáª[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáº[?25l
+Loading qwen3.8-4b-distill 85% Γáç[?25l
+Loading qwen3.8-4b-distill 85% Γáç[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 85% Γáï[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 85% Γá╣[?25l
+Loading qwen3.8-4b-distill 85% Γá╣[?25l
+Loading qwen3.8-4b-distill 85% Γá╕[?25l
+Loading qwen3.8-4b-distill 85% Γá╕
+Error: Engine protocol runtime llama-server for 5Zhs9o20QUaZMz1COV3aCsAy exited before becoming healthy. exitCode=3221226505, signal=null
+[K[?25h
+
+--- lms ps (exit 0) ---
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+
+--- nvidia-smi memory (exit 0) ---
+0, Quadro K1200, 867 MiB, 4096 MiB
+1, NVIDIA GeForce GTX 1650 SUPER, 88 MiB, 4096 MiB
+
+UTC end: 2026-09-21T03:44:22.8287033Z
+
+=== 16K PARTIAL-OFFLOAD RECOVERY ===
+UTC start: 2026-09-21T03:45:41.3965532Z
+
+--- lms server stop ---
+Stopped the server on port 1234.
+Exit code: 0
+
+--- lms server start ---
+Success! Server is now running on port 1234
+Exit code: 0
+
+--- server health: lms server status ---
+The server is running on port 1234.
+Exit code: 0
+
+--- server health: GET http://127.0.0.1:1234/v1/models ---
+HTTP status: 200
+{
+  "data": [
+    {
+      "id": "qwen3.8-4b-distill",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "lfm2.5-2.6b",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "qwen3.8-2b-distill",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "ternary-bonsai-2-27b",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "qwen/qwen3.5-27b",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "granite-4.2-8b",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "nvidia/nemotron-3-nano-4b",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "qwen/qwen3-4b-thinking-2507",
+      "object": "model",
+      "owned_by": "organization_owner"
+    },
+    {
+      "id": "text-embedding-nomic-embed-text-v1.5",
+      "object": "model",
+      "owned_by": "organization_owner"
+    }
+  ],
+  "object": "list"
+}
+Health exit code: 0
+
+--- lms load -y qwen3.8-4b-distill -c 16384 --gpu 0.5 --identifier qwen38-4b-distill --ttl 3600 --parallel 1 ---
+[?25l
+Loading qwen3.8-4b-distill 0% Γáï[?25l
+Loading qwen3.8-4b-distill 0% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 2% Γá╣[?25l
+Loading qwen3.8-4b-distill 4% Γá╣[?25l
+Loading qwen3.8-4b-distill 4% Γá╕[?25l
+Loading qwen3.8-4b-distill 4% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá╝[?25l
+Loading qwen3.8-4b-distill 6% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γá┤[?25l
+Loading qwen3.8-4b-distill 7% Γáª[?25l
+Loading qwen3.8-4b-distill 7% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáº[?25l
+Loading qwen3.8-4b-distill 9% Γáç[?25l
+Loading qwen3.8-4b-distill 11% Γáç[?25l
+Loading qwen3.8-4b-distill 11% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 12% Γáï[?25l
+Loading qwen3.8-4b-distill 12% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 14% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╣[?25l
+Loading qwen3.8-4b-distill 15% Γá╕[?25l
+Loading qwen3.8-4b-distill 15% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá╝[?25l
+Loading qwen3.8-4b-distill 17% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γá┤[?25l
+Loading qwen3.8-4b-distill 18% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáª[?25l
+Loading qwen3.8-4b-distill 19% Γáº[?25l
+Loading qwen3.8-4b-distill 21% Γáº[?25l
+Loading qwen3.8-4b-distill 21% Γáç[?25l
+Loading qwen3.8-4b-distill 21% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 22% Γáï[?25l
+Loading qwen3.8-4b-distill 23% Γáï[?25l
+Loading qwen3.8-4b-distill 23% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 23% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╣[?25l
+Loading qwen3.8-4b-distill 24% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╕[?25l
+Loading qwen3.8-4b-distill 26% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá╝[?25l
+Loading qwen3.8-4b-distill 27% Γá┤[?25l
+Loading qwen3.8-4b-distill 27% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáª[?25l
+Loading qwen3.8-4b-distill 28% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáº[?25l
+Loading qwen3.8-4b-distill 29% Γáç[?25l
+Loading qwen3.8-4b-distill 30% Γáç[?25l
+Loading qwen3.8-4b-distill 30% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 30% Γáï[?25l
+Loading qwen3.8-4b-distill 31% Γáï[?25l
+Loading qwen3.8-4b-distill 31% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 32% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╣[?25l
+Loading qwen3.8-4b-distill 33% Γá╕[?25l
+Loading qwen3.8-4b-distill 33% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá╝[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γá┤[?25l
+Loading qwen3.8-4b-distill 34% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáª[?25l
+Loading qwen3.8-4b-distill 35% Γáº[?25l
+Loading qwen3.8-4b-distill 35% Γáç[?25l
+Loading qwen3.8-4b-distill 36% Γáç[?25l
+Loading qwen3.8-4b-distill 36% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 36% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 36% Γáï[?25l
+Loading qwen3.8-4b-distill 36% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 37% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 37% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╣[?25l
+Loading qwen3.8-4b-distill 38% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╕[?25l
+Loading qwen3.8-4b-distill 39% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá╝[?25l
+Loading qwen3.8-4b-distill 40% Γá┤[?25l
+Loading qwen3.8-4b-distill 40% Γáª[?25l
+Loading qwen3.8-4b-distill 40% Γáª[?25l
+Loading qwen3.8-4b-distill 40% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáº[?25l
+Loading qwen3.8-4b-distill 41% Γáç[?25l
+Loading qwen3.8-4b-distill 41% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 42% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 42% Γáï[?25l
+Loading qwen3.8-4b-distill 42% Γáï[?25l
+Loading qwen3.8-4b-distill 42% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 43% Γá╣[?25l
+Loading qwen3.8-4b-distill 43% Γá╕[?25l
+Loading qwen3.8-4b-distill 44% Γá╕[?25l
+Loading qwen3.8-4b-distill 44% Γá╝[?25l
+Loading qwen3.8-4b-distill 44% Γá╝[?25l
+Loading qwen3.8-4b-distill 44% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γá┤[?25l
+Loading qwen3.8-4b-distill 45% Γáª[?25l
+Loading qwen3.8-4b-distill 46% Γáª[?25l
+Loading qwen3.8-4b-distill 46% Γáº[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% Γáç[?25l
+Loading qwen3.8-4b-distill 46% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 47% Γáï[?25l
+Loading qwen3.8-4b-distill 47% Γáï[?25l
+Loading qwen3.8-4b-distill 47% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 47% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╣[?25l
+Loading qwen3.8-4b-distill 48% Γá╕[?25l
+Loading qwen3.8-4b-distill 48% Γá╕[?25l
+Loading qwen3.8-4b-distill 48% Γá╝[?25l
+Loading qwen3.8-4b-distill 48% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γá┤[?25l
+Loading qwen3.8-4b-distill 49% Γáª[?25l
+Loading qwen3.8-4b-distill 49% Γáª[?25l
+Loading qwen3.8-4b-distill 49% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáº[?25l
+Loading qwen3.8-4b-distill 50% Γáç[?25l
+Loading qwen3.8-4b-distill 50% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 50% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 50% Γáï[?25l
+Loading qwen3.8-4b-distill 51% Γáï[?25l
+Loading qwen3.8-4b-distill 51% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 51% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 51% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╣[?25l
+Loading qwen3.8-4b-distill 52% Γá╕[?25l
+Loading qwen3.8-4b-distill 52% Γá╝[?25l
+Loading qwen3.8-4b-distill 52% Γá╝[?25l
+Loading qwen3.8-4b-distill 52% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γá┤[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáª[?25l
+Loading qwen3.8-4b-distill 53% Γáº[?25l
+Loading qwen3.8-4b-distill 54% Γáº[?25l
+Loading qwen3.8-4b-distill 54% Γáç[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 54% Γáï[?25l
+Loading qwen3.8-4b-distill 55% Γáï[?25l
+Loading qwen3.8-4b-distill 55% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 55% Γá╣[?25l
+Loading qwen3.8-4b-distill 55% Γá╕[?25l
+Loading qwen3.8-4b-distill 55% Γá╕[?25l
+Loading qwen3.8-4b-distill 55% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá╝[?25l
+Loading qwen3.8-4b-distill 56% Γá┤[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáª[?25l
+Loading qwen3.8-4b-distill 56% Γáº[?25l
+Loading qwen3.8-4b-distill 56% Γáº[?25l
+Loading qwen3.8-4b-distill 56% Γáç[?25l
+Loading qwen3.8-4b-distill 57% Γáç[?25l
+Loading qwen3.8-4b-distill 57% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% Γáï[?25l
+Loading qwen3.8-4b-distill 57% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╣[?25l
+Loading qwen3.8-4b-distill 58% Γá╕[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá╝[?25l
+Loading qwen3.8-4b-distill 58% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γá┤[?25l
+Loading qwen3.8-4b-distill 59% Γáª[?25l
+Loading qwen3.8-4b-distill 59% Γáª[?25l
+Loading qwen3.8-4b-distill 59% Γáº[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% Γáç[?25l
+Loading qwen3.8-4b-distill 59% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 60% Γáï[?25l
+Loading qwen3.8-4b-distill 60% Γáï[?25l
+Loading qwen3.8-4b-distill 60% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╣[?25l
+Loading qwen3.8-4b-distill 60% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╕[?25l
+Loading qwen3.8-4b-distill 61% Γá╝[?25l
+Loading qwen3.8-4b-distill 61% Γá╝[?25l
+Loading qwen3.8-4b-distill 61% Γá┤[?25l
+Loading qwen3.8-4b-distill 61% Γá┤[?25l
+Loading qwen3.8-4b-distill 61% Γáª[?25l
+Loading qwen3.8-4b-distill 61% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáº[?25l
+Loading qwen3.8-4b-distill 62% Γáç[?25l
+Loading qwen3.8-4b-distill 62% Γáç[?25l
+Loading qwen3.8-4b-distill 62% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% Γáï[?25l
+Loading qwen3.8-4b-distill 62% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 62% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 62% Γá╣[?25l
+Loading qwen3.8-4b-distill 63% Γá╣[?25l
+Loading qwen3.8-4b-distill 63% Γá╕[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá╝[?25l
+Loading qwen3.8-4b-distill 63% Γá┤[?25l
+Loading qwen3.8-4b-distill 63% Γá┤[?25l
+Loading qwen3.8-4b-distill 63% Γáª[?25l
+Loading qwen3.8-4b-distill 64% Γáª[?25l
+Loading qwen3.8-4b-distill 64% Γáº[?25l
+Loading qwen3.8-4b-distill 64% Γáç[?25l
+Loading qwen3.8-4b-distill 64% Γáç[?25l
+Loading qwen3.8-4b-distill 64% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 64% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% Γáï[?25l
+Loading qwen3.8-4b-distill 64% ΓáÖ[?25l
+Loading qwen3.8-4b-distill 64% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╣[?25l
+Loading qwen3.8-4b-distill 65% Γá╕[?25l
+Loading qwen3.8-4b-distill 65% Γá╕[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá╝[?25l
+Loading qwen3.8-4b-distill 65% Γá┤[?25l
+Loading qwen3.8-4b-distill 65% Γáª[?25l
+Loading qwen3.8-4b-distill 65% Γáª[?25l
+Loading qwen3.8-4b-distill 65% Γáº[?25l
+Loading qwen3.8-4b-distill 66% Γáº[?25l
+Loading qwen3.8-4b-distill 66% Γáç[?25l
+Loading qwen3.8-4b-distill 66% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 66% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 100% ΓáÅ[?25l
+Loading qwen3.8-4b-distill 100% Γáï
+Model loaded successfully in 12.34s.
+(2.59 GiB)
+To use the model in the API/SDK, use the identifier "qwen38-4b-distill".
+[K[?25h
+Exit code: 0
+
+--- lms ps ---
+
+IDENTIFIER           MODEL                 STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     
+qwen38-4b-distill    qwen3.8-4b-distill    IDLE      2.78 GB    16384      1           Local     60m / 1h
+
+Exit code: 0
+
+--- nvidia-smi --query-gpu=index,name,memory.used,memory.total --format=csv,noheader ---
+0, Quadro K1200, 867 MiB, 4096 MiB
+1, NVIDIA GeForce GTX 1650 SUPER, 2333 MiB, 4096 MiB
+Exit code: 0
+
+UTC end: 2026-09-21T03:45:57.7782991Z

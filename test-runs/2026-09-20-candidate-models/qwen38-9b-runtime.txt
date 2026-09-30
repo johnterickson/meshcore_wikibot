@@ -1,0 +1,11 @@
+CURRENT LMS PS:
+No models are currently loaded.
+
+To load a model, run:
+
+    lms load <model path>
+
+GPU:
+0, Quadro K1200, 601 MiB, 4096 MiB
+1, NVIDIA GeForce GTX 1650 SUPER, 170 MiB, 4096 MiB
+

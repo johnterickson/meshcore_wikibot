@@ -1,0 +1,13 @@
+{
+  "model": "qwen38-4b-distill",
+  "temperature": 0.6,
+  "num_predict": 512,
+  "curl_exit": 0,
+  "http_status": "200",
+  "wall_seconds": 7.852,
+  "ndjson_count": 2,
+  "done_count": 1,
+  "tool_calls": [],
+  "combined_content": "",
+  "pass": false
+}

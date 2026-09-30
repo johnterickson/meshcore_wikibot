@@ -1,0 +1,6 @@
+UTC_START=2026-09-21T18:42:18.9355332Z MODEL=qwen3.8-9b-distill CONTEXT_LENGTH=8192 PARALLEL=1 K1200=excluded SPILL_ALLOWED=true QUESTION=/new Which active MLB teams have never been to the World Series? NUM_PREDICT=2048 TEMPERATURE=0.6 CASE=Single Wiki benchmark
+WALL_SECONDS=163.247
+UTC_END=2026-09-21T18:45:01Z
+EXIT_CODE=RECOVERED_AFTER_WRAPPER_INTERRUPTION
+WALL_SECONDS=about 162
+RECOVERY=Recovered from gateway logs; no new inference sent; exact final response availability recorded in runtime artifact.

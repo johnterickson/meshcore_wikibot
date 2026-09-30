@@ -1,0 +1,38 @@
+[LMStudioClient][LLM] Verbose logging is enabled. To hide progress logs, set the "verbose" option to false in client.llm.load.
+[LMStudioClient][LLM] Start loading model qwen3.8-4b-distill...
+[LMStudioClient][LLM] Loading the model, progress: 0.0%
+[LMStudioClient][LLM] Loading the model, progress: 7.5%
+[LMStudioClient][LLM] Loading the model, progress: 13.9%
+[LMStudioClient][LLM] Loading the model, progress: 19.5%
+[LMStudioClient][LLM] Loading the model, progress: 25.0%
+[LMStudioClient][LLM] Loading the model, progress: 29.3%
+[LMStudioClient][LLM] Loading the model, progress: 33.1%
+[LMStudioClient][LLM] Loading the model, progress: 36.5%
+[LMStudioClient][LLM] Loading the model, progress: 39.6%
+[LMStudioClient][LLM] Loading the model, progress: 42.7%
+[LMStudioClient][LLM] Loading the model, progress: 45.2%
+[LMStudioClient][LLM] Loading the model, progress: 47.5%
+[LMStudioClient][LLM] Loading the model, progress: 49.7%
+[LMStudioClient][LLM] Loading the model, progress: 51.6%
+[LMStudioClient][LLM] Loading the model, progress: 53.4%
+[LMStudioClient][LLM] Loading the model, progress: 55.1%
+[LMStudioClient][LLM] Loading the model, progress: 56.7%
+[LMStudioClient][LLM] Loading the model, progress: 100.0%
+[LMStudioClient][LLM] Successfully loaded model qwen3.8-4b-distill in 8816ms
+{
+  "modelKey": "qwen3.8-4b-distill",
+  "identifier": "qwen3.8-4b-distill",
+  "contextLength": 32768,
+  "gpu": {
+    "ratio": "max",
+    "mainGpu": 0,
+    "disabledGpus": [
+      1
+    ]
+  },
+  "offloadKVCacheToGpu": true,
+  "evalBatchSize": 512,
+  "flashAttention": false,
+  "useFp16ForKVCache": true,
+  "loadWallSeconds": 8.8174235
+}

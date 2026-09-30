@@ -1,0 +1,98 @@
+{
+  "model": "ornith-1.5-9b",
+  "request": {
+    "max_tokens": 512,
+    "tool_name": "HassGetState",
+    "tool_choice": "required",
+    "stream": false,
+    "user_message": "Call HassGetState for Desk lamp. You must use the supplied tool and must not answer directly.",
+    "endpoint": "http://127.0.0.1:1234/v1/chat/completions",
+    "schema": {
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "temperature": 0.6
+  },
+  "http_status": 200,
+  "latency_ms": 10026.5,
+  "finish_reason": "tool_calls",
+  "content": "",
+  "parsed_tool_calls": [
+    {
+      "type": "function",
+      "name": "HassGetState",
+      "arguments": {
+        "name": "Desk lamp"
+      }
+    }
+  ],
+  "strict_pass": true,
+  "residency": {
+    "after": true,
+    "before": true
+  },
+  "before": {
+    "lms_ps": "IDENTIFIER       MODEL            STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nornith-1.5-9b    ornith-1.5-9b    IDLE      6.70 GB    8192       1           Local     59m / 1h",
+    "api_health": {
+      "http_status": 200,
+      "reachable": true
+    },
+    "gpu": [
+      {
+        "name": "Quadro K1200",
+        "memory_used_mb": 900.0,
+        "memory_total_mb": 4096.0
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "memory_used_mb": 3879.0,
+        "memory_total_mb": 4096.0
+      }
+    ],
+    "ram": {
+      "used_mb": 30000.5,
+      "total_mb": 65441.3
+    }
+  },
+  "after": {
+    "lms_ps": "IDENTIFIER       MODEL            STATUS    SIZE       CONTEXT    PARALLEL    DEVICE    TTL     \r\nornith-1.5-9b    ornith-1.5-9b    IDLE      6.70 GB    8192       1           Local     60m / 1h",
+    "api_health": {
+      "http_status": 200,
+      "reachable": true
+    },
+    "gpu": [
+      {
+        "name": "Quadro K1200",
+        "memory_used_mb": 900.0,
+        "memory_total_mb": 4096.0
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "memory_used_mb": 3889.0,
+        "memory_total_mb": 4096.0
+      }
+    ],
+    "ram": {
+      "used_mb": 30098.6,
+      "total_mb": 65441.3
+    }
+  },
+  "resource_deltas": {
+    "ram_total_delta_mb": 0.0,
+    "gpu": [
+      {
+        "name": "Quadro K1200",
+        "memory_used_delta_mb": 0.0,
+        "memory_total_delta_mb": 0.0
+      },
+      {
+        "name": "NVIDIA GeForce GTX 1650 SUPER",
+        "memory_used_delta_mb": 10.0,
+        "memory_total_delta_mb": 0.0
+      }
+    ],
+    "ram_used_delta_mb": 98.1
+  }
+}

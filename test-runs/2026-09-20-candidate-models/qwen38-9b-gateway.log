@@ -1,0 +1,35 @@
+home-assistant-gateway-1  | 2026-09-21T18:09:25.400825382Z {"event":"chat_request","requestId":1,"model":"qwen38-9b-distill","messages":1,"systemMessages":0,"historyReset":true,"stream":false}
+home-assistant-gateway-1  | 2026-09-21T18:09:25.407466827Z {"event":"chat_started","requestId":1,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T18:09:25.542589627Z {"event":"chat_released","requestId":1,"waiting":0}
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543281716Z [Error: 
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543309219Z 
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543316920Z    Γöî Error ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543321121Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543324221Z    Γöé   Cannot find a model with path "qwen38-9b-distill"   Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543327221Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543330122Z    Γöé   Here are your available models:                     Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543332922Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543335822Z    Γöé   ΓÇó ornith-1.5-9b                                     Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543338623Z    Γöé   ΓÇó qwen3.8-9b-distill                                Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543341423Z    Γöé   ΓÇó qwen3.8-4b-distill                                Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543344724Z    Γöé   ΓÇó lfm2.5-2.6b                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543347624Z    Γöé   ΓÇó qwen3.8-2b-distill                                Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543350424Z    Γöé   ... (and 11 more)                                   Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543353425Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543356125Z    Γöé   Run                                                 Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543359025Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543361726Z    Γöé   lms ls                                              Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543364526Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543384329Z    Γöé   to see a full list of loadable models               Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543387329Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543389429Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543391429Z    Γöé   </> STACK TRACE                                     Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543394130Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543396230Z    Γöé   at file:///app/dist/server.js:216:42                Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543398330Z    Γöé   at process.processTicksAndRejections                Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543400431Z    Γöé   (node:internal/process/task_queues:103:5)           Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543402531Z    Γöé                                                       Γöé
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543404831Z    ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ] {
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543407632Z   title: 'Model not found: qwen38-9b-distill'
+home-assistant-gateway-1  | 2026-09-21T18:09:25.543409832Z }
+

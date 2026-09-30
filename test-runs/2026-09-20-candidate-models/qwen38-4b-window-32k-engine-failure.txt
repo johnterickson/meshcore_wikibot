@@ -1,0 +1,12 @@
+UTC_START=2026-09-21T03:43:17.1647423Z
+model=qwen38-4b-distill
+SOURCE=empero-ai/Qwen3.8-4B-Distill-GGUF
+QUANT=Q4_K_M
+CONTEXT_LENGTH=32768
+GPU_PLAN=GTX_PRIORITY_FULL_OFFLOAD
+NUM_PREDICT=2048
+TEMPERATURE=0.6
+case=/new Which active MLB teams have never been to the World Series?
+UTC_END=2026-09-21T03:43:18.0218319Z
+exit_code=1
+wall_seconds=0.854

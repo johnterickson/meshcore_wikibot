@@ -1,0 +1,4 @@
+DIRECT_HA=PASS wall_seconds=13.507
+MARINERS=PASS wall_seconds=363
+SPICE=PENDING
+NOTE=Recovered completed Mariners artifacts without inference or model changes.
