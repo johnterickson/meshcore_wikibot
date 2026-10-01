@@ -1,47 +1,56 @@
 alias: wikibot DM
 description: wikibot
 triggers:
-  - event_type: meshcore_message
+  - event_type: meshcore_raw_event
     trigger: event
 conditions:
   - condition: template
     value_template: |
-      {{ trigger.event.data.message_type == 'direct' }}
+      {{ trigger.event.data.event_type == 'EventType.CONTACT_MSG_RECV' }}
   - condition: template
     value_template: |
-      {{ trigger.event.data.receiver_name == 'meshcore' }}
+      {{ trigger.event.data.payload.txt_type | int(-1) == 2 }}
   - condition: template
     value_template: |
-      {{ trigger.event.data.sender_name != 'johnlaptop-HA' }}
+      {{ trigger.event.data.payload.signature | default('', true) | length > 0 }}
+  - condition: template
+    value_template: |
+      {{ trigger.event.data.payload.pubkey_prefix in ['b5edac383e16', 'fa04521d1722'] }}
 actions:
+  - variables:
+      message_text: '{{ trigger.event.data.payload.text }}'
+      participant_signature: '{{ trigger.event.data.payload.signature }}'
+      room_pubkey: '{{ trigger.event.data.payload.pubkey_prefix }}'
+  - variables:
+      conversation_agent: >-
+        {{ 'conversation.ha_control' if room_pubkey == 'fa04521d1722' else
+        'conversation.wikibot' }}
+      meshcore_conversation_id: >-
+        {{ 'meshcore_' ~ room_pubkey ~ '_' ~ participant_signature }}
+      participant_mention: "{{ '@' ~ participant_signature }}"
   - if:
       - condition: template
         value_template: >-
-          {{ trigger.event.data.message | trim | lower not in ['help', '/help'] }}
+          {{ message_text | trim | lower not in ['help', '/help'] }}
     then:
       - action: meshcore.send_message
         data:
-          node_id: '{{ trigger.event.data.sender_name }}'
-          message: '[thinking]'
-  - variables:
-      conversation_agent: >-
-        {{ 'conversation.ha_control' if trigger.event.data.sender_name ==
-        'johnlaptop-room' else 'conversation.wikibot' }}
+          pubkey_prefix: '{{ room_pubkey }}'
+          message: '{{ participant_mention }} [thinking]'
   - action: system_log.write
     data:
       level: warning
       message: >-
-        MeshCore conversation route: sender={{ trigger.event.data.sender_name |
-        tojson }}, pubkey_prefix={{ trigger.event.data.pubkey_prefix | tojson
-        }}, agent={{ conversation_agent | tojson }}
+        MeshCore conversation route: room={{ room_pubkey | tojson }},
+        participant={{ participant_signature | tojson }}, conversation_id={{
+        meshcore_conversation_id | tojson }}, agent={{ conversation_agent |
+        tojson }}
   - action: conversation.process
     continue_on_error: true
     data:
       agent_id: '{{ conversation_agent }}'
-      text: '{{ trigger.event.data.message }}'
-      conversation_id: >-
-        {{ trigger.event.data.pubkey_prefix }}_{{ trigger.event.data.sender_name
-        }}
+      text: '{{ message_text }}'
+      conversation_id: '{{ meshcore_conversation_id }}'
     response_variable: resp
   - action: system_log.write
     data:
@@ -58,24 +67,28 @@ actions:
           - variables:
               chunks: >
                 {% set text = resp.response.speech.plain.speech %} {% set ns =
-                namespace(result=[]) %} {% for i in range(0, text|length, 100)
+                namespace(result=[]) %} {% set prefix = participant_mention ~
+                ' ' %} {% set chunk_size = 100 - prefix|length %} {% for i in
+                range(0, text|length, chunk_size)
                 %}
-                  {% set ns.result = ns.result + [text[i:i+100]] %}
+                  {% set ns.result = ns.result + [prefix ~ text[i:i+chunk_size]] %}
                 {% endfor %} {{ ns.result }}
           - repeat:
               for_each: '{{ chunks }}'
               sequence:
                 - action: meshcore.send_message
                   data:
-                    node_id: '{{ trigger.event.data.sender_name }}'
+                    pubkey_prefix: '{{ room_pubkey }}'
                     message: '{{ repeat.item }}'
                 - delay:
                     milliseconds: 7000
     default:
       - action: meshcore.send_message
         data:
-          node_id: '{{ trigger.event.data.sender_name }}'
-          message: 'Wikibot error: model unavailable. Try again in a minute.'
+          pubkey_prefix: '{{ room_pubkey }}'
+          message: >-
+            {{ participant_mention }} Wikibot error: model unavailable. Try
+            again in a minute.
 mode: queued
 trace:
   stored_traces: 200

@@ -87,7 +87,7 @@ The public endpoint rejects client-supplied tools. The private endpoint receives
 
 The control gateway enforces exact action semantics: open, close, stop, pause, toggle, on, and off are never substituted for one another. A tool request alone is not treated as success. The gateway reads Home Assistant's `data.success` and `data.failed`, requires `HassGetState` verification after state changes, and rechecks moving covers up to three observations. Its final success or unconfirmed-state message is generated deterministically from observed state rather than model confidence.
 
-The example MeshCore automation in `scripts/ha.automation.yml` routes `johnlaptop-room` to private control and other allowed direct messages to wiki research. Exact `help` and `/help` requests bypass the `[thinking]` message. Replies are split into 100-character chunks with seven seconds between sends for reliable radio delivery.
+The example MeshCore automation in `scripts/ha.automation.yml` consumes signed raw contact events. Shared-room messages expose the room server as the transport sender, while `txt_type: 2` includes the first eight hex characters of the participant's public key in `signature`. The automation keys each conversation by room public key plus participant signature, routes the private room public key to HA control, and replies through the room server. Every outbound message starts with `@<signature>` so the room identifies its intended participant. Exact `help` and `/help` requests bypass the `[thinking]` message. Replies remain within 100 characters and are paced seven seconds apart for reliable radio delivery.
 
 ## Research
 
