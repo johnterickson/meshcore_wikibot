@@ -70,7 +70,7 @@ Inside each researcher, exact Kiwix article paths and descriptive section IDs re
 
 The compatibility surface includes `/api/chat`, `/api/tags`, `/api/show`, `/api/version`, and `/api/ps`. Bearer authentication and `x-api-key` are supported. Streaming requests receive Ollama-compatible NDJSON `message.thinking` progress records for discovery, each map item, retries, and reduction, followed by one final `done:true` answer. Non-streaming requests still receive one JSON response.
 
-Research uses two explicit modes. `/query` is the default and runs one clean aggregate or single-subject researcher. `/map` runs the complete membership-only `research_list` -> per-item `research_map` -> `research_reduce` pipeline. Begin a message with `/new` to discard earlier conversation history; directives compose, for example `/new /query Which active MLB teams have never been to the World Series?` or `/new /map Who are the Spice Girls and what are their birthdays?`. The most recent `/new` remains the history boundary when Home Assistant sends later follow-up messages.
+Research uses two explicit modes. `/query` is the default and runs one clean aggregate or single-subject researcher. `/map` runs the complete membership-only `research_list` -> per-item `research_map` -> `research_reduce` pipeline. Begin a message with `/new` to discard earlier conversation history; directives compose, for example `/new /query Which active MLB teams have never been to the World Series?` or `/new /map Who are the Spice Girls and what are their birthdays?`. The most recent `/new` remains the history boundary when Home Assistant sends later follow-up messages. Send `/help` for a brief local command summary without invoking the model or research tools.
 
 ## Verify and operate
 

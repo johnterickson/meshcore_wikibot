@@ -14,10 +14,15 @@ conditions:
     value_template: |
       {{ trigger.event.data.sender_name != 'johnlaptop-HA' }}
 actions:
-  - action: meshcore.send_message
-    data:
-      node_id: '{{ trigger.event.data.sender_name }}'
-      message: '[thinking]'
+  - if:
+      - condition: template
+        value_template: >-
+          {{ trigger.event.data.message | trim | lower not in ['help', '/help'] }}
+    then:
+      - action: meshcore.send_message
+        data:
+          node_id: '{{ trigger.event.data.sender_name }}'
+          message: '[thinking]'
   - variables:
       conversation_agent: >-
         {{ 'conversation.ha_control' if trigger.event.data.sender_name ==
@@ -27,13 +32,16 @@ actions:
       level: warning
       message: >-
         MeshCore conversation route: sender={{ trigger.event.data.sender_name |
-        tojson }}, agent={{ conversation_agent | tojson }}
+        tojson }}, pubkey_prefix={{ trigger.event.data.pubkey_prefix | tojson
+        }}, agent={{ conversation_agent | tojson }}
   - action: conversation.process
     continue_on_error: true
     data:
       agent_id: '{{ conversation_agent }}'
       text: '{{ trigger.event.data.message }}'
-      conversation_id: '{{ trigger.event.data.sender_name }}'
+      conversation_id: >-
+        {{ trigger.event.data.pubkey_prefix }}_{{ trigger.event.data.sender_name
+        }}
     response_variable: resp
   - action: system_log.write
     data:
@@ -62,12 +70,12 @@ actions:
                     node_id: '{{ trigger.event.data.sender_name }}'
                     message: '{{ repeat.item }}'
                 - delay:
-                    milliseconds: 1000
+                    milliseconds: 7000
     default:
       - action: meshcore.send_message
         data:
           node_id: '{{ trigger.event.data.sender_name }}'
           message: 'Wikibot error: model unavailable. Try again in a minute.'
-mode: single
+mode: queued
 trace:
   stored_traces: 200

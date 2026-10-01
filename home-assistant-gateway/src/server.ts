@@ -3,10 +3,11 @@ import { LMStudioClient, type ChatMessageInput, type PredictionResult } from "@l
 import express, { type NextFunction, type Request, type Response } from "express";
 import { z } from "zod";
 import { AsyncMutex } from "./asyncMutex.js";
-import { config, listExtractionPrompt, reduceReviewSystemPrompt, reduceSystemPrompt, researchSystemPrompt, wikiSystemPrompt } from "./config.js";
+import { config, evidenceSynthesisSystemPrompt, listExtractionPrompt, reduceReviewSystemPrompt, reduceSystemPrompt, researchSystemPrompt, wikiSystemPrompt } from "./config.js";
 import { createControlGateway } from "./controlGateway.js";
 import { addAssessmentRepairs, buildRepairPlan, completeRepairReviewCoverage, mergeFieldResults, reduceFieldResults, repairCallBudget, repairReviewCoverageIssues, repairReviewMaxTokens, type FieldResearchResult } from "./researchRepair.js";
-import { parseResearchDirectives, researchModeFromMessages, type ResearchMode } from "./researchMode.js";
+import { helpMessage, isHelpRequest, parseResearchDirectives, researchModeFromMessages, type ResearchMode } from "./researchMode.js";
+import { isTransientModelError, publicResearchFailureMessage } from "./researchResilience.js";
 import { createResearchTools, normalizeDiscoveredItems, unresolvedResearchFields, type ResearchResult } from "./researchTool.js";
 import { connectLocalWiki, createWikiTools } from "./wikiTools.js";
 
@@ -147,6 +148,19 @@ function ollamaResponse(body: ChatBody, modelName: string, predictions: Predicti
   };
 }
 
+function directOllamaResponse(modelName: string, content: string) {
+  return {
+    model: modelName,
+    created_at: new Date().toISOString(),
+    message: { role: "assistant", content, thinking: "" },
+    done: true,
+    done_reason: "stop",
+    total_duration: 0,
+    prompt_eval_count: 0,
+    eval_count: 0,
+  };
+}
+
 app.get("/health", async (_request, response) => {
   try {
     await lmStudio.llm.listLoaded();
@@ -205,14 +219,30 @@ app.post("/api/show", async (request, response) => {
 app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, response) => {
   const requestId = ++chatRequestSequence;
   const body = request.body ?? {};
+  const modelName = body.model || config.defaultModel;
+  const streaming = body.stream !== false;
+  if (isHelpRequest(body.messages ?? [])) {
+    const payload = {
+      model: modelName,
+      created_at: new Date().toISOString(),
+      message: { role: "assistant", content: helpMessage },
+      done: true,
+      done_reason: "stop",
+      total_duration: 0,
+      prompt_eval_count: 0,
+      eval_count: 0,
+    };
+    console.info(JSON.stringify({ event: "chat_help", requestId, stream: streaming }));
+    if (!streaming) response.json(payload);
+    else response.status(200).type("application/x-ndjson").end(`${JSON.stringify(payload)}\n`);
+    return;
+  }
   if (body.tools?.length) {
     response.status(400).json({
       error: "The public wiki endpoint does not accept client tools. Use the private Home Assistant control endpoint.",
     });
     return;
   }
-  const modelName = body.model || config.defaultModel;
-  const streaming = body.stream !== false;
   const researchMode = researchModeFromMessages(body.messages ?? []);
   response.locals.modelName = modelName;
   response.locals.streaming = streaming;
@@ -254,12 +284,13 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
   console.info(JSON.stringify({ event: "chat_started", requestId, waiting: chatMutex.waiting }));
   if (queuePosition > 0) sendProgress("Model available. Starting research.");
   try {
-  const model = await lmStudio.llm.model(modelName);
+  let model = await lmStudio.llm.model(modelName);
   const originalRequest = parseResearchDirectives([...(body.messages ?? [])]
     .reverse()
     .find(message => message.role === "user" && typeof message.content === "string")
     ?.content ?? "").content;
   let subagentCount = 0;
+  let latestResearchResult: ResearchResult | undefined;
   const runResearch = async (question: string): Promise<ResearchResult> => {
     const index = ++subagentCount;
     console.info(JSON.stringify({ event: "subagent_started", requestId, index, question }));
@@ -272,13 +303,13 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
           const result = await model.act([
             { role: "system", content: researchSystemPrompt },
             { role: "user", content: question },
-          ], createWikiTools(subagentWikiClient, {
+          ], await createWikiTools(subagentWikiClient, {
             onEvidence: content => evidence.push(content),
             logContext: { requestId, subagent: index, attempt },
           }), {
             temperature: body.options?.temperature ?? config.defaultTemperature,
             maxTokens: Math.min(body.options?.num_predict ?? config.defaultMaxTokens, 1536),
-            maxPredictionRounds: Math.min(config.maxPredictionRounds, 12),
+            maxPredictionRounds: config.maxPredictionRounds,
             contextOverflowPolicy: "truncateMiddle",
             allowParallelToolExecution: false,
             signal: abortController.signal,
@@ -296,9 +327,41 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
               }));
             },
           });
-          const answer = predictionAnswer(subagentPredictions.at(-1));
+          let answer = predictionAnswer(subagentPredictions.at(-1));
+          let malformed = isMalformedResearchAnswer(answer);
+          if ((!answer || malformed) && evidence.length > 0) {
+            console.warn(JSON.stringify({
+              event: "subagent_evidence_synthesis_started",
+              requestId,
+              index,
+              attempt,
+              reason: malformed ? "malformed_answer" : "empty_answer",
+              evidenceSegments: evidence.length,
+            }));
+            const synthesis = await model.respond([
+              { role: "system", content: evidenceSynthesisSystemPrompt },
+              { role: "user", content: `Question: ${question}\n\nWikipedia evidence:\n${evidence.map((value, evidenceIndex) => `[Evidence ${evidenceIndex + 1}]\n${boundedLogText(value, 3500)}`).join("\n\n")}` },
+            ], {
+              temperature: 0,
+              maxTokens: Math.min(body.options?.num_predict ?? config.defaultMaxTokens, 1024),
+              signal: abortController.signal,
+              raw: { fields: [{ key: "llm.prediction.reasoning.enableThinking", value: false }] },
+            });
+            const synthesizedAnswer = predictionAnswer(synthesis);
+            if (synthesizedAnswer && !isMalformedResearchAnswer(synthesizedAnswer)) {
+              answer = synthesizedAnswer;
+              malformed = false;
+            }
+            console.info(JSON.stringify({
+              event: "subagent_evidence_synthesis_completed",
+              requestId,
+              index,
+              attempt,
+              answerCharacters: synthesizedAnswer.length,
+              malformed: isMalformedResearchAnswer(synthesizedAnswer),
+            }));
+          }
           const unresolved = unresolvedResearchFields(answer);
-          const malformed = isMalformedResearchAnswer(answer);
           const status = !answer || evidence.length === 0 || malformed
             ? "failed"
             : unresolved.length > 0 ? "partial" : "complete";
@@ -316,7 +379,10 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
             malformed,
             executionSeconds: result.totalExecutionTimeSeconds,
           }));
-          if (status !== "failed") return { question, answer, status, unresolved, evidence };
+          if (status !== "failed") {
+            latestResearchResult = { question, answer, status, unresolved, evidence };
+            return latestResearchResult;
+          }
         } catch (error) {
           if (abortController.signal.aborted) throw error;
           console.warn(JSON.stringify({
@@ -326,6 +392,10 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
             attempt,
             error: error instanceof Error ? error.message : String(error),
           }));
+          if (attempt < 2 && isTransientModelError(error)) {
+            console.warn(JSON.stringify({ event: "subagent_model_reload", requestId, index, attempt }));
+            model = await lmStudio.llm.model(modelName);
+          }
         }
       } finally {
         await subagentWikiClient.close();
@@ -547,39 +617,79 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
       return answer || "No supported reduction was produced.";
     },
   });
-  const result = await model.act(chatMessages(body.messages ?? [], researchMode), tools, {
-      temperature: body.options?.temperature ?? config.defaultTemperature,
-      maxTokens: body.options?.num_predict ?? config.defaultMaxTokens,
-      maxPredictionRounds: config.maxPredictionRounds,
-      topKSampling: body.options?.top_k,
-      topPSampling: body.options?.top_p,
-      minPSampling: body.options?.min_p,
-      repeatPenalty: body.options?.repeat_penalty,
-      allowParallelToolExecution: false,
-      signal: abortController.signal,
-      raw: reasoningConfig(body.options?.reasoning_budget),
-      onPredictionCompleted: prediction => predictions.push(prediction),
-      onToolCallRequestFinalized: (round, _callId, { toolCallRequest }) => {
-        console.info(JSON.stringify({
-          event: "lmstudio_tool_call",
-          requestId,
-          round: round + 1,
-          name: toolCallRequest.name,
-          arguments: toolCallRequest.arguments,
-        }));
-      },
-      handleInvalidToolRequest: (error, toolCallRequest) => {
+  let executionSeconds = 0;
+  let fallbackAnswer: string | undefined;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    predictions.length = 0;
+    try {
+      const result = await model.act(chatMessages(body.messages ?? [], researchMode), tools, {
+        temperature: body.options?.temperature ?? config.defaultTemperature,
+        maxTokens: body.options?.num_predict ?? config.defaultMaxTokens,
+        maxPredictionRounds: config.maxPredictionRounds,
+        topKSampling: body.options?.top_k,
+        topPSampling: body.options?.top_p,
+        minPSampling: body.options?.min_p,
+        repeatPenalty: body.options?.repeat_penalty,
+        allowParallelToolExecution: false,
+        signal: abortController.signal,
+        raw: reasoningConfig(body.options?.reasoning_budget),
+        onPredictionCompleted: prediction => predictions.push(prediction),
+        onToolCallRequestFinalized: (round, _callId, { toolCallRequest }) => {
+          console.info(JSON.stringify({
+            event: "lmstudio_tool_call",
+            requestId,
+            attempt,
+            round: round + 1,
+            name: toolCallRequest.name,
+            arguments: toolCallRequest.arguments,
+          }));
+        },
+        handleInvalidToolRequest: (error, toolCallRequest) => {
+          console.warn(JSON.stringify({
+            event: "lmstudio_invalid_tool_call",
+            requestId,
+            attempt,
+            error: error.message,
+            request: toolCallRequest,
+          }));
+          if (toolCallRequest) return error.message;
+          throw error;
+        },
+      });
+      executionSeconds = result.totalExecutionTimeSeconds;
+      break;
+    } catch (error) {
+      if (abortController.signal.aborted) throw error;
+      const retryable = isTransientModelError(error);
+      console.warn(JSON.stringify({
+        event: "chat_attempt_failed",
+        requestId,
+        attempt,
+        retryable,
+        error: error instanceof Error ? error.message : String(error),
+      }));
+      if (retryable && attempt < 2) {
+        sendProgress("Model interrupted. Reloading and continuing research.");
+        model = await lmStudio.llm.model(modelName);
+        continue;
+      }
+      if (latestResearchResult) {
+        fallbackAnswer = latestResearchResult.answer;
         console.warn(JSON.stringify({
-          event: "lmstudio_invalid_tool_call",
+          event: "chat_evidence_fallback",
           requestId,
-          error: error.message,
-          request: toolCallRequest,
+          attempt,
+          answerCharacters: fallbackAnswer.length,
+          evidenceSegments: latestResearchResult.evidence.length,
         }));
-        if (toolCallRequest) return error.message;
-        throw error;
-      },
-  });
-    const payload = ollamaResponse(body, modelName, predictions, result.totalExecutionTimeSeconds);
+        break;
+      }
+      throw new Error(publicResearchFailureMessage);
+    }
+  }
+    const payload = fallbackAnswer
+      ? directOllamaResponse(modelName, fallbackAnswer)
+      : ollamaResponse(body, modelName, predictions, executionSeconds);
     console.info(JSON.stringify({
       event: "chat_completed",
       requestId,
@@ -603,17 +713,16 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
 app.use((error: unknown, _request: Request, response: Response, _next: NextFunction) => {
   console.error(error);
   if (response.headersSent) {
-    const message = error instanceof Error ? error.message : String(error);
     response.end(`${JSON.stringify({
       model: response.locals.modelName,
       created_at: new Date().toISOString(),
-      message: { role: "assistant", content: `Research failed: ${message}` },
+      message: { role: "assistant", content: publicResearchFailureMessage },
       done: true,
       done_reason: "error",
     })}\n`);
     return;
   }
-  response.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  response.status(503).json({ error: publicResearchFailureMessage });
 });
 
 app.listen(config.port, "0.0.0.0", () => {

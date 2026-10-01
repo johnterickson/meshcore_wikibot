@@ -3,7 +3,7 @@ import { createServer, type Server } from "node:http";
 import test from "node:test";
 import type { AddressInfo } from "node:net";
 import { AsyncMutex } from "./asyncMutex.js";
-import { createControlGateway, OpenAiStreamAccumulator, summarizeControlHistory, toOllamaCompletion, toOpenAiChatRequest, toOpenAiMessages } from "./controlGateway.js";
+import { controlSafetyPrompt, controlVerificationStatus, createControlGateway, OpenAiStreamAccumulator, summarizeControlHistory, toOllamaCompletion, toOpenAiChatRequest, toOpenAiMessages, verifiedControlOutcome, type OllamaMessage } from "./controlGateway.js";
 
 async function listen(server: Server): Promise<string> {
 	await new Promise<void>((resolve, reject) => {
@@ -83,7 +83,10 @@ test("toOpenAiChatRequest forwards HA tools and compatible generation options", 
 
 	assert.deepEqual(request, {
 		model: "test-model",
-		messages: [{ role: "user", content: "Turn off the kitchen light" }],
+		messages: [
+			{ role: "system", content: controlSafetyPrompt },
+			{ role: "user", content: "Turn off the kitchen light" },
+		],
 		stream: true,
 		temperature: 0.1,
 		max_tokens: 256,
@@ -253,7 +256,10 @@ test("control gateway authenticates and streams complete Ollama tool calls", asy
 		}]);
 		assert.equal(lines[0].done, true);
 		assert.deepEqual(upstreamRequest?.tools, [tool]);
-		assert.deepEqual(upstreamRequest?.messages, [{ role: "user", content: "Turn on the desk lamp" }]);
+		assert.deepEqual(upstreamRequest?.messages, [
+			{ role: "system", content: controlSafetyPrompt },
+			{ role: "user", content: "Turn on the desk lamp" },
+		]);
 	} finally {
 		await close(gateway);
 		await close(upstream);
@@ -277,6 +283,87 @@ test("summarizeControlHistory reports tool flow without values", () => {
 			dataType: "object",
 			hasError: false,
 			dataKeys: ["success"],
+			successCount: 1,
+			failedCount: undefined,
 		}],
 	});
+});
+
+test("control safety policy requires exact actions and proven success", () => {
+	assert.match(controlSafetyPrompt, /Never substitute stop/);
+	assert.match(controlSafetyPrompt, /only for entities explicitly listed in data\.success/);
+	assert.match(controlSafetyPrompt, /report every entity in data\.failed/);
+	assert.match(controlSafetyPrompt, /at most three state observations per entity/);
+	assert.match(controlSafetyPrompt, /completion was not confirmed/);
+
+	assert.deepEqual(summarizeControlHistory([{
+		role: "tool",
+		content: JSON.stringify({ data: { success: [], failed: [{ name: "Garage door" }] }, error: null }),
+	}]).toolResults, [{
+		parsed: true,
+		dataType: "object",
+		hasError: false,
+		dataKeys: ["success", "failed"],
+		successCount: 0,
+		failedCount: 1,
+	}]);
+});
+
+test("control verification detects moving and blocked cover states", () => {
+	const actionMessages = [
+		{ role: "user", content: "Close Garage door 1" },
+		{ role: "assistant", tool_calls: [{ function: { name: "intent__HassTurnOff", arguments: { name: "Garage door 1" } } }] },
+		{ role: "tool", content: JSON.stringify({ data: { success: [{ name: "Garage door 1" }] }, error: null }) },
+	] satisfies OllamaMessage[];
+	const firstCheck = [
+		...actionMessages,
+		{ role: "assistant", tool_calls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }] },
+		{ role: "tool", content: JSON.stringify({ data: { success: [{ name: "Garage door 1", state: "closing" }] }, error: null }) },
+	] satisfies OllamaMessage[];
+	assert.deepEqual(controlVerificationStatus(firstCheck), {
+		stateChecks: 1,
+		stateRounds: 1,
+		latestStates: ["closing"],
+		movingStates: ["closing"],
+		observedStates: ["closing"],
+		latestStateCalls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }],
+	});
+
+	const blocked = [
+		...firstCheck,
+		{ role: "assistant", tool_calls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }] },
+		{ role: "tool", content: JSON.stringify({ data: { success: [{ name: "Garage door 1", state: "open" }] }, error: null }) },
+	] satisfies OllamaMessage[];
+	assert.deepEqual(controlVerificationStatus(blocked), {
+		stateChecks: 2,
+		stateRounds: 2,
+		latestStates: ["open"],
+		movingStates: [],
+		observedStates: ["closing", "open"],
+		latestStateCalls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }],
+	});
+	assert.equal(
+		verifiedControlOutcome(blocked),
+		"Command was sent for Garage door 1. It was observed closing. Latest observed state: open. Requested final state closed was not confirmed.",
+	);
+
+	const closed = blocked.slice(0, -1).concat({
+		role: "tool",
+		content: JSON.stringify({ data: { success: [{ name: "Garage door 1", state: "closed" }] }, error: null }),
+	});
+	assert.equal(
+		verifiedControlOutcome(closed),
+		"Command completed and verified for Garage door 1. Latest observed state: closed.",
+	);
+
+	const stillClosing = firstCheck.concat(
+		{ role: "assistant", tool_calls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }] },
+		{ role: "tool", content: JSON.stringify({ data: { success: [{ name: "Garage door 1", state: "closing" }] }, error: null }) },
+		{ role: "assistant", tool_calls: [{ function: { name: "intent__HassGetState", arguments: { name: "Garage door 1" } } }] },
+		{ role: "tool", content: JSON.stringify({ data: { success: [{ name: "Garage door 1", state: "closing" }] }, error: null }) },
+	);
+	assert.equal(
+		verifiedControlOutcome(stillClosing),
+		"Command was sent for Garage door 1. It was observed closing. Latest observed state: closing. Requested final state closed was not confirmed.",
+	);
 });

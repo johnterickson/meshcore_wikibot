@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseResearchDirectives, researchModeFromMessages } from "./researchMode.js";
+import { helpMessage, isHelpRequest, parseResearchDirectives, researchModeFromMessages } from "./researchMode.js";
 
 test("query mode is the default", () => {
   assert.deepEqual(parseResearchDirectives("Who is Victoria Beckham?"), {
@@ -46,4 +46,22 @@ test("latest user message selects the request mode", () => {
     { role: "user", content: "Earlier request" },
     { role: "user", content: "/new /map Current request" },
   ]), "map");
+});
+
+test("help is an exact latest-user command", () => {
+  assert.equal(isHelpRequest([{ role: "user", content: "  /HELP  " }]), true);
+  assert.equal(isHelpRequest([{ role: "user", content: "  help  " }]), true);
+  assert.equal(isHelpRequest([{ role: "user", content: "/new /help" }]), true);
+  assert.equal(isHelpRequest([{ role: "user", content: "/new help" }]), true);
+  assert.equal(isHelpRequest([
+    { role: "user", content: "/help" },
+    { role: "assistant", content: helpMessage },
+    { role: "user", content: "What is titanium?" },
+  ]), false);
+  assert.equal(isHelpRequest([{ role: "user", content: "/help me research" }]), false);
+  assert.equal(isHelpRequest([{ role: "user", content: "help me research" }]), false);
+  assert.match(helpMessage, /\/query/);
+  assert.match(helpMessage, /\/map/);
+  assert.match(helpMessage, /\/new/);
+  assert.ok(helpMessage.length <= 100);
 });

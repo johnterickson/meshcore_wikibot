@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { setTimeout as delay } from "node:timers/promises";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { AsyncMutex } from "./asyncMutex.js";
 
@@ -95,6 +96,128 @@ export type ControlGatewayOptions = {
 	defaultMaxTokens: number;
 	mutex: AsyncMutex;
 };
+
+export const controlSafetyPrompt = `Home Assistant control policy: Match the user's requested operation exactly. Never substitute stop, pause, toggle, open, close, turn-on, or turn-off operations for one another. A requested tool call does not prove that an action succeeded. After tool results, claim success only for entities explicitly listed in data.success and report every entity in data.failed.
+
+After a successful state-changing action, use the supplied state-reading tool whose name ends in HassGetState to verify every affected entity before answering. For cover actions, if a state is opening or closing, check it again, with at most three state observations per entity. Claim a final open or closed state only when the latest state result explicitly reports it. If state verification is unavailable, remains moving, returns to the opposite state, or otherwise does not prove the requested final state, say the command was sent and report the observed state, but clearly state that completion was not confirmed.`;
+
+function stateValues(value: unknown): string[] {
+	if (Array.isArray(value)) return value.flatMap(stateValues);
+	if (value === null || typeof value !== "object") return [];
+	return Object.entries(value as JsonObject).flatMap(([key, entry]) =>
+		key.toLowerCase() === "state" && typeof entry === "string"
+			? [entry]
+			: stateValues(entry)
+	);
+}
+
+export function controlVerificationStatus(messages: OllamaMessage[]) {
+	let latestMutationIndex = -1;
+	let latestStateCallIndex = -1;
+	let stateChecks = 0;
+	let stateRounds = 0;
+	let latestStateCalls: OllamaToolCall[] = [];
+	for (const [messageIndex, message] of messages.entries()) {
+		if (message.role !== "assistant" || !message.tool_calls?.length) continue;
+		const names = message.tool_calls.map(toolCall => toolCall.function.name);
+		if (names.some(name => !/HassGetState$/i.test(name))) {
+			latestMutationIndex = messageIndex;
+			latestStateCallIndex = -1;
+			stateChecks = 0;
+			stateRounds = 0;
+			latestStateCalls = [];
+		}
+		const stateCalls = message.tool_calls.filter(toolCall => /HassGetState$/i.test(toolCall.function.name));
+		const checks = stateCalls.length;
+		if (checks > 0 && messageIndex > latestMutationIndex) {
+			latestStateCallIndex = messageIndex;
+			stateChecks += checks;
+			stateRounds += 1;
+			latestStateCalls = stateCalls;
+		}
+	}
+
+	const latestStates: string[] = [];
+	const observedStates: string[] = [];
+	let collectingStateResult = false;
+	for (let index = latestMutationIndex + 1; index < messages.length; index += 1) {
+		const message = messages[index];
+		if (message.role === "assistant") {
+			collectingStateResult = Boolean(message.tool_calls?.some(call => /HassGetState$/i.test(call.function.name)));
+			continue;
+		}
+		if (message.role !== "tool" || !collectingStateResult) continue;
+		try {
+			observedStates.push(...stateValues(JSON.parse(message.content ?? "")));
+		} catch {
+			// Non-JSON tool results cannot prove a final state.
+		}
+	}
+	if (latestStateCallIndex >= 0) {
+		for (let index = latestStateCallIndex + 1; index < messages.length; index += 1) {
+			const message = messages[index];
+			if (message.role !== "tool") break;
+			try {
+				latestStates.push(...stateValues(JSON.parse(message.content ?? "")));
+			} catch {
+				// Non-JSON tool results cannot prove a final state.
+			}
+		}
+	}
+	return {
+		stateChecks,
+		stateRounds,
+		latestStates,
+		movingStates: latestStates.filter(state => /^(?:opening|closing)$/i.test(state)),
+		observedStates,
+		latestStateCalls,
+	};
+}
+
+function requestedFinalState(messages: OllamaMessage[]): string | undefined {
+	const request = [...messages]
+		.reverse()
+		.find(message => message.role === "user" && typeof message.content === "string")
+		?.content?.toLowerCase() ?? "";
+	if (/\bclose(?:d)?\b/.test(request)) return "closed";
+	if (/\bopen(?:ed)?\b/.test(request)) return "open";
+	if (/\b(?:turn|switch)\s+off\b/.test(request)) return "off";
+	if (/\b(?:turn|switch)\s+on\b/.test(request)) return "on";
+	if (/\bunlock(?:ed)?\b/.test(request)) return "unlocked";
+	if (/\block(?:ed)?\b/.test(request)) return "locked";
+	return undefined;
+}
+
+function toolCallEntityNames(calls: OllamaToolCall[]): string[] {
+	return calls.flatMap(call => {
+		const arguments_ = typeof call.function.arguments === "string"
+			? ollamaArguments(call.function.arguments)
+			: call.function.arguments;
+		const name = arguments_?.name;
+		return typeof name === "string" && name.trim() ? [name.trim()] : [];
+	});
+}
+
+export function verifiedControlOutcome(messages: OllamaMessage[]): string | undefined {
+	const target = requestedFinalState(messages);
+	const verification = controlVerificationStatus(messages);
+	if (!target || verification.stateRounds === 0 || verification.latestStates.length === 0) {
+		return undefined;
+	}
+	if (verification.movingStates.length > 0 && verification.stateRounds < 3) {
+		return undefined;
+	}
+	const entities = toolCallEntityNames(verification.latestStateCalls);
+	const subject = entities.length > 0 ? entities.join(", ") : "the requested entities";
+	const latest = verification.latestStates.join(", ");
+	const enoughResults = entities.length === 0 || verification.latestStates.length >= entities.length;
+	const reachedTarget = enoughResults && verification.latestStates.every(state => state.toLowerCase() === target);
+	if (reachedTarget) {
+		return `Command completed and verified for ${subject}. Latest observed state: ${latest}.`;
+	}
+	const movement = verification.observedStates.find(state => /^(?:opening|closing)$/i.test(state));
+	return `Command was sent for ${subject}.${movement ? ` It was observed ${movement}.` : ""} Latest observed state: ${latest}. Requested final state ${target} was not confirmed.`;
+}
 
 function secureEqual(expected: string, supplied: string | undefined): boolean {
 	if (!supplied) return false;
@@ -193,13 +316,18 @@ export function summarizeControlHistory(messages: OllamaMessage[]) {
 					}
 					const envelope = result as JsonObject;
 					const data = envelope.data;
+					const resultData = data !== null && typeof data === "object" && !Array.isArray(data)
+						? data as JsonObject
+						: undefined;
 					return {
 						parsed: true,
 						dataType: Array.isArray(data) ? "array" : data === null ? "null" : typeof data,
 						hasError: Boolean(envelope.error),
-						dataKeys: data !== null && typeof data === "object" && !Array.isArray(data)
-							? Object.keys(data as JsonObject).slice(0, 20)
+						dataKeys: resultData
+							? Object.keys(resultData).slice(0, 20)
 							: [],
+						successCount: Array.isArray(resultData?.success) ? resultData.success.length : undefined,
+						failedCount: Array.isArray(resultData?.failed) ? resultData.failed.length : undefined,
 					};
 				} catch {
 					return { parsed: false, dataType: "text", hasError: false, dataKeys: [] };
@@ -232,7 +360,10 @@ export function toOpenAiChatRequest(
 	const format = responseFormat(body.format);
 	return {
 		model: body.model || defaults.defaultModel,
-		messages: toOpenAiMessages(body.messages ?? []),
+		messages: [
+			{ role: "system", content: controlSafetyPrompt },
+			...toOpenAiMessages(body.messages ?? []),
+		],
 		stream: body.stream !== false,
 		temperature: options.temperature ?? defaults.defaultTemperature,
 		max_tokens: options.num_predict ?? defaults.defaultMaxTokens,
@@ -458,15 +589,75 @@ export function createControlGateway(options: ControlGatewayOptions) {
 		response.once("close", () => {
 			if (!response.writableEnded) abortController.abort();
 		});
+		const verification = controlVerificationStatus(body.messages ?? []);
+		const verificationLog = {
+			stateChecks: verification.stateChecks,
+			stateRounds: verification.stateRounds,
+			latestStates: verification.latestStates,
+			movingStates: verification.movingStates,
+			observedStates: verification.observedStates,
+		};
 		console.info(JSON.stringify({
 			event: "control_chat_request",
 			requestId,
 			model,
 			messages: body.messages?.length ?? 0,
 			tools: body.tools?.length ?? 0,
+			toolNames: (body.tools ?? []).map(tool => {
+				const definition = tool.function;
+				return definition && typeof definition === "object" && !Array.isArray(definition)
+					? (definition as JsonObject).name
+					: undefined;
+			}).filter(name => typeof name === "string"),
 			history: summarizeControlHistory(body.messages ?? []),
+			verification: verificationLog,
 			stream: streaming,
 		}));
+		if (verification.movingStates.length > 0 && verification.stateRounds < 3) {
+			console.info(JSON.stringify({
+				event: "control_verification_wait",
+				requestId,
+				milliseconds: 5000,
+				stateChecks: verification.stateChecks,
+				movingStates: verification.movingStates,
+			}));
+			await delay(5000, undefined, { signal: abortController.signal });
+			const suppliedToolNames = new Set((body.tools ?? []).flatMap(tool => {
+				const definition = tool.function;
+				if (!definition || typeof definition !== "object" || Array.isArray(definition)) return [];
+				const name = (definition as JsonObject).name;
+				return typeof name === "string" ? [name] : [];
+			}));
+			const recheckCalls = verification.stateRounds < 3
+				? verification.latestStateCalls.filter(call => suppliedToolNames.has(call.function.name))
+				: [];
+			if (recheckCalls.length > 0) {
+				const payload = ollamaChunk(model, { content: "", tool_calls: recheckCalls }, true, { done_reason: "stop" });
+				console.info(JSON.stringify({
+					event: "control_verification_recheck",
+					requestId,
+					stateRound: verification.stateRounds + 1,
+					requestedTools: recheckCalls.map(call => call.function.name),
+				}));
+				if (!streaming) response.json(payload);
+				else response.status(200).type("application/x-ndjson").end(`${JSON.stringify(payload)}\n`);
+				return;
+			}
+		}
+		const verifiedOutcome = verifiedControlOutcome(body.messages ?? []);
+		if (verifiedOutcome) {
+			const payload = ollamaChunk(model, { content: verifiedOutcome }, true, { done_reason: "stop" });
+			console.info(JSON.stringify({
+				event: "control_verification_completed",
+				requestId,
+				stateChecks: verification.stateChecks,
+				latestStates: verification.latestStates,
+				confirmed: !/not confirmed\.$/i.test(verifiedOutcome),
+			}));
+			if (!streaming) response.json(payload);
+			else response.status(200).type("application/x-ndjson").end(`${JSON.stringify(payload)}\n`);
+			return;
+		}
 		const release = await options.mutex.acquire(abortController.signal);
 		console.info(JSON.stringify({ event: "control_chat_started", requestId, waiting: options.mutex.waiting }));
 		try {

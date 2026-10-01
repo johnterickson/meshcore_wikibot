@@ -299,9 +299,12 @@ test("discovery prompts require one item per unique subject", async () => {
 test("research prompt requires plain-text termination", async () => {
   process.env.GATEWAY_API_KEY ??= "test-key";
   process.env.LOCALWIKI_MCP_AUTH_TOKEN ??= "test-token";
-  const { researchSystemPrompt } = await import("./config.js");
+  const { evidenceSynthesisSystemPrompt, researchSystemPrompt } = await import("./config.js");
   assert.match(researchSystemPrompt, /Tool calls are cheaper and more reliable than speculative reasoning/);
   assert.match(researchSystemPrompt, /Search sparingly with short exact subjects/);
   assert.match(researchSystemPrompt, /Stop calling tools immediately once fetched evidence fully answers the question/);
   assert.match(researchSystemPrompt, /Never print or serialize tool calls as text/);
+  assert.match(evidenceSynthesisSystemPrompt, /using only the supplied Wikipedia evidence/);
+  assert.match(evidenceSynthesisSystemPrompt, /Do not call or request tools/);
+  assert.match(evidenceSynthesisSystemPrompt, /what remains unsupported instead of guessing/);
 });

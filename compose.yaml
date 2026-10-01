@@ -25,43 +25,43 @@ services:
     security_opt:
       - no-new-privileges:true
 
-  openzim-mcp:
-    image: ghcr.io/cameronrye/openzim-mcp:3.3.3
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:${MCP_PORT:-8000}:8000"
-    volumes:
-      - type: bind
-        source: ${ZIM_PATH:-F:/wikipedia}
-        target: /data
-        read_only: true
-      - type: bind
-        source: ./cache/openzim-mcp
-        target: /home/appuser/.cache/openzim-mcp
-    environment:
-      OPENZIM_MCP_TRANSPORT: http
-      OPENZIM_MCP_HOST: 0.0.0.0
-      OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
-      OPENZIM_MCP_LOGGING__LEVEL: ${OPENZIM_MCP_LOG_LEVEL:-INFO}
-      OPENZIM_MCP_LOGGING__FORMAT: "%(asctime)s - %(name)s:%(funcName)s - %(levelname)s - %(message)s"
-      OPENZIM_MCP_CACHE__MAX_SIZE: "500"
-      OPENZIM_MCP_CACHE__TTL_SECONDS: "14400"
-      OPENZIM_MCP_CACHE__PERSISTENCE_ENABLED: "true"
-      OPENZIM_MCP_CACHE__PERSISTENCE_PATH: /home/appuser/.cache/openzim-mcp/cache.json
-      OPENZIM_MCP_CACHE__LIBZIM_CLUSTER_CACHE_MAX_SIZE_BYTES: "67108864"
-      OPENZIM_MCP_CACHE__LIBZIM_DIRENT_CACHE_MAX_COUNT: "2048"
-    healthcheck:
-      test:
-        - CMD
-        - python
-        - -c
-        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/readyz').getcode() == 200 else 1)"
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 5m
-    security_opt:
-      - no-new-privileges:true
+  # openzim-mcp:
+  #   image: ghcr.io/cameronrye/openzim-mcp:3.3.3
+  #   restart: unless-stopped
+  #   ports:
+  #     - "127.0.0.1:${MCP_PORT:-8000}:8000"
+  #   volumes:
+  #     - type: bind
+  #       source: ${ZIM_PATH:-F:/wikipedia}
+  #       target: /data
+  #       read_only: true
+  #     - type: bind
+  #       source: ./cache/openzim-mcp
+  #       target: /home/appuser/.cache/openzim-mcp
+  #   environment:
+  #     OPENZIM_MCP_TRANSPORT: http
+  #     OPENZIM_MCP_HOST: 0.0.0.0
+  #     OPENZIM_MCP_AUTH_TOKEN: ${OPENZIM_MCP_AUTH_TOKEN:?Set OPENZIM_MCP_AUTH_TOKEN in .env}
+  #     OPENZIM_MCP_LOGGING__LEVEL: ${OPENZIM_MCP_LOG_LEVEL:-INFO}
+  #     OPENZIM_MCP_LOGGING__FORMAT: "%(asctime)s - %(name)s:%(funcName)s - %(levelname)s - %(message)s"
+  #     OPENZIM_MCP_CACHE__MAX_SIZE: "500"
+  #     OPENZIM_MCP_CACHE__TTL_SECONDS: "14400"
+  #     OPENZIM_MCP_CACHE__PERSISTENCE_ENABLED: "true"
+  #     OPENZIM_MCP_CACHE__PERSISTENCE_PATH: /home/appuser/.cache/openzim-mcp/cache.json
+  #     OPENZIM_MCP_CACHE__LIBZIM_CLUSTER_CACHE_MAX_SIZE_BYTES: "67108864"
+  #     OPENZIM_MCP_CACHE__LIBZIM_DIRENT_CACHE_MAX_COUNT: "2048"
+  #   healthcheck:
+  #     test:
+  #       - CMD
+  #       - python
+  #       - -c
+  #       - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/readyz').getcode() == 200 else 1)"
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 5m
+  #   security_opt:
+  #     - no-new-privileges:true
 
   localwiki-mcp:
     build:

@@ -6,6 +6,8 @@ export type ParsedResearchDirectives = {
   reset: boolean;
 };
 
+export const helpMessage = "/query <question> (default); /map <question> for lists; /new resets chat. Commands can be combined.";
+
 export function parseResearchDirectives(value: string): ParsedResearchDirectives {
   let content = value.trimStart();
   let mode: ResearchMode = "query";
@@ -32,4 +34,15 @@ export function researchModeFromMessages(
   return latestUserMessage?.content
     ? parseResearchDirectives(latestUserMessage.content).mode
     : "query";
+}
+
+export function isHelpRequest(
+  messages: Array<{ role?: string; content?: string }>,
+): boolean {
+  const latestUserMessage = [...messages]
+    .reverse()
+    .find(message => message.role === "user" && typeof message.content === "string");
+  return latestUserMessage?.content
+    ? /^\/?help$/i.test(parseResearchDirectives(latestUserMessage.content).content.trim())
+    : false;
 }
