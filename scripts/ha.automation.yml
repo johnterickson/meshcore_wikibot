@@ -27,7 +27,9 @@ actions:
         'conversation.wikibot' }}
       meshcore_conversation_id: >-
         {{ 'meshcore_' ~ room_pubkey ~ '_' ~ participant_signature }}
-      participant_mention: "{{ '@' ~ participant_signature }}"
+      participant_mention: >-
+        {{ '@' ~ {'7a1aec75': 'johnlaptop-2'}.get(participant_signature,
+        participant_signature) }}
   - if:
       - condition: template
         value_template: >-
@@ -44,7 +46,7 @@ actions:
         MeshCore conversation route: room={{ room_pubkey | tojson }},
         participant={{ participant_signature | tojson }}, conversation_id={{
         meshcore_conversation_id | tojson }}, agent={{ conversation_agent |
-        tojson }}
+        tojson }}, mention={{ participant_mention | tojson }}
   - action: conversation.process
     continue_on_error: true
     data:
@@ -81,7 +83,7 @@ actions:
                     pubkey_prefix: '{{ room_pubkey }}'
                     message: '{{ repeat.item }}'
                 - delay:
-                    milliseconds: 7000
+                    milliseconds: 10000
     default:
       - action: meshcore.send_message
         data:
