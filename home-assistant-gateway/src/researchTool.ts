@@ -108,7 +108,7 @@ export function normalizeDiscoveredItems(items: string[]): string[] {
 }
 
 export function unresolvedResearchFields(answer: string): string[] {
-  return /\b(unknown|not provided|not available|not supported|unsupported|cannot verify|could not be verified|remains unsupported)\b/i.test(answer)
+  return /\b(?:unknown|not provided|not available|not supported|unsupported|cannot verify|could not be verified|remains unsupported|does not establish|did not establish|cannot confirm|could not confirm|cannot be confirmed|not established|insufficient evidence|insufficient information|no information or evidence|does not support|not possible to answer|unable to answer)\b/i.test(answer)
     ? ["The researcher reported one or more requested facts as unresolved."]
     : [];
 }

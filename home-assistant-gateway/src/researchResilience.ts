@@ -4,3 +4,7 @@ export function isTransientModelError(error: unknown): boolean {
   const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
   return /engine protocol|predict request failed|fetch failed|terminated|model unloaded|econnreset|econnrefused|socket|network/i.test(message);
 }
+
+export function shouldUseGroundedFallback(answer: string, completionReason: string): boolean {
+  return answer.trim().length === 0 || completionReason === "length";
+}

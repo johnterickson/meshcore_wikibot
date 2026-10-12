@@ -216,6 +216,12 @@ test("unsupported facts mark a research answer unresolved", () => {
   assert.deepEqual(unresolvedResearchFields("Birthday dates are not supported by any fetched passage."), [
     "The researcher reported one or more requested facts as unresolved.",
   ]);
+  assert.deepEqual(unresolvedResearchFields("The provided evidence does not establish that this is the only active team."), [
+    "The researcher reported one or more requested facts as unresolved.",
+  ]);
+  assert.deepEqual(unresolvedResearchFields("Based on the supplied evidence, it is not possible to answer the question."), [
+    "The researcher reported one or more requested facts as unresolved.",
+  ]);
   assert.deepEqual(unresolvedResearchFields("Every requested fact is supported by the fetched passage."), []);
 });
 

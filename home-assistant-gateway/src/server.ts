@@ -7,7 +7,7 @@ import { config, evidenceSynthesisSystemPrompt, listExtractionPrompt, reduceRevi
 import { createControlGateway } from "./controlGateway.js";
 import { addAssessmentRepairs, buildRepairPlan, completeRepairReviewCoverage, mergeFieldResults, reduceFieldResults, repairCallBudget, repairReviewCoverageIssues, repairReviewMaxTokens, type FieldResearchResult } from "./researchRepair.js";
 import { helpMessage, isHelpRequest, parseResearchDirectives, researchModeFromMessages, type ResearchMode } from "./researchMode.js";
-import { isTransientModelError, publicResearchFailureMessage } from "./researchResilience.js";
+import { isTransientModelError, publicResearchFailureMessage, shouldUseGroundedFallback } from "./researchResilience.js";
 import { createResearchTools, normalizeDiscoveredItems, unresolvedResearchFields, type ResearchResult } from "./researchTool.js";
 import { connectLocalWiki, createWikiTools } from "./wikiTools.js";
 
@@ -657,6 +657,21 @@ app.post("/api/chat", async (request: Request<unknown, unknown, ChatBody>, respo
         },
       });
       executionSeconds = result.totalExecutionTimeSeconds;
+      const finalPrediction = predictions.at(-1);
+      const answer = predictionAnswer(finalPrediction);
+      const completionReason = doneReason(finalPrediction?.stats.stopReason);
+      if (shouldUseGroundedFallback(answer, completionReason)) {
+        if (!latestResearchResult) throw new Error(publicResearchFailureMessage);
+        fallbackAnswer = latestResearchResult.answer;
+        console.warn(JSON.stringify({
+          event: "chat_evidence_fallback",
+          requestId,
+          attempt,
+          reason: answer ? "length" : "empty_answer",
+          answerCharacters: fallbackAnswer.length,
+          evidenceSegments: latestResearchResult.evidence.length,
+        }));
+      }
       break;
     } catch (error) {
       if (abortController.signal.aborted) throw error;
